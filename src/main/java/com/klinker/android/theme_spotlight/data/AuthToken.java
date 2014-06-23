@@ -18,6 +18,7 @@ package com.klinker.android.theme_spotlight.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.klinker.android.theme_spotlight.util.AuthUtils;
@@ -32,7 +33,7 @@ public class AuthToken {
     private String token;
     private String androidId;
 
-    public AuthToken(final Context context, final OnLoadFinishedListener listener) {
+    public AuthToken(final Context context, final OnLoadFinishedListener listener, final Handler handler) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         token = sharedPreferences.getString(AUTH_TOKEN_PREF, null);
         androidId = sharedPreferences.getString(ANDROID_ID_PREF, null);
@@ -59,7 +60,13 @@ public class AuthToken {
                         e.printStackTrace();
                     }
 
-                    listener.onLoadFinished();
+                    // post back to ui thread
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onLoadFinished();
+                        }
+                    });
                 }
             }).start();
         } else {

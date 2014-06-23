@@ -79,7 +79,7 @@ public class SpotlightActivity extends Activity {
                 // initialize us to the evolve theme fragment
                 switchFragments(EVOLVE_FRAGMENT);
             }
-        });
+        }, mHandler);
 
         // initialize the drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
