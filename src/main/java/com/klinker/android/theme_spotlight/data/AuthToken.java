@@ -18,64 +18,71 @@ package com.klinker.android.theme_spotlight.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import com.klinker.android.theme_spotlight.util.AuthUtils;
 
 public class AuthToken {
 
     private static final String TAG = "AuthToken";
 
-    private static final String AUTH_TOKEN_PREF = "accounts_username";
+    private static final String AUTH_USERNAME_PREF = "accounts_username";
+    private static final String AUTH_PASSWORD_PREF = "accounts_password";
     private static final String ANDROID_ID_PREF = "accounts_android_id";
 
-    private String token;
+    private String username;
+    private String password;
     private String androidId;
 
-    public AuthToken(final Context context, final OnLoadFinishedListener listener, final Handler handler) {
+    public AuthToken(Context context) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        token = sharedPreferences.getString(AUTH_TOKEN_PREF, null);
+        username = sharedPreferences.getString(AUTH_USERNAME_PREF, null);
+        password = sharedPreferences.getString(AUTH_PASSWORD_PREF, null);
         androidId = sharedPreferences.getString(ANDROID_ID_PREF, null);
 
-        // if this is the first time running and they aren't yet stored, create and store them
-        if (token == null || androidId == null) {
-            Log.v(TAG, "credentials null, getting new credentials");
+        if (username == null || password == null || androidId == null) {
+            // TODO launcher login activity
+            username = "jklinker1@gmail.com";
+            password = "klinker1127";
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        token = AuthUtils.getAuthToken(context);
-                        androidId = AuthUtils.getAndroidID(context);
-
-                        // save values to shared preferences
-                        sharedPreferences.edit()
-                                .putString(AUTH_TOKEN_PREF, token)
-                                .putString(ANDROID_ID_PREF, androidId)
-                                .commit();
-
-                        Log.v(TAG, "token: " + token + ", androidId: " + androidId);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    // post back to ui thread
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.onLoadFinished();
-                        }
-                    });
-                }
-            }).start();
-        } else {
-            listener.onLoadFinished();
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    GooglePlayAPI api = new GooglePlayAPI(username, password);
+//
+//                    try {
+//                        api.checkin();
+//                        androidId = api.getAndroidID();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }).start();
         }
     }
 
-    public String getToken() {
-        return token;
+    public AuthToken(Context context, String username, String password, String androidId) {
+        this.username = username;
+        this.password = password;
+        this.androidId = androidId;
+
+        storeToPrefs(context);
+    }
+
+    private void storeToPrefs(Context context) {
+        // update these in shared prefs
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(AUTH_USERNAME_PREF, username)
+                .putString(AUTH_PASSWORD_PREF, password)
+                .putString(ANDROID_ID_PREF, androidId)
+                .commit();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getAndroidId() {

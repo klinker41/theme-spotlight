@@ -30,7 +30,8 @@
     <application android:allowBackup="true"
                  android:label="@string/app_name"
                  android:icon="@android:color/transparent"
-                 android:theme="@style/Theme">
+                 android:theme="@style/Theme"
+                 android:name=".SpotlightApplication">
 
         <activity android:name=".activity.SpotlightActivity">
             <intent-filter>

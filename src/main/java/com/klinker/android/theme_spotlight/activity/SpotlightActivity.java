@@ -17,6 +17,7 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +62,9 @@ public class SpotlightActivity extends Activity {
     private int mIcon;
     private View[] drawerButtons;
 
+    // current fragment being shown
+    private AbstractThemeFragment mFragment;
+
     // auth token information from google account
     private AuthToken mAuthToken;
 
@@ -73,18 +77,13 @@ public class SpotlightActivity extends Activity {
         mHandler = new Handler();
 
         // request getting our auth tokens
-        mAuthToken = new AuthToken(this, new AuthToken.OnLoadFinishedListener() {
-            @Override
-            public void onLoadFinished() {
-                // initialize us to the evolve theme fragment
-                switchFragments(EVOLVE_FRAGMENT);
-            }
-        }, mHandler);
+        mAuthToken = new AuthToken(this);
 
         // initialize the drawer
+        setupActionbar(0);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
-                R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
+                R.drawable.ic_drawer, R.string.app_name, R.string.evolve_sms_themes) {
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -110,26 +109,25 @@ public class SpotlightActivity extends Activity {
     }
 
     // perform transaction and switch the old fragment for the new one
-    private void switchFragments(int position) {
+    public void switchFragments(int position) {
         // Create a new fragment
-        AbstractThemeFragment fragment;
         switch (position) {
             case EVOLVE_FRAGMENT:
-                fragment = EvolveThemeFragment.newInstance(mAuthToken);
+                mFragment = EvolveThemeFragment.newInstance(mAuthToken);
                 break;
             case TALON_FRAGMENT:
-                fragment = TalonThemeFragment.newInstance(mAuthToken);
+                mFragment = TalonThemeFragment.newInstance(mAuthToken);
                 break;
             case FEATURED_FRAGMENT:
             default:
-                fragment = FeaturedThemeFragment.newInstance(mAuthToken);
+                mFragment = FeaturedThemeFragment.newInstance(mAuthToken);
                 break;
         }
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
+                .replace(R.id.content_frame, mFragment)
                 .commit();
 
         // Highlight the selected item, update the title, and close the drawer
@@ -139,7 +137,7 @@ public class SpotlightActivity extends Activity {
     }
 
     // set title and icon in the actionbar
-    private void setupActionbar(int position) {
+    public void setupActionbar(int position) {
         switch (position) {
             case EVOLVE_FRAGMENT:
                 setTitle(R.string.evolve_sms_themes);
@@ -242,5 +240,17 @@ public class SpotlightActivity extends Activity {
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_feedback)));
+    }
+
+    public int getActionbarIcon() {
+        return mIcon;
+    }
+
+    public DrawerLayout getNavigationDrawer() {
+        return mDrawer;
+    }
+
+    public Fragment getCurrentFragment() {
+        return mFragment;
     }
 }

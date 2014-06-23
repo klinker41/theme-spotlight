@@ -30,10 +30,11 @@ public abstract class AbstractThemeFragment extends Fragment {
 
     public static void setArguements(AbstractThemeFragment frag, AuthToken token) {
         Bundle args = new Bundle();
-        args.putString(AUTH_TOKEN, token.getToken());
+        args.putString(AUTH_TOKEN, token.getUsername());
         args.putString(ANDROID_ID, token.getAndroidId());
         frag.setArguments(args);
 
-        Log.v(TAG, "token: " + token.getToken() + ", androidId: " + token.getAndroidId());
+        Log.v(TAG, "username: " + token.getUsername() + ", password: " + token.getPassword()
+                + ", androidId: " + token.getAndroidId());
     }
 }
