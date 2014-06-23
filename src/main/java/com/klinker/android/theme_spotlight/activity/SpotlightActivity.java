@@ -17,12 +17,13 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -31,8 +32,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.data.AuthToken;
+import com.klinker.android.theme_spotlight.fragment.AbstractThemeFragment;
+import com.klinker.android.theme_spotlight.fragment.EvolveThemeFragment;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
+import com.klinker.android.theme_spotlight.fragment.TalonThemeFragment;
 
 public class SpotlightActivity extends Activity {
+
+    private static final String TAG = "SpotlightActivity";
 
     // fragment positions in the drawer
     private static final int EVOLVE_FRAGMENT = 0;
@@ -43,6 +51,9 @@ public class SpotlightActivity extends Activity {
     private static final Typeface LIGHT_TEXT = Typeface.create("sans-serif-light", Typeface.NORMAL);
     private static final Typeface BOLD_TEXT = Typeface.create("sans-serif", Typeface.BOLD);
 
+    private Context mContext;
+    private Handler mHandler;
+
     // stuff to manage the drawer
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -50,10 +61,25 @@ public class SpotlightActivity extends Activity {
     private int mIcon;
     private View[] drawerButtons;
 
+    // auth token information from google account
+    private AuthToken mAuthToken;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spotlight);
+
+        mContext = this;
+        mHandler = new Handler();
+
+        // request getting our auth tokens
+        mAuthToken = new AuthToken(this, new AuthToken.OnLoadFinishedListener() {
+            @Override
+            public void onLoadFinished() {
+                // initialize us to the evolve theme fragment
+                switchFragments(EVOLVE_FRAGMENT);
+            }
+        });
 
         // initialize the drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,25 +107,22 @@ public class SpotlightActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         setupDrawerButtons();
-
-        // initialize us to the evolve theme fragment
-        switchFragments(EVOLVE_FRAGMENT);
     }
 
     // perform transaction and switch the old fragment for the new one
     private void switchFragments(int position) {
         // Create a new fragment
-        Fragment fragment;
+        AbstractThemeFragment fragment;
         switch (position) {
             case EVOLVE_FRAGMENT:
-                fragment = new Fragment();
+                fragment = EvolveThemeFragment.newInstance(mAuthToken);
                 break;
             case TALON_FRAGMENT:
-                fragment = new Fragment();
+                fragment = TalonThemeFragment.newInstance(mAuthToken);
                 break;
             case FEATURED_FRAGMENT:
             default:
-                fragment = new Fragment();
+                fragment = FeaturedThemeFragment.newInstance(mAuthToken);
                 break;
         }
 
