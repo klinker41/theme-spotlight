@@ -206,10 +206,12 @@ public class SpotlightActivity extends Activity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    // handle settings button clicked in the drawer
     public void onSettingsClicked(View v) {
-        // TODO implement
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
+    // handle send feedback button clicked in the drawer
     public void onFeedbackClicked(View v) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
