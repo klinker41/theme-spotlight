@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +28,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import com.klinker.android.theme_spotlight.R;
 
 public class SpotlightActivity extends Activity {
@@ -35,9 +37,15 @@ public class SpotlightActivity extends Activity {
     private static final int TALON_FRAGMENT = 1;
     private static final int FEATURED_FRAGMENT = 2;
 
+    private static final Typeface LIGHT_TEXT = Typeface.create("sans-serif-light", Typeface.NORMAL);
+    private static final Typeface BOLD_TEXT = Typeface.create("sans-serif", Typeface.BOLD);
+
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mTitle;
+    private int mIcon;
+
+    private View[] drawerButtons;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,12 +60,14 @@ public class SpotlightActivity extends Activity {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getActionBar().setTitle(mTitle);
+                getActionBar().setIcon(mIcon);
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(R.string.app_name);
+                getActionBar().setIcon(android.R.color.transparent);
                 invalidateOptionsMenu();
             }
         };
@@ -66,6 +76,8 @@ public class SpotlightActivity extends Activity {
         mDrawer.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        setupDrawerButtons();
 
         // initialize us to the evolve theme fragment
         switchFragments(EVOLVE_FRAGMENT);
@@ -109,26 +121,65 @@ public class SpotlightActivity extends Activity {
         switch (position) {
             case EVOLVE_FRAGMENT:
                 setTitle(R.string.evolve_sms_themes);
-                getActionBar().setIcon(R.drawable.evolve_logo);
+                mIcon = R.drawable.evolve_logo;
                 break;
             case TALON_FRAGMENT:
                 setTitle(R.string.talon_themes);
+                mIcon = R.drawable.talon_logo;
                 break;
             case FEATURED_FRAGMENT:
                 setTitle(R.string.featured_themers);
+                mIcon = android.R.color.transparent;
                 break;
             default:
                 setTitle(R.string.app_name);
+                mIcon = android.R.color.transparent;
         }
 
         mTitle = getTitle().toString();
+        getActionBar().setIcon(mIcon);
+    }
+
+    /**
+     * Sets up click functionality in the drawer
+     */
+    private void setupDrawerButtons() {
+        drawerButtons = new View[3];
+        drawerButtons[0] = findViewById(R.id.evolve_button);
+        drawerButtons[1] = findViewById(R.id.talon_button);
+        drawerButtons[2] = findViewById(R.id.featured_button);
+
+        drawerButtons[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchFragments(0);
+            }
+        });
+        drawerButtons[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchFragments(1);
+            }
+        });
+        drawerButtons[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchFragments(2);
+            }
+        });
     }
 
     /**
      * Handle bolding items in the navigation drawer when one is selected
      */
     private void boldDrawerItem(int position) {
-        // TODO bold items
+        for (int i = 0; i < drawerButtons.length; i++) {
+            if (i == position) {
+                ((TextView) drawerButtons[i]).setTypeface(BOLD_TEXT);
+            } else {
+                ((TextView) drawerButtons[i]).setTypeface(LIGHT_TEXT);
+            }
+        }
     }
 
     /**
@@ -170,5 +221,13 @@ public class SpotlightActivity extends Activity {
         // TODO hide search icon when opened
         // menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void onSettingsClicked(View v) {
+        // TODO implement
+    }
+
+    public void onFeedbackClicked(View v) {
+        // TODO implement
     }
 }

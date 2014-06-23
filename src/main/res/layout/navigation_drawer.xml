@@ -20,7 +20,101 @@
               android:orientation="vertical"
               android:layout_width="280dp"
               android:layout_height="match_parent"
-              android:background="@android:color/white"
+              android:background="@color/drawer_background"
               android:layout_gravity="start">
 
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/evolve_sms_themes"
+            android:id="@+id/evolve_button"
+            style="@style/DrawerButton"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/talon_themes"
+            android:id="@+id/talon_button"
+            style="@style/DrawerButton"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/featured_themers"
+            android:id="@+id/featured_button"
+            style="@style/DrawerButton"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/drawer_options_background"
+        android:orientation="vertical">
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@color/drawer_divider_color"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/drawer_option_btn_background"
+                android:onClick="onSettingsClicked">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_settings"
+                    android:id="@+id/settings_image"
+                    android:scaleType="centerInside"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings"
+                    android:id="@+id/settings_button"
+                    style="@style/DrawerOptionsButton"
+                    android:layout_toRightOf="@+id/settings_image"/>
+
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@color/drawer_divider_color"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/drawer_option_btn_background"
+                android:onClick="onFeedbackClicked">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_feedback"
+                    android:id="@+id/feedback_image"
+                    android:scaleType="centerInside"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/send_feedback"
+                    android:id="@+id/feedback_button"
+                    style="@style/DrawerOptionsButton"
+                    android:layout_toRightOf="@+id/feedback_image"/>
+
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@color/drawer_divider_color"/>
+
+    </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (C) 2014 Klinker Apps, Inc.
   ~
@@ -18,13 +17,14 @@
 
 <resources>
 
-    <string name="app_name">Theme Spotlight</string>
+    <color name="window_background">#e5e5e5</color>
 
-    <!-- Navigation drawer options -->
-    <string name="evolve_sms_themes">EvolveSMS Themes</string>
-    <string name="talon_themes">Talon Themes</string>
-    <string name="featured_themers">Featured Themers</string>
-    <string name="settings">Settings</string>
-    <string name="send_feedback">Send Feedback</string>
+    <!-- Drawer colors -->
+    <color name="drawer_options_background">#f7f7f7</color>
+    <color name="drawer_options_item_selected">#e3e3e3</color>
+    <color name="drawer_background">@android:color/white</color>
+    <color name="drawer_text_color">#505050</color>
+    <color name="drawer_divider_color">#e5e5e5</color>
+    <color name="drawer_subtext_color">#666666</color>
 
 </resources>
