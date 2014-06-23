@@ -19,6 +19,7 @@ package com.klinker.android.theme_spotlight.activity;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -33,18 +34,20 @@ import com.klinker.android.theme_spotlight.R;
 
 public class SpotlightActivity extends Activity {
 
+    // fragment positions in the drawer
     private static final int EVOLVE_FRAGMENT = 0;
     private static final int TALON_FRAGMENT = 1;
     private static final int FEATURED_FRAGMENT = 2;
 
+    // typefaces to use in the drawer
     private static final Typeface LIGHT_TEXT = Typeface.create("sans-serif-light", Typeface.NORMAL);
     private static final Typeface BOLD_TEXT = Typeface.create("sans-serif", Typeface.BOLD);
 
+    // stuff to manage the drawer
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mTitle;
     private int mIcon;
-
     private View[] drawerButtons;
 
     @Override
@@ -83,9 +86,7 @@ public class SpotlightActivity extends Activity {
         switchFragments(EVOLVE_FRAGMENT);
     }
 
-    /**
-     * Called when drawer item is selected
-     */
+    // perform transaction and switch the old fragment for the new one
     private void switchFragments(int position) {
         // Create a new fragment
         Fragment fragment;
@@ -114,9 +115,7 @@ public class SpotlightActivity extends Activity {
         mDrawer.closeDrawer(Gravity.START);
     }
 
-    /**
-     * Correctly set title and icons in actionbar
-     */
+    // set title and icon in the actionbar
     private void setupActionbar(int position) {
         switch (position) {
             case EVOLVE_FRAGMENT:
@@ -140,9 +139,7 @@ public class SpotlightActivity extends Activity {
         getActionBar().setIcon(mIcon);
     }
 
-    /**
-     * Sets up click functionality in the drawer
-     */
+    // initialize buttons in drawer and handle clicking on them
     private void setupDrawerButtons() {
         drawerButtons = new View[3];
         drawerButtons[0] = findViewById(R.id.evolve_button);
@@ -169,10 +166,8 @@ public class SpotlightActivity extends Activity {
         });
     }
 
-    /**
-     * Handle bolding items in the navigation drawer when one is selected
-     */
     private void boldDrawerItem(int position) {
+        // Loop through and bold the correct items
         for (int i = 0; i < drawerButtons.length; i++) {
             if (i == position) {
                 ((TextView) drawerButtons[i]).setTypeface(BOLD_TEXT);
@@ -182,27 +177,18 @@ public class SpotlightActivity extends Activity {
         }
     }
 
-    /**
-     * Handle drawer toggle changes
-     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
-    /**
-     * Handle drawer toggle changes
-     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Handle actionbar menu item clicks
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -212,9 +198,6 @@ public class SpotlightActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Hide the search icon when drawer is open
-     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean drawerOpen = mDrawer.isDrawerOpen(Gravity.START);
@@ -228,6 +211,11 @@ public class SpotlightActivity extends Activity {
     }
 
     public void onFeedbackClicked(View v) {
-        // TODO implement
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, "support@klinkerapps.com");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+
+        startActivity(Intent.createChooser(intent, getString(R.string.send_feedback)));
     }
 }

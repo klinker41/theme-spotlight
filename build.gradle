@@ -99,6 +99,7 @@ dependencies {
     androidTestCompile 'com.squareup:fest-android:1.0.+'
 
     compile 'com.android.support:support-v13:+'
+    compile files('lib/google-play-crawler.jar')
 }
 
 apply plugin: 'idea'
