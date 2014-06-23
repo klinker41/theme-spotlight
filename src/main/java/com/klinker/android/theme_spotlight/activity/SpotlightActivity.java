@@ -67,7 +67,7 @@ public class SpotlightActivity extends Activity {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(R.string.app_name);
-                getActionBar().setIcon(android.R.color.transparent);
+                getActionBar().setIcon(R.drawable.spotlight_logo);
                 invalidateOptionsMenu();
             }
         };
@@ -129,11 +129,11 @@ public class SpotlightActivity extends Activity {
                 break;
             case FEATURED_FRAGMENT:
                 setTitle(R.string.featured_themers);
-                mIcon = android.R.color.transparent;
+                mIcon = R.drawable.featured_logo;
                 break;
             default:
                 setTitle(R.string.app_name);
-                mIcon = android.R.color.transparent;
+                mIcon = R.drawable.spotlight_logo;
         }
 
         mTitle = getTitle().toString();

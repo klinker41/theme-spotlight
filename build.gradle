@@ -36,6 +36,7 @@ android {
         versionName "0.0.1"
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
+
     buildTypes {
         release {
             runProguard false
@@ -46,6 +47,10 @@ android {
         androidTest {
             setRoot('src/test')
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
