@@ -101,11 +101,6 @@ public class SpotlightActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         setupDrawerButtons();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         // request getting our auth tokens
         AuthToken.initAuthToken(this, new AuthToken.OnLoadFinishedListener() {
