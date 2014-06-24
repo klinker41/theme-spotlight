@@ -17,14 +17,14 @@
   -->
 
 <changelog>
-    <version name="0.1.0">
+    <version name="0.1.0" description="Sometimes, I surprise even myself">
         <text>Display themes on a list</text>
     </version>
-    <version name="0.0.2">
+    <version name="0.0.2" description="Whoa, that's real data it's pulling it">
         <text>Authenticate and log themes pulled from the play store</text>
         <text>Simple fragments displaying loading</text>
     </version>
-    <version name="0.0.1">
+    <version name="0.0.1" description="Boy, that drawer looks good">
         <text>Initial build based off of Google Play Music look and feel</text>
     </version>
 </changelog>
