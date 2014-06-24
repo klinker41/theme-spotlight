@@ -16,6 +16,11 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 public class FeaturedThemeListFragment extends ThemeListFragment {
 
     private static final String TAG = "FeaturedThemeFragment";
@@ -24,5 +29,10 @@ public class FeaturedThemeListFragment extends ThemeListFragment {
         FeaturedThemeListFragment frag = new FeaturedThemeListFragment();
         setArguements(frag, null);
         return frag;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

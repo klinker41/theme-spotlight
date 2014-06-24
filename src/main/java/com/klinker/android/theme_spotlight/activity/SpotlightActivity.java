@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -111,7 +110,6 @@ public class SpotlightActivity extends Activity {
         AuthToken.initAuthToken(this, new AuthToken.OnLoadFinishedListener() {
             @Override
             public void onLoadFinished() {
-                Log.v(TAG, "authToken: " + AuthToken.getAuthToken() + "\nandroidId: " + AuthToken.getAndroidId());
                 switchFragments(0);
             }
         });

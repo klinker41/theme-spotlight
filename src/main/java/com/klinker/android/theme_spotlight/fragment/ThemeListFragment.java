@@ -20,12 +20,13 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
+import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 
 import java.util.List;
@@ -38,17 +39,20 @@ public class ThemeListFragment extends ListFragment {
     private static final int NUM_THEMES_TO_QUERY = 10;
 
     private Context mContext;
+    private Handler mHandler;
 
     private String mBaseSearch;
     private String currentSearch = "";
     private int currentSearchIndex = 0;
 
+    // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
         ThemeListFragment frag = new ThemeListFragment();
         setArguements(frag, baseSearch);
         return frag;
     }
 
+    // set up our base search via arguments
     public static void setArguements(ThemeListFragment frag, String baseSearch) {
         Bundle args = new Bundle();
         args.putString(BASE_SEARCH, baseSearch);
@@ -69,6 +73,7 @@ public class ThemeListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mHandler = new Handler();
         getThemes(currentSearchIndex);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -104,10 +109,7 @@ public class ThemeListFragment extends ListFragment {
                         @Override
                         public void onResult(Market.ResponseContext context, Market.AppsResponse response) {
                             List<Market.App> apps = response.getAppList();
-
-                            for (Market.App app : apps) {
-                                Log.v(TAG, app.toString());
-                            }
+                            setApps(apps);
                         }
                     });
                     session.flush();
@@ -116,6 +118,15 @@ public class ThemeListFragment extends ListFragment {
                 }
             }
         }).start();
+    }
+
+    private void setApps(final List<Market.App> apps) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                setListAdapter(new ThemeArrayAdapter(mContext, apps));
+            }
+        });
     }
 
     // combine the base search and current search param

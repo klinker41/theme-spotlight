@@ -17,6 +17,9 @@
   -->
 
 <changelog>
+    <version name="0.1.0">
+        <text>Display themes on a list</text>
+    </version>
     <version name="0.0.2">
         <text>Authenticate and log themes pulled from the play store</text>
         <text>Simple fragments displaying loading</text>
