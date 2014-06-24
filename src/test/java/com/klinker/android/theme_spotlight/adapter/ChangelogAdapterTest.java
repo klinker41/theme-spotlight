@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package com.klinker.android.theme_spotlight.activity;
+package com.klinker.android.theme_spotlight.adapter;
 
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import org.junit.Test;
-import org.robolectric.Robolectric;
 
-import static junit.framework.Assert.assertNotNull;
-
-public class AuthActivityTest extends AbstractSpotlightTest {
+public class ChangelogAdapterTest extends AbstractSpotlightTest {
 
     @Test
-    public void testInitAuthToken() {
-        AuthActivity act = Robolectric.buildActivity(SpotlightActivity.class).create().get();
-        act.initAuthToken(act);
-        assertNotNull(act.getAuthToken());
+    public void testView() {
+
     }
 
 }

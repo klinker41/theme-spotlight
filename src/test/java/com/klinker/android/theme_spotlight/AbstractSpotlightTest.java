@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-package com.klinker.android.theme_spotlight.activity;
+package com.klinker.android.theme_spotlight;
 
-import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
+import android.content.Context;
+import org.junit.Before;
 import org.junit.Test;
-import org.robolectric.Robolectric;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.Assert.assertNotNull;
 
-public class AuthActivityTest extends AbstractSpotlightTest {
+@RunWith(RobolectricTestRunner.class)
+public class AbstractSpotlightTest {
 
-    @Test
-    public void testInitAuthToken() {
-        AuthActivity act = Robolectric.buildActivity(SpotlightActivity.class).create().get();
-        act.initAuthToken(act);
-        assertNotNull(act.getAuthToken());
+    @Mock
+    private Context context;
+
+    @Before
+    public final void setup() {
+        MockitoAnnotations.initMocks(this);
     }
 
+    @Test
+    public void testMocking() {
+        // simple test to ensure that mocking is working correctly
+        assertNotNull(context);
+    }
 }

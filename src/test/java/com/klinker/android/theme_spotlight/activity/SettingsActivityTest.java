@@ -19,20 +19,24 @@ package com.klinker.android.theme_spotlight.activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
+import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import com.klinker.android.theme_spotlight.R;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(RobolectricTestRunner.class)
-public class SettingsActivityTest {
+public class SettingsActivityTest extends AbstractSpotlightTest {
+
+    @Mock
+    private Bundle bundle;
+
+    @Mock
+    private Preference preference;
 
     @Test
     public void testOnCreate() throws PackageManager.NameNotFoundException {
-        Bundle bundle = mock(Bundle.class);
         SettingsActivity spy = Mockito.spy(new SettingsActivity());
         doNothing().when(spy).superOnCreate(bundle);
         doNothing().when(spy).addPreferencesFromResource(R.xml.preferences);
@@ -46,7 +50,6 @@ public class SettingsActivityTest {
 
     @Test
     public void testChangelogItem() throws PackageManager.NameNotFoundException {
-        Preference preference = mock(Preference.class);
         SettingsActivity spy = Mockito.spy(new SettingsActivity());
         when(spy.getVersionNumber()).thenReturn("");
         when(spy.getString(R.string.version_number)).thenReturn("");

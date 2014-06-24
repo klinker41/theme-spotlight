@@ -16,27 +16,20 @@
 
 package com.klinker.android.theme_spotlight.activity;
 
-import android.content.Context;
+import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricTestRunner.class)
-public class SpotlightActivityTest {
+public class SpotlightActivityTest extends AbstractSpotlightTest {
 
     private SpotlightActivity activity;
-
-    @Mock
-    private Context context;
 
     @Before
     public void setUp() {
