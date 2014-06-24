@@ -17,6 +17,10 @@
   -->
 
 <changelog>
+    <version name="0.2.0" description="Mmmh, unit testing.">
+        <text>Code cleanup</text>
+        <text>Add unit testing with Robolectric and Mockito</text>
+    </version>
     <version name="0.1.0" description="Sometimes, I surprise even myself!">
         <text>Display themes on a list</text>
     </version>
