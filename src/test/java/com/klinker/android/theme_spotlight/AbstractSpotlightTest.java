@@ -17,12 +17,14 @@
 package com.klinker.android.theme_spotlight;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
+@Ignore
 @RunWith(RobolectricTestRunner.class)
-public class AbstractSpotlightTest {
+public abstract class AbstractSpotlightTest {
 
     @Before
     public void setup() {
