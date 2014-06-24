@@ -16,14 +16,60 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.app.Activity;
+import android.text.Spanned;
+import android.text.SpannedString;
+import android.widget.TextView;
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
 public class ChangelogAdapterTest extends AbstractSpotlightTest {
 
-    @Test
-    public void testView() {
+    private ChangelogAdapter adapter;
 
+    @Mock
+    private Activity context;
+
+    @Mock
+    private TextView textView;
+
+    @Before
+    public void setup() {
+        super.setup();
+
+        Spanned[] array = new Spanned[] {
+                new SpannedString("String 1"),
+                new SpannedString("String 2"),
+                new SpannedString("Changelog item 3")
+        };
+
+        adapter = spy(new ChangelogAdapter(context, array));
     }
 
+    @Test
+    public void testGetItem() {
+        assertEquals("String 2", adapter.getItem(1).toString());
+    }
+
+    @Test
+    public void testGetCount() {
+        assertEquals(adapter.getCount(), 3);
+    }
+
+    @Test
+    public void testGetView() {
+        doReturn(textView).when(adapter).inflateChangelog();
+        TextView view = (TextView) adapter.getView(0, null, null);
+        assertNotNull(view);
+
+        view = (TextView) adapter.getView(2, null, null);
+        assertNotNull(view);
+    }
 }

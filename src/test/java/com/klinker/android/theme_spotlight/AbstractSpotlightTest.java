@@ -16,30 +16,16 @@
 
 package com.klinker.android.theme_spotlight;
 
-import android.content.Context;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
-
-import static junit.framework.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class AbstractSpotlightTest {
 
-    @Mock
-    private Context context;
-
     @Before
-    public final void setup() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void testMocking() {
-        // simple test to ensure that mocking is working correctly
-        assertNotNull(context);
     }
 }

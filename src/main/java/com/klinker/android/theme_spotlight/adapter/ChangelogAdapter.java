@@ -46,15 +46,15 @@ public class ChangelogAdapter extends ArrayAdapter<Spanned> {
     private final Context context;
     private final Spanned[] items;
 
-    // hold data for recycling
-    static class ViewHolder {
-        public TextView text;
-    }
-
     public ChangelogAdapter(Context context, Spanned[] spans) {
         super(context, R.layout.changelog_item);
         this.context = context;
         this.items = spans;
+    }
+
+    @Override
+    public Spanned getItem(int i) {
+        return items[i];
     }
 
     @Override
@@ -64,23 +64,22 @@ public class ChangelogAdapter extends ArrayAdapter<Spanned> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
+        TextView rowView = (TextView) convertView;
 
         // recycle the view correctly
         if (rowView == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            rowView = inflater.inflate(R.layout.changelog_item, null);
-
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.text = (TextView) rowView;
-
-            rowView.setTag(viewHolder);
+            rowView = inflateChangelog();
         }
 
         // set the new text to the item
-        ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.text.setText(items[position]);
+        rowView.setText(items[position]);
 
         return rowView;
+    }
+
+    // inflate changelog view and return it
+    public TextView inflateChangelog() {
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        return (TextView) inflater.inflate(R.layout.changelog_item, null);
     }
 }
