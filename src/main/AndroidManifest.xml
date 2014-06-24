@@ -27,7 +27,7 @@
 
     <application android:allowBackup="true"
                  android:label="@string/app_name"
-                 android:icon="@drawable/spotlight_logo"
+                 android:icon="@mipmap/ic_launcher"
                  android:theme="@style/Theme"
                  android:name=".SpotlightApplication">
 

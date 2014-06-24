@@ -119,7 +119,7 @@ public class ThemeListFragment extends ListFragment {
     }
 
     // combine the base search and current search param
-    private String getSearch(String search) {
+    public String getSearch(String search) {
         return mBaseSearch + " " + search;
     }
 }

@@ -17,7 +17,6 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -260,7 +259,7 @@ public class SpotlightActivity extends Activity {
         return mDrawer;
     }
 
-    public Fragment getCurrentFragment() {
+    public ThemeListFragment getCurrentFragment() {
         return mFragment;
     }
 }

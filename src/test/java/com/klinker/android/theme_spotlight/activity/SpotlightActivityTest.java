@@ -60,10 +60,12 @@ public class SpotlightActivityTest {
     @Test
     public void testSwitchingFragments() {
         activity.switchFragments(0);
-        assertTrue(activity.getCurrentFragment() instanceof EvolveThemeFragment);
+        assertTrue(activity.getCurrentFragment() != null);
+        assertEquals(activity.getCurrentFragment().getSearch(""), "EvolveSMS ");
 
         activity.switchFragments(1);
-        assertTrue(activity.getCurrentFragment() instanceof TalonThemeFragment);
+        assertTrue(activity.getCurrentFragment() != null);
+        assertEquals(activity.getCurrentFragment().getSearch(""), "Talon theme ");
 
         activity.switchFragments(2);
         assertTrue(activity.getCurrentFragment() instanceof FeaturedThemeListFragment);
