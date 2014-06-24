@@ -32,33 +32,53 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        superOnCreate(savedInstanceState);
 
         // add the preferences from xml
         addPreferencesFromResource(R.xml.preferences);
 
         try {
-            Preference about = findPreference("preference_about");
-
-            // set correct summary for version number
-            String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            about.setSummary(about.getSummary().toString().replace("%s", versionName));
-
-            // show changelog when item is clicked
-            about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Spanned[] changelogItems = XmlChangelogUtils.parse(SettingsActivity.this);
-                    new AlertDialog.Builder(SettingsActivity.this)
-                            .setTitle(R.string.changelog)
-                            .setAdapter(new ChangelogAdapter(SettingsActivity.this, changelogItems), null)
-                            .show();
-
-                    return true;
-                }
-            });
+            initAboutPreference();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+    // used for mocking testing
+    public void superOnCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    public Preference getAboutPreference() {
+        return findPreference("preference_about");
+    }
+
+    public void initAboutPreference() throws PackageManager.NameNotFoundException {
+        Preference about = getAboutPreference();
+
+        // set correct summary for version number
+        String versionName = getVersionNumber();
+        String current = getString(R.string.version_number);
+        about.setSummary(current.replace("%s", versionName));
+
+        // show changelog when item is clicked
+        about.setOnPreferenceClickListener(aboutClick);
+    }
+
+    public String getVersionNumber() throws PackageManager.NameNotFoundException {
+        return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+    }
+
+    private Preference.OnPreferenceClickListener aboutClick = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            Spanned[] changelogItems = XmlChangelogUtils.parse(SettingsActivity.this);
+            new AlertDialog.Builder(SettingsActivity.this)
+                    .setTitle(R.string.changelog)
+                    .setAdapter(new ChangelogAdapter(SettingsActivity.this, changelogItems), null)
+                    .show();
+
+            return true;
+        }
+    };
 }
