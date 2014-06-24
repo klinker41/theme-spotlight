@@ -32,6 +32,7 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
     private final Context context;
     private final List<Market.App> items;
 
+    // hold data for recycling
     static class ViewHolder {
         public TextView title;
         public TextView publisher;
@@ -67,6 +69,7 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             rowView = inflater.inflate(R.layout.theme_item, null);
 
+            // initialize what we want to display views on
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.title = (TextView) rowView.findViewById(R.id.title);
             viewHolder.publisher = (TextView) rowView.findViewById(R.id.publisher);
@@ -79,16 +82,22 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         final Market.App item = items.get(position);
 
+        // set everything
         holder.title.setText(item.getTitle());
         holder.publisher.setText(item.getCreator());
+
+        // this is a holder so that we can confirm we are still in the correct
+        // position after the icon has loaded
         holder.id = item.getId();
 
+        // start a new thread to download and cache our icon
         LoadIcon loader = new LoadIcon(item, holder);
         new Thread(loader).start();
 
         return rowView;
     }
 
+    // handles downloading, caching a reusing the app's icon
     private class LoadIcon implements Runnable {
 
         private Handler mHandler;
@@ -103,40 +112,65 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
 
         @Override
         public void run() {
-            MarketSession session = new MarketSession();
-            session.getContext().setAuthSubToken(AuthToken.getAuthToken());
-            session.getContext().setAndroidId(AuthToken.getAndroidId());
+            // cache the file in our cache directory and keep it around so we don't have to keep downloading
+            // it every time we access the item
+            final String fileName = context.getCacheDir() + "/" + item.getPackageName() + ".png";
 
-            Market.GetImageRequest imgReq = Market.GetImageRequest.newBuilder().setAppId(item.getId())
-                    .setImageUsage(Market.GetImageRequest.AppImageUsage.ICON)
-                    .setImageId("1")
-                    .build();
+            if (new File(fileName).exists()) {
+                // if the file exists already, skip downloading and processing it and just apply it
+                setIcon(fileName);
+            } else {
+                // create a new market session
+                MarketSession session = new MarketSession();
+                session.getContext().setAuthSubToken(AuthToken.getAuthToken());
+                session.getContext().setAndroidId(AuthToken.getAndroidId());
 
-            session.append(imgReq, new MarketSession.Callback<Market.GetImageResponse>() {
+                // get the icon for the app
+                Market.GetImageRequest imgReq = Market.GetImageRequest.newBuilder().setAppId(item.getId())
+                        .setImageUsage(Market.GetImageRequest.AppImageUsage.ICON)
+                        .setImageId("0")
+                        .build();
 
-                @Override
-                public void onResult(Market.ResponseContext responseContext, Market.GetImageResponse response) {
-                    try {
-                        String fileName = context.getCacheDir() + "/" + item.getPackageName() + ".png";
-                        FileOutputStream fos = new FileOutputStream(fileName);
-                        fos.write(response.getImageData().toByteArray());
-                        fos.close();
-                        final Bitmap icon = BitmapFactory.decodeFile(fileName);
+                // post the request
+                session.append(imgReq, new MarketSession.Callback<Market.GetImageResponse>() {
 
-                        if (holder.id.equals(item.getId())) {
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    holder.icon.setImageBitmap(icon);
-                                }
-                            });
+                    @Override
+                    public void onResult(Market.ResponseContext responseContext, Market.GetImageResponse response) {
+                        try {
+                            // save the image to the file name
+                            FileOutputStream fos = new FileOutputStream(fileName);
+                            fos.write(response.getImageData().toByteArray());
+                            fos.close();
+
+                            // set the icon from the just saved file
+                            setIcon(fileName);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch(Exception ex) {
-                        ex.printStackTrace();
                     }
-                }
-            });
-            session.flush();
+                });
+                session.flush();
+            }
+        }
+
+        // set the icon and animate it in with a fade animation
+        private void setIcon(String fileName) {
+            final Bitmap icon = BitmapFactory.decodeFile(fileName);
+
+            if (holder.id.equals(item.getId())) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.icon.setImageBitmap(icon);
+
+                        holder.icon.setAlpha(0.0f);
+                        holder.icon.animate()
+                                .alpha(1.0f)
+                                .setDuration(200)
+                                .start();
+                    }
+                });
+            }
         }
     }
 }

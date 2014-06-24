@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// used for getting changelog from our xml file
 public class XmlChangelogUtils {
 
     private static final String TAG = "XmlChangelogUtils";

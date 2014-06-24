@@ -46,6 +46,7 @@ public class ChangelogAdapter extends ArrayAdapter<Spanned> {
     private final Context context;
     private final Spanned[] items;
 
+    // hold data for recycling
     static class ViewHolder {
         public TextView text;
     }

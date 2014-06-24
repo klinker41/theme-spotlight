@@ -22,6 +22,7 @@ public class FeaturedThemeListFragment extends ListFragment {
 
     private static final String TAG = "FeaturedThemeFragment";
 
+    // create new instance of our featured list
     public static FeaturedThemeListFragment newInstance() {
         FeaturedThemeListFragment frag = new FeaturedThemeListFragment();
         return frag;

@@ -74,6 +74,8 @@ public class ThemeListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mHandler = new Handler();
+
+        // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -120,6 +122,7 @@ public class ThemeListFragment extends ListFragment {
         }).start();
     }
 
+    // set the apps to the listview and initialize other parts of the list
     private void setApps(final List<Market.App> apps) {
         mHandler.post(new Runnable() {
             @Override

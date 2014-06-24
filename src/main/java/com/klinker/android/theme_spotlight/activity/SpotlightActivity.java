@@ -66,6 +66,7 @@ public class SpotlightActivity extends Activity {
 
     // current fragment being shown
     private Fragment mFragment;
+    private int currentPosition = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,18 +102,25 @@ public class SpotlightActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         setupDrawerButtons();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         // request getting our auth tokens
         AuthToken.initAuthToken(this, new AuthToken.OnLoadFinishedListener() {
             @Override
             public void onLoadFinished() {
-                switchFragments(0);
+                switchFragments(currentPosition);
             }
         });
     }
 
     // perform transaction and switch the old fragment for the new one
     public void switchFragments(int position) {
+        currentPosition = position;
+
         // Create a new fragment
         switch (position) {
             case EVOLVE_FRAGMENT:
