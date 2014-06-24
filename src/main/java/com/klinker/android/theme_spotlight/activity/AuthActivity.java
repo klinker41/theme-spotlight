@@ -30,10 +30,14 @@ public abstract class AuthActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        authToken = new AuthToken(this);
+        initAuthToken(this);
+    }
+
+    public void initAuthToken(Activity activity) {
+        authToken = new AuthToken(activity);
 
         if (authToken.getAuthToken() == null) {
-            authToken.initAuthToken(this, new AuthToken.OnLoadFinishedListener() {
+            authToken.initAuthToken(activity, new AuthToken.OnLoadFinishedListener() {
                 @Override
                 public void onLoadFinished() {
                     onAuthFinished(authToken);
