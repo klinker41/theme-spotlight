@@ -17,9 +17,7 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import com.klinker.android.theme_spotlight.R;
-import com.klinker.android.theme_spotlight.fragment.EvolveThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.TalonThemeFragment;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,16 +45,16 @@ public class SpotlightActivityTest {
     @Test
     public void testActionbarTitle() {
         activity.setupActionbar(0);
-        assertEquals("Checking title is evolvesms themes", activity.getTitle(), "EvolveSMS Themes");
-        assertEquals("checking icon is evolve", activity.getActionbarIcon(), R.drawable.evolve_logo);
+        assertEquals(activity.getTitle(), "EvolveSMS Themes");
+        assertEquals(activity.getActionbarIcon(), R.drawable.evolve_logo);
 
         activity.setupActionbar(1);
-        assertEquals("checking title is talon themes", activity.getTitle(), "Talon Themes");
-        assertEquals("checking icon is talon", activity.getActionbarIcon(), R.drawable.talon_logo);
+        assertEquals(activity.getTitle(), "Talon Themes");
+        assertEquals(activity.getActionbarIcon(), R.drawable.talon_logo);
 
         activity.setupActionbar(2);
-        assertEquals("checking title is featured themers", activity.getTitle(), "Featured Themers");
-        assertEquals("checking icon is featured themers", activity.getActionbarIcon(), R.drawable.featured_logo);
+        assertEquals(activity.getTitle(), "Featured Themers");
+        assertEquals(activity.getActionbarIcon(), R.drawable.featured_logo);
     }
 
     @Test
@@ -68,6 +66,6 @@ public class SpotlightActivityTest {
         assertTrue(activity.getCurrentFragment() instanceof TalonThemeFragment);
 
         activity.switchFragments(2);
-        assertTrue(activity.getCurrentFragment() instanceof FeaturedThemeFragment);
+        assertTrue(activity.getCurrentFragment() instanceof FeaturedThemeListFragment);
     }
 }

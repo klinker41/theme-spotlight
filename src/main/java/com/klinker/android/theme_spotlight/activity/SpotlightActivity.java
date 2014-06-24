@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,10 +35,8 @@ import android.view.View;
 import android.widget.TextView;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
-import com.klinker.android.theme_spotlight.fragment.AbstractThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.EvolveThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.TalonThemeFragment;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
+import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 
 public class SpotlightActivity extends Activity {
 
@@ -52,6 +51,10 @@ public class SpotlightActivity extends Activity {
     private static final Typeface LIGHT_TEXT = Typeface.create("sans-serif-light", Typeface.NORMAL);
     private static final Typeface BOLD_TEXT = Typeface.create("sans-serif", Typeface.BOLD);
 
+    // base searches
+    private static final String EVOLVE_SMS = "EvolveSMS";
+    private static final String TALON = "Talon theme";
+
     private Context mContext;
     private Handler mHandler;
 
@@ -63,10 +66,7 @@ public class SpotlightActivity extends Activity {
     private View[] drawerButtons;
 
     // current fragment being shown
-    private AbstractThemeFragment mFragment;
-
-    // auth token information from google account
-    private AuthToken mAuthToken;
+    private ThemeListFragment mFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,11 +76,7 @@ public class SpotlightActivity extends Activity {
         mContext = this;
         mHandler = new Handler();
 
-        // request getting our auth tokens
-        mAuthToken = new AuthToken(this);
-
         // initialize the drawer
-        setupActionbar(0);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.drawable.ic_drawer, R.string.app_name, R.string.evolve_sms_themes) {
@@ -108,19 +104,33 @@ public class SpotlightActivity extends Activity {
         setupDrawerButtons();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // request getting our auth tokens
+        AuthToken.initAuthToken(this, new AuthToken.OnLoadFinishedListener() {
+            @Override
+            public void onLoadFinished() {
+                Log.v(TAG, "authToken: " + AuthToken.getAuthToken() + "\nandroidId: " + AuthToken.getAndroidId());
+                switchFragments(0);
+            }
+        });
+    }
+
     // perform transaction and switch the old fragment for the new one
     public void switchFragments(int position) {
         // Create a new fragment
         switch (position) {
             case EVOLVE_FRAGMENT:
-                mFragment = EvolveThemeFragment.newInstance(mAuthToken);
+                mFragment = ThemeListFragment.newInstance(EVOLVE_SMS);
                 break;
             case TALON_FRAGMENT:
-                mFragment = TalonThemeFragment.newInstance(mAuthToken);
+                mFragment = ThemeListFragment.newInstance(TALON);
                 break;
             case FEATURED_FRAGMENT:
             default:
-                mFragment = FeaturedThemeFragment.newInstance(mAuthToken);
+                mFragment = FeaturedThemeListFragment.newInstance();
                 break;
         }
 

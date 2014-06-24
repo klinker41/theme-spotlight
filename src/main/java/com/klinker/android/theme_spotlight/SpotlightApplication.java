@@ -19,5 +19,5 @@ package com.klinker.android.theme_spotlight;
 import android.app.Application;
 
 public class SpotlightApplication extends Application {
-    // necessary for unit testing
+    // needed for unit testing, maybe
 }

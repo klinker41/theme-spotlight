@@ -16,15 +16,13 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
-import com.klinker.android.theme_spotlight.data.AuthToken;
-
-public class FeaturedThemeFragment extends AbstractThemeFragment {
+public class FeaturedThemeListFragment extends ThemeListFragment {
 
     private static final String TAG = "FeaturedThemeFragment";
 
-    public static FeaturedThemeFragment newInstance(AuthToken token) {
-        FeaturedThemeFragment frag = new FeaturedThemeFragment();
-        setArguements(frag, token);
+    public static FeaturedThemeListFragment newInstance() {
+        FeaturedThemeListFragment frag = new FeaturedThemeListFragment();
+        setArguements(frag, null);
         return frag;
     }
 }

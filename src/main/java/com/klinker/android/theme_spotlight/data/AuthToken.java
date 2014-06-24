@@ -16,80 +16,83 @@
 
 package com.klinker.android.theme_spotlight.data;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import com.klinker.android.theme_spotlight.util.AuthUtils;
 
 public class AuthToken {
 
     private static final String TAG = "AuthToken";
 
-    private static final String AUTH_USERNAME_PREF = "accounts_username";
-    private static final String AUTH_PASSWORD_PREF = "accounts_password";
+    private static final String AUTH_TOKEN_PREF = "accounts_auth_token";
     private static final String ANDROID_ID_PREF = "accounts_android_id";
 
-    private String username;
-    private String password;
-    private String androidId;
+    private static String authToken;
+    private static String androidId;
 
-    public AuthToken(Context context) {
+    public static void initAuthToken(final Activity context, final OnLoadFinishedListener listener) {
+        // attempt to get stored information in available
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        username = sharedPreferences.getString(AUTH_USERNAME_PREF, null);
-        password = sharedPreferences.getString(AUTH_PASSWORD_PREF, null);
+        authToken = sharedPreferences.getString(AUTH_TOKEN_PREF, null);
         androidId = sharedPreferences.getString(ANDROID_ID_PREF, null);
 
-        if (username == null || password == null || androidId == null) {
-            // TODO launcher login activity
-            username = "jklinker1@gmail.com";
-            password = "klinker1127";
-
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    GooglePlayAPI api = new GooglePlayAPI(username, password);
-//
-//                    try {
-//                        api.checkin();
-//                        androidId = api.getAndroidID();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }).start();
+        // if tokens are not available (ie this is first run, then we need to fetch
+        // them. We authenticate with Google Play Services and get the correct account
+        // token and then store that and the androidId in shared prefs for next time
+        if (authToken == null || androidId == null) {
+            final Handler handler = new Handler();
+            AuthUtils.getAuthToken(context, new AccountManagerCallback<Bundle>() {
+                @Override
+                public void run(AccountManagerFuture<Bundle> result) {
+                    try {
+                        Bundle bundle = result.getResult();
+                        authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+                        storeToPrefs(context);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onLoadFinished();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            androidId = AuthUtils.getAndroidID(context);
+        } else {
+            listener.onLoadFinished();
         }
     }
 
-    public AuthToken(Context context, String username, String password, String androidId) {
-        this.username = username;
-        this.password = password;
-        this.androidId = androidId;
+    // can't be initialized
+    private AuthToken() { }
 
-        storeToPrefs(context);
-    }
-
-    private void storeToPrefs(Context context) {
+    private static void storeToPrefs(Context context) {
         // update these in shared prefs
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString(AUTH_USERNAME_PREF, username)
-                .putString(AUTH_PASSWORD_PREF, password)
+                .putString(AUTH_TOKEN_PREF, authToken)
                 .putString(ANDROID_ID_PREF, androidId)
                 .commit();
     }
 
-    public String getUsername() {
-        return username;
+    public static String getAuthToken() {
+        return authToken;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getAndroidId() {
+    public static String getAndroidId() {
         return androidId;
     }
 
-    public interface  OnLoadFinishedListener {
+    public interface OnLoadFinishedListener {
         public void onLoadFinished();
     }
 }
