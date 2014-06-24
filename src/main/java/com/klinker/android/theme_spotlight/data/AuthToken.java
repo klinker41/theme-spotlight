@@ -20,12 +20,15 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import com.klinker.android.theme_spotlight.util.AuthUtils;
+import com.klinker.android.theme_spotlight.R;
 
 public class AuthToken {
 
@@ -34,21 +37,16 @@ public class AuthToken {
     private static final String AUTH_TOKEN_PREF = "accounts_auth_token";
     private static final String ANDROID_ID_PREF = "accounts_android_id";
 
-    private static String authToken;
-    private static String androidId;
+    private String authToken;
+    private String androidId;
 
-    public static void initAuthToken(final Activity context, final OnLoadFinishedListener listener) {
-        // attempt to get stored information in available
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        authToken = sharedPreferences.getString(AUTH_TOKEN_PREF, null);
-        androidId = sharedPreferences.getString(ANDROID_ID_PREF, null);
-
+    public void initAuthToken(final Activity context, final OnLoadFinishedListener listener) {
         // if tokens are not available (ie this is first run, then we need to fetch
         // them. We authenticate with Google Play Services and get the correct account
         // token and then store that and the androidId in shared prefs for next time
         if (authToken == null || androidId == null) {
             final Handler handler = new Handler();
-            AuthUtils.getAuthToken(context, new AccountManagerCallback<Bundle>() {
+            getAuthToken(context, new AccountManagerCallback<Bundle>() {
                 @Override
                 public void run(AccountManagerFuture<Bundle> result) {
                     try {
@@ -66,16 +64,19 @@ public class AuthToken {
                     }
                 }
             });
-            androidId = AuthUtils.getAndroidID(context);
+            androidId = getAndroidID(context);
         } else {
             listener.onLoadFinished();
         }
     }
 
-    // can't be initialized
-    private AuthToken() { }
+    public AuthToken(Context context) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        authToken = sharedPreferences.getString(AUTH_TOKEN_PREF, null);
+        androidId = sharedPreferences.getString(ANDROID_ID_PREF, null);
+    }
 
-    private static void storeToPrefs(Context context) {
+    private void storeToPrefs(Context context) {
         // update these in shared prefs
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
@@ -84,15 +85,58 @@ public class AuthToken {
                 .commit();
     }
 
-    public static String getAuthToken() {
+    public String getAuthToken() {
         return authToken;
     }
 
-    public static String getAndroidId() {
+    public String getAndroidId() {
         return androidId;
     }
 
     public interface OnLoadFinishedListener {
         public void onLoadFinished();
+    }
+
+    // get the android id from the device
+    private String getAndroidID(Context context) {
+        String[] query = new String[] {"android_id"};
+        Cursor cursor = context.getContentResolver().query(Uri.parse("content://com.google.android.gsf.gservices"), null, null, query, null);
+
+        if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() >= 2) {
+            return Long.toHexString(Long.parseLong(cursor.getString(1))).toUpperCase();
+        }
+
+        return null;
+    }
+
+    // get the google auth token
+    private String getAuthToken(Activity context, AccountManagerCallback<Bundle> callback) {
+        String authToken = "null";
+
+        try {
+            AccountManager am = AccountManager.get(context);
+            Bundle options = new Bundle();
+
+            // access google play services to get this token
+            if (am.getAccounts().length > 0) {
+                am.getAuthToken(
+                        am.getAccounts()[0],
+                        "android",
+                        options,
+                        context,
+                        callback,
+                        null);
+            } else {
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.error_no_accounts)
+                        .setMessage(R.string.error_no_accounts_summary)
+                        .setPositiveButton(R.string.ok, null)
+                        .show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return authToken;
     }
 }

@@ -16,7 +16,6 @@
 
 package com.klinker.android.theme_spotlight.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -37,7 +36,7 @@ import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 
-public class SpotlightActivity extends Activity {
+public class SpotlightActivity extends AuthActivity {
 
     private static final String TAG = "SpotlightActivity";
 
@@ -105,16 +104,8 @@ public class SpotlightActivity extends Activity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        // request getting our auth tokens
-        AuthToken.initAuthToken(this, new AuthToken.OnLoadFinishedListener() {
-            @Override
-            public void onLoadFinished() {
-                switchFragments(currentPosition);
-            }
-        });
+    public void onAuthFinished(AuthToken token) {
+        switchFragments(currentPosition);
     }
 
     // perform transaction and switch the old fragment for the new one

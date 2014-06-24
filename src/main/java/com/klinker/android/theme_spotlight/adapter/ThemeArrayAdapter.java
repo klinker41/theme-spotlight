@@ -17,7 +17,6 @@
 package com.klinker.android.theme_spotlight.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -30,7 +29,7 @@ import android.widget.TextView;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
-import com.klinker.android.theme_spotlight.data.AuthToken;
+import com.klinker.android.theme_spotlight.activity.AuthActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +37,7 @@ import java.util.List;
 
 public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
 
-    private final Context context;
+    private final AuthActivity context;
     private final List<Market.App> items;
 
     // hold data for recycling
@@ -49,7 +48,7 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
         public String id;
     }
 
-    public ThemeArrayAdapter(Context context, List<Market.App> items) {
+    public ThemeArrayAdapter(AuthActivity context, List<Market.App> items) {
         super(context, R.layout.theme_item);
         this.context = context;
         this.items = items;
@@ -122,8 +121,8 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
             } else {
                 // create a new market session
                 MarketSession session = new MarketSession();
-                session.getContext().setAuthSubToken(AuthToken.getAuthToken());
-                session.getContext().setAndroidId(AuthToken.getAndroidId());
+                session.getContext().setAuthSubToken(context.getAuthToken().getAuthToken());
+                session.getContext().setAndroidId(context.getAuthToken().getAndroidId());
 
                 // get the icon for the app
                 Market.GetImageRequest imgReq = Market.GetImageRequest.newBuilder().setAppId(item.getId())

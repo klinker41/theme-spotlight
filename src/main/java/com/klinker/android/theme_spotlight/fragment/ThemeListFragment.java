@@ -18,7 +18,6 @@ package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.Activity;
 import android.app.ListFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -26,8 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
+import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
-import com.klinker.android.theme_spotlight.data.AuthToken;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ThemeListFragment extends ListFragment {
     public static final String BASE_SEARCH = "base_search_parameter";
     private static final int NUM_THEMES_TO_QUERY = 10;
 
-    private Context mContext;
+    private AuthActivity mContext;
     private Handler mHandler;
 
     private String mBaseSearch;
@@ -68,7 +67,7 @@ public class ThemeListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mContext = activity;
+        mContext = (AuthActivity) activity;
     }
 
     @Override
@@ -94,8 +93,8 @@ public class ThemeListFragment extends ListFragment {
                 try {
                     // create our session to look at themes from
                     MarketSession session = new MarketSession();
-                    session.getContext().setAuthSubToken(AuthToken.getAuthToken());
-                    session.getContext().setAndroidId(AuthToken.getAndroidId());
+                    session.getContext().setAuthSubToken(mContext.getAuthToken().getAuthToken());
+                    session.getContext().setAndroidId(mContext.getAuthToken().getAndroidId());
 
                     // create a simple query
                     String query = getSearch(currentSearch);
