@@ -16,23 +16,14 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.app.ListFragment;
 
-public class FeaturedThemeListFragment extends ThemeListFragment {
+public class FeaturedThemeListFragment extends ListFragment {
 
     private static final String TAG = "FeaturedThemeFragment";
 
     public static FeaturedThemeListFragment newInstance() {
         FeaturedThemeListFragment frag = new FeaturedThemeListFragment();
-        setArguements(frag, null);
         return frag;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

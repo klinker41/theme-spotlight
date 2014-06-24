@@ -17,6 +17,7 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -64,7 +65,7 @@ public class SpotlightActivity extends Activity {
     private View[] drawerButtons;
 
     // current fragment being shown
-    private ThemeListFragment mFragment;
+    private Fragment mFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -257,7 +258,7 @@ public class SpotlightActivity extends Activity {
         return mDrawer;
     }
 
-    public ThemeListFragment getCurrentFragment() {
+    public Fragment getCurrentFragment() {
         return mFragment;
     }
 }

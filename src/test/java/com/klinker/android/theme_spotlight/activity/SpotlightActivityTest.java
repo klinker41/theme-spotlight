@@ -18,6 +18,7 @@ package com.klinker.android.theme_spotlight.activity;
 
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
+import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,12 +61,12 @@ public class SpotlightActivityTest {
     @Test
     public void testSwitchingFragments() {
         activity.switchFragments(0);
-        assertTrue(activity.getCurrentFragment() != null);
-        assertEquals(activity.getCurrentFragment().getSearch(""), "EvolveSMS ");
+        assertTrue(activity.getCurrentFragment() instanceof ThemeListFragment);
+        assertEquals(((ThemeListFragment) activity.getCurrentFragment()).getSearch(""), "EvolveSMS ");
 
         activity.switchFragments(1);
-        assertTrue(activity.getCurrentFragment() != null);
-        assertEquals(activity.getCurrentFragment().getSearch(""), "Talon theme ");
+        assertTrue(activity.getCurrentFragment() instanceof ThemeListFragment);
+        assertEquals(((ThemeListFragment) activity.getCurrentFragment()).getSearch(""), "Talon theme ");
 
         activity.switchFragments(2);
         assertTrue(activity.getCurrentFragment() instanceof FeaturedThemeListFragment);
