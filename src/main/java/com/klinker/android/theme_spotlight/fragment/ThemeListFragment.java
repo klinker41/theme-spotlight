@@ -51,6 +51,10 @@ public class ThemeListFragment extends ListFragment {
         return frag;
     }
 
+    public ThemeListFragment() {
+
+    }
+
     // set up our base search via arguments
     public static void setArguements(ThemeListFragment frag, String baseSearch) {
         Bundle args = new Bundle();
@@ -60,8 +64,12 @@ public class ThemeListFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        superOnCreate(savedInstanceState);
         mBaseSearch = getArguments().getString(BASE_SEARCH);
+    }
+
+    public void superOnCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

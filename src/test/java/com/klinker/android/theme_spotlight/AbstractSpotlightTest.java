@@ -16,10 +16,15 @@
 
 package com.klinker.android.theme_spotlight;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 @Ignore
@@ -29,5 +34,18 @@ public abstract class AbstractSpotlightTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    public void startFragment(Fragment fragment) {
+        AuthActivity activity = Robolectric.buildActivity(AuthActivity.class)
+                .create()
+                .start()
+                .resume()
+                .get();
+
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(fragment, null);
+        fragmentTransaction.commit();
     }
 }

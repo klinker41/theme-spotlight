@@ -27,4 +27,8 @@ public class FeaturedThemeListFragment extends ListFragment {
         FeaturedThemeListFragment frag = new FeaturedThemeListFragment();
         return frag;
     }
+
+    public FeaturedThemeListFragment() {
+
+    }
 }
