@@ -48,7 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/drawer_options_background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="true">
 
         <View android:layout_width="match_parent"
               android:layout_height="1dp"

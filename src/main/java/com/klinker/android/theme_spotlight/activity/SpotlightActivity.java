@@ -255,4 +255,8 @@ public class SpotlightActivity extends AuthActivity {
     public Fragment getCurrentFragment() {
         return mFragment;
     }
+
+    public boolean isTwoPane() {
+        return findViewById(R.id.theme_frame) != null;
+    }
 }
