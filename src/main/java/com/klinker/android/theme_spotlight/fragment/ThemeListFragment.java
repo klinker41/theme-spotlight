@@ -23,9 +23,12 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
+import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
+import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 
 import java.util.List;
@@ -52,7 +55,7 @@ public class ThemeListFragment extends ListFragment {
     }
 
     public ThemeListFragment() {
-
+        // all fragments should contain an empty constructor
     }
 
     // set up our base search via arguments
@@ -84,7 +87,18 @@ public class ThemeListFragment extends ListFragment {
 
         // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+        // set up our view
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        ListView list = (ListView) v.findViewById(android.R.id.list);
+        list.setDivider(getResources().getDrawable(R.drawable.list_divider));
+        list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.list_divider_height));
+
+        if (((SpotlightActivity) mContext).isTwoPane()) {
+            v.setBackgroundResource(android.R.color.white);
+        }
+
+        return v;
     }
 
     public void getThemes(int startIndex) {

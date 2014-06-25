@@ -40,4 +40,7 @@
     <string name="error_no_accounts_summary">No accounts on device to log in to. We can\'t do anything.</string>
     <string name="ok">OK</string>
 
+    <!-- Theme Selected strings -->
+    <string name="select_a_theme">Select an item!</string>
+
 </resources>

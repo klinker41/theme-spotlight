@@ -17,6 +17,11 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.ListFragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
 
 public class FeaturedThemeListFragment extends ListFragment {
 
@@ -29,6 +34,17 @@ public class FeaturedThemeListFragment extends ListFragment {
     }
 
     public FeaturedThemeListFragment() {
+        // all fragments should contain an empty constructor
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+
+        if (((SpotlightActivity) getActivity()).isTwoPane()) {
+            v.setBackgroundResource(android.R.color.white);
+        }
+
+        return v;
     }
 }

@@ -17,16 +17,6 @@
 
 <resources>
 
-    <!-- Main screen colors -->
-    <color name="window_background">#e5e5e5</color>
-    <color name="list_divider_color">#cecece</color>
-
-    <!-- Drawer colors -->
-    <color name="drawer_options_background">#f7f7f7</color>
-    <color name="drawer_options_item_selected">#e3e3e3</color>
-    <color name="drawer_background">@android:color/white</color>
-    <color name="drawer_text_color">#505050</color>
-    <color name="drawer_divider_color">#e5e5e5</color>
-    <color name="drawer_subtext_color">#666666</color>
+    <dimen name="list_divider_height">1dp</dimen>
 
 </resources>
