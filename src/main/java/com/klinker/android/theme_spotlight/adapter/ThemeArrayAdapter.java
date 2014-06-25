@@ -16,7 +16,6 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -65,7 +64,7 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
 
         // recycle the view correctly
         if (rowView == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = context.getLayoutInflater();
             rowView = inflater.inflate(R.layout.theme_item, null);
 
             // initialize what we want to display views on
