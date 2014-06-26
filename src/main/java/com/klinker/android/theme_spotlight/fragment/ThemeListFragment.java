@@ -78,6 +78,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         superOnCreate(savedInstanceState);
         mBaseSearch = getArguments().getString(BASE_SEARCH);
+        mApps = new ArrayList<Market.App>();
     }
 
     public void superOnCreate(Bundle savedInstanceState) {
@@ -173,8 +174,8 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
 
     // set the apps to the listview and initialize other parts of the list
     public void setApps(final List<Market.App> apps) {
-        mApps = apps;
-        setListAdapterPost(mHandler, apps);
+        mApps.addAll(apps);
+        setListAdapterPost(mHandler, mApps);
     }
 
     public void setListAdapterPost(Handler handler, final List<Market.App> apps) {
@@ -186,6 +187,10 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                 if (adapter == null) {
                     adapter = new ThemeArrayAdapter(mContext, apps);
                     mListView.setAdapter(adapter);
+
+                    // after the first run, immediately get more themes since we can only
+                    // pull 10 at a time
+                    getMoreThemes();
                 } else {
                     adapter.notifyDataSetChanged();
                 }
