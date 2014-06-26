@@ -54,6 +54,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
     private List<Market.App> mApps;
 
     private ListView mListView;
+    private ThemeArrayAdapter adapter;
 
     // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
@@ -165,6 +166,11 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         }).start();
     }
 
+    public void getMoreThemes() {
+        currentSearchIndex += NUM_THEMES_TO_QUERY;
+        getThemes(currentSearchIndex);
+    }
+
     // set the apps to the listview and initialize other parts of the list
     public void setApps(final List<Market.App> apps) {
         mApps = apps;
@@ -175,7 +181,14 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         handler.post(new Runnable() {
             @Override
             public void run() {
-                mListView.setAdapter(new ThemeArrayAdapter(mContext, apps));
+                // if we haven't yet set an adapter, set it now. If we have already, just
+                // notify that our data has changed and it should reload
+                if (adapter == null) {
+                    adapter = new ThemeArrayAdapter(mContext, apps);
+                    mListView.setAdapter(adapter);
+                } else {
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
