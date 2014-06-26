@@ -74,13 +74,16 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         final Market.App item = items.get(position);
 
-        // set everything
         holder.title.setText(item.getTitle());
         holder.publisher.setText(item.getCreator());
 
         // this is a holder so that we can confirm we are still in the correct
         // position after the icon has loaded
         holder.icon.setTag(item.getId());
+
+        // since we are loading on a different thread for the icon, set the current
+        // one to transparent (don't want it looking funny during recycling
+        holder.icon.setImageResource(android.R.color.transparent);
 
         // start a new thread to download and cache our icon
         IconLoader loader = new IconLoader(item, holder.icon, context);

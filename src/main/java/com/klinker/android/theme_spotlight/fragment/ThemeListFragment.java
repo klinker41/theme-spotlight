@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.gc.android.market.api.MarketSession;
@@ -55,6 +56,8 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
 
     private ListView mListView;
     private ThemeArrayAdapter adapter;
+
+    private boolean isSyncing = false;
 
     // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
@@ -124,6 +127,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         new Thread(new Runnable() {
             @Override
             public void run() {
+                isSyncing = true;
                 try {
                     // create our session to look at themes from
                     MarketSession session = new MarketSession();
@@ -157,6 +161,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                             }
 
                             setApps(apps);
+                            isSyncing = false;
                         }
                     });
                     session.flush();
@@ -187,6 +192,23 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                 if (adapter == null) {
                     adapter = new ThemeArrayAdapter(mContext, apps);
                     mListView.setAdapter(adapter);
+
+                    mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView absListView, int i) {
+                            // dont care
+                        }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem,
+                                             int visibleItemCount, int totalItemCount) {
+                            // if we scroll to 2 items from the bottom, start grabbing more right away
+                            if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && !isSyncing) {
+                                isSyncing = true;
+                                getMoreThemes();
+                            }
+                        }
+                    });
 
                     // after the first run, immediately get more themes since we can only
                     // pull 10 at a time
