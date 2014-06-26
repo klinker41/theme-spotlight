@@ -16,6 +16,7 @@
 
 package com.klinker.android.theme_spotlight.data;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
@@ -46,25 +47,20 @@ public class AuthToken {
         // token and then store that and the androidId in shared prefs for next time
         if (authToken == null || androidId == null) {
             final Handler handler = new Handler();
-            getAuthToken(context, new AccountManagerCallback<Bundle>() {
+            new Thread(new Runnable() {
                 @Override
-                public void run(AccountManagerFuture<Bundle> result) {
-                    try {
-                        Bundle bundle = result.getResult();
-                        authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
-                        storeToPrefs(context);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                listener.onLoadFinished();
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                public void run() {
+                    authToken = updateToken(false, context);
+                    androidId = getAndroidID(context);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onLoadFinished();
+                        }
+                    });
                 }
-            });
-            androidId = getAndroidID(context);
+            }).start();
         } else {
             listener.onLoadFinished();
         }
@@ -109,7 +105,7 @@ public class AuthToken {
         return null;
     }
 
-    // get the google auth token
+    // one method for getting the google auth token
     private String getAuthToken(Activity context, AccountManagerCallback<Bundle> callback) {
         String authToken = "null";
 
@@ -137,6 +133,30 @@ public class AuthToken {
             e.printStackTrace();
         }
 
+        return authToken;
+    }
+
+    // another method for getting the auth token, I like this more because of the invalidation if I ever needed to
+    private String updateToken(boolean invalidateToken, Activity activity) {
+        String authToken = "null";
+        try {
+            AccountManager am = AccountManager.get(activity);
+            Account[] accounts = am.getAccountsByType("com.google");
+            AccountManagerFuture<Bundle> accountManagerFuture;
+            if (activity == null) {
+                accountManagerFuture = am.getAuthToken(accounts[0], "android", false, null, null);
+            } else {
+                accountManagerFuture = am.getAuthToken(accounts[0], "android", null, activity, null, null);
+            }
+            Bundle authTokenBundle = accountManagerFuture.getResult();
+            authToken = authTokenBundle.getString(AccountManager.KEY_AUTHTOKEN).toString();
+            if (invalidateToken) {
+                am.invalidateAuthToken("com.google", authToken);
+                authToken = updateToken(false, activity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return authToken;
     }
 }
