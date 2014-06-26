@@ -19,6 +19,7 @@ package com.klinker.android.theme_spotlight.data;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.util.LruCache;
 import android.widget.ImageView;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
@@ -34,12 +35,14 @@ public class IconLoader implements Runnable {
     private AuthActivity context;
     private Market.App item;
     private ImageView imageView;
+    private LruCache<String, Bitmap> cache;
 
-    public IconLoader(Market.App item, ImageView imageView, AuthActivity context) {
+    public IconLoader(Market.App item, ImageView imageView, AuthActivity context, LruCache<String, Bitmap> cache) {
         mHandler = new Handler();
         this.context = context;
         this.item = item;
         this.imageView = imageView;
+        this.cache = cache;
     }
 
     @Override
@@ -88,6 +91,7 @@ public class IconLoader implements Runnable {
     // set the icon and animate it in with a fade animation
     private void setIcon(String fileName) {
         final Bitmap icon = BitmapFactory.decodeFile(fileName);
+        addBitmapToMemoryCache(item.getId(), icon);
 
         if (imageView.getTag().toString().equals(item.getId())) {
             mHandler.post(new Runnable() {
@@ -103,5 +107,9 @@ public class IconLoader implements Runnable {
                 }
             });
         }
+    }
+
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        cache.put(key, bitmap);
     }
 }

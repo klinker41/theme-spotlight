@@ -16,6 +16,8 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.graphics.Bitmap;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,8 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
     private final AuthActivity context;
     private final List<Market.App> items;
 
+    private LruCache<String, Bitmap> mIconCache;
+
     // hold data for recycling
     static class ViewHolder {
         public TextView title;
@@ -45,6 +49,16 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
         super(context, R.layout.theme_item);
         this.context = context;
         this.items = items;
+
+        // set up the icon cacher
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        mIconCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
     }
 
     @Override
@@ -81,15 +95,24 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
         // position after the icon has loaded
         holder.icon.setTag(item.getId());
 
-        // since we are loading on a different thread for the icon, set the current
-        // one to transparent (don't want it looking funny during recycling
-        holder.icon.setImageResource(android.R.color.transparent);
+        // check if we already have this item stored
+        Bitmap icon = getBitmapFromMemCache(item.getId());
+        if (icon != null) {
+            holder.icon.setImageBitmap(icon);
+        } else {
+            // since we are loading on a different thread for the icon, set the current
+            // one to transparent (don't want it looking funny during recycling
+            holder.icon.setImageResource(android.R.color.transparent);
 
-        // start a new thread to download and cache our icon
-        IconLoader loader = new IconLoader(item, holder.icon, context);
-        new Thread(loader).start();
+            // start a new thread to download and cache our icon
+            IconLoader loader = new IconLoader(item, holder.icon, context, mIconCache);
+            new Thread(loader).start();
+        }
 
         return rowView;
     }
 
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mIconCache.get(key);
+    }
 }
