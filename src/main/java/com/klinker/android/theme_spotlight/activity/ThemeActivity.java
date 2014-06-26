@@ -16,13 +16,13 @@
 
 package com.klinker.android.theme_spotlight.activity;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 
-public class ThemeActivity extends Activity {
+public class ThemeActivity extends AuthActivity {
 
     private ThemeFragment mFragment;
 
@@ -41,5 +41,11 @@ public class ThemeActivity extends Activity {
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, mFragment)
                 .commit();
+    }
+
+    @Override
+    public void onAuthFinished(AuthToken token) {
+        // do nothing here, auth will finish instantly since this is coming from another
+        // auth activity
     }
 }
