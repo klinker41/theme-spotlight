@@ -76,6 +76,8 @@ public class ThemeListFragmentTest extends AbstractSpotlightTest {
     public void testSetApps() throws Exception {
         ThemeListFragment spy = Mockito.spy(fragment);
         doNothing().when(spy).setListAdapterPost(any(Handler.class), anyList());
+        doNothing().when(spy).superOnCreate(any(Bundle.class));
+        spy.onCreate(bundle);
         spy.setApps(new ArrayList<Market.App>());
         assertNotNull(spy.getApps());
     }
