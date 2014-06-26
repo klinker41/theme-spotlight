@@ -17,35 +17,40 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.Activity;
-import android.app.ListFragment;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
-import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
+import com.klinker.android.theme_spotlight.activity.ThemeActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 
 import java.util.List;
 
-public class ThemeListFragment extends ListFragment {
+public class ThemeListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private static final String TAG = "AbstractThemeFragment";
+    private static final String TAG = "ThemeListFragment";
 
     public static final String BASE_SEARCH = "base_search_parameter";
     private static final int NUM_THEMES_TO_QUERY = 10;
 
-    private AuthActivity mContext;
+    private SpotlightActivity mContext;
     private Handler mHandler;
 
     private String mBaseSearch;
     private String currentSearch = "";
     private int currentSearchIndex = 0;
+    private List<Market.App> mApps;
+
+    private ListView mListView;
 
     // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
@@ -78,27 +83,29 @@ public class ThemeListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mContext = (AuthActivity) activity;
+        mContext = (SpotlightActivity) activity;
+        mHandler = new Handler();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mHandler = new Handler();
-
         // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
 
-        // set up our view
-        View v = super.onCreateView(inflater, container, savedInstanceState);
-        ListView list = (ListView) v.findViewById(android.R.id.list);
-        list.setDivider(getResources().getDrawable(R.drawable.list_divider));
-        list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.list_divider_height));
+        mListView = inflateListView(inflater);
+        return mListView;
+    }
 
-        if (((SpotlightActivity) mContext).isTwoPane()) {
-            v.setBackgroundResource(android.R.color.white);
+    // set up our view, broken out for testing purposes
+    public ListView inflateListView(LayoutInflater inflater) {
+        ListView list = (ListView) inflater.inflate(R.layout.fragment_theme_list, null);
+        list.setOnItemClickListener(this);
+
+        if (mContext.isTwoPane()) {
+            list.setBackgroundResource(android.R.color.white);
         }
 
-        return v;
+        return list;
     }
 
     public void getThemes(int startIndex) {
@@ -144,11 +151,16 @@ public class ThemeListFragment extends ListFragment {
     }
 
     // set the apps to the listview and initialize other parts of the list
-    private void setApps(final List<Market.App> apps) {
-        mHandler.post(new Runnable() {
+    public void setApps(final List<Market.App> apps) {
+        mApps = apps;
+        setListAdapterPost(mHandler, apps);
+    }
+
+    public void setListAdapterPost(Handler handler, final List<Market.App> apps) {
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                setListAdapter(new ThemeArrayAdapter(mContext, apps));
+                mListView.setAdapter(new ThemeArrayAdapter(mContext, apps));
             }
         });
     }
@@ -156,5 +168,29 @@ public class ThemeListFragment extends ListFragment {
     // combine the base search and current search param
     public String getSearch(String search) {
         return mBaseSearch + " " + search;
+    }
+
+    public List<Market.App> getApps() {
+        return mApps;
+    }
+
+    public ListView getList() {
+        return mListView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Market.App clickedApp = mApps.get(i);
+
+        // if this is a single pane view, then start a new activity to display our theme
+        // if this is a dual pane view, then post this to the spotlight activity themeItemClicked
+        // where we will then display that theme in a fragment on the screen
+        if (mContext.isTwoPane()) {
+            mContext.themeItemClicked(clickedApp);
+        } else {
+            Intent intent = new Intent(getActivity(), ThemeActivity.class);
+            intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
+            startActivity(intent);
+        }
     }
 }

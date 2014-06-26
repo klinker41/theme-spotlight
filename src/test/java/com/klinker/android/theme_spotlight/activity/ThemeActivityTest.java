@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package com.klinker.android.theme_spotlight;
+package com.klinker.android.theme_spotlight.activity;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
+import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
+import org.junit.Test;
+import org.robolectric.Robolectric;
 
-@Ignore
-@RunWith(RobolectricTestRunner.class)
-public abstract class AbstractSpotlightTest {
+import static junit.framework.Assert.assertNotNull;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+public class ThemeActivityTest extends AbstractSpotlightTest {
+
+    @Test
+    public void testOnCreate() throws Exception {
+        ThemeActivity activity = Robolectric.buildActivity(ThemeActivity.class).create().get();
+        assertNotNull(activity);
     }
-
 }
