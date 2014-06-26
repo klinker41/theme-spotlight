@@ -36,13 +36,13 @@ android {
     }
 
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "20.0.0"
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
         versionCode 1
-        versionName "0.2.0"
+        versionName "0.4.0"
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
@@ -105,7 +105,7 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v13:19.1.0'
     compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar')
 }
 
