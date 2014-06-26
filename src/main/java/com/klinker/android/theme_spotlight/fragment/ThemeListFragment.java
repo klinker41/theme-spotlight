@@ -33,6 +33,7 @@ import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
 import com.klinker.android.theme_spotlight.activity.ThemeActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ThemeListFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -41,6 +42,8 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
 
     public static final String BASE_SEARCH = "base_search_parameter";
     private static final int NUM_THEMES_TO_QUERY = 10;
+    private static final String EVOLVE_PACKAGE = "com.klinker.android.evolve_sms";
+    private static final String TALON_PACKAGE = "com.klinker.android.twitter";
 
     private SpotlightActivity mContext;
     private Handler mHandler;
@@ -126,7 +129,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                     session.getContext().setAndroidId(mContext.getAuthToken().getAndroidId());
 
                     // create a simple query
-                    String query = getSearch(currentSearch);
+                    final String query = getSearch(currentSearch);
                     Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder()
                             .setQuery(query)
                             .setStartIndex(startIndex)
@@ -138,7 +141,19 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                     session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
                         @Override
                         public void onResult(Market.ResponseContext context, Market.AppsResponse response) {
-                            List<Market.App> apps = response.getAppList();
+                            // response.getAppList() is marked as unmodifiable, we need to change that so we can
+                            // strip items out when necessary
+                            ArrayList<Market.App> apps = new ArrayList<Market.App>(response.getAppList());
+
+                            // check the first for whether or not it is evolve or talon, and if so
+                            // strip it out as we don't want to display it. want to also verify the query
+                            // is correct so that later if I choose to do a Klinker Apps featured themer as
+                            // an example, it will still show those packages
+                            if ((apps.get(0).getPackageName().equals(EVOLVE_PACKAGE) && query.contains(SpotlightActivity.EVOLVE_SMS)) ||
+                                    (apps.get(0).getPackageName().equals(TALON_PACKAGE) && query.contains(SpotlightActivity.TALON))) {
+                                apps.remove(0);
+                            }
+
                             setApps(apps);
                         }
                     });

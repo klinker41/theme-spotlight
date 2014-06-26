@@ -52,8 +52,8 @@ public class SpotlightActivity extends AuthActivity {
     private static final Typeface BOLD_TEXT = Typeface.create("sans-serif", Typeface.BOLD);
 
     // base searches
-    private static final String EVOLVE_SMS = "EvolveSMS";
-    private static final String TALON = "Talon theme";
+    public static final String EVOLVE_SMS = "EvolveSMS";
+    public static final String TALON = "Talon theme";
 
     private Context mContext;
     private Handler mHandler;
