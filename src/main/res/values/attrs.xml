@@ -17,19 +17,8 @@
 
 <resources>
 
-    <!-- Main screen colors -->
-    <color name="window_background">#e5e5e5</color>
-    <color name="list_divider_color">#cecece</color>
-    <color name="orange">#55ffbb33</color>
-    <color name="primary_color">@android:color/holo_orange_dark</color>
-    <color name="primary_color_dark">#c96f05</color>
-
-    <!-- Drawer colors -->
-    <color name="drawer_options_background">#f7f7f7</color>
-    <color name="drawer_options_item_selected">#e3e3e3</color>
-    <color name="drawer_background">@android:color/white</color>
-    <color name="drawer_text_color">#505050</color>
-    <color name="drawer_divider_color">#e5e5e5</color>
-    <color name="drawer_subtext_color">#666666</color>
+    <attr name="drawer_button_background" format="reference"/>
+    <attr name="drawer_options_button_background" format="reference"/>
+    <attr name="button_background" format="reference"/>
 
 </resources>

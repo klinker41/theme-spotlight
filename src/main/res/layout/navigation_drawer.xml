@@ -58,7 +58,7 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="@drawable/drawer_option_btn_background"
+                android:background="?drawer_options_button_background"
                 android:onClick="onSettingsClicked">
 
             <ImageView
@@ -89,7 +89,7 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="@drawable/drawer_option_btn_background"
+                android:background="?drawer_options_button_background"
                 android:onClick="onFeedbackClicked">
 
             <ImageView

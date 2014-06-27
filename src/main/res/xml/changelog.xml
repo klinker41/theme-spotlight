@@ -32,13 +32,14 @@
         <text>Featured themers list</text>
         <text>More unit testing</text>
     </version>
-    <version name="0.6.5">
-        <text>Landscape theme viewer</text>
-    </version>
-    <version name="0.6.0" description="That sure is starting to look great...">
+    <version name="0.6.5" description="That sure is starting to look great...">
         <text>Fancy animation for fragment as drawer pulls out</text>
         <text>Multiple screenshots</text>
         <text>More unit testing</text>
+    </version>
+    <version name="0.6.0" description="Android L.">
+        <text>Support for Android L</text>
+        <text>Landscape theme viewer</text>
     </version>
     <version name="0.5.0" description="Hey, those are real themes, let's download!">
         <text>View themes when you click on one</text>
