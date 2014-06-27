@@ -38,12 +38,12 @@ android {
         exclude 'mockito-extensions/org.mockito.plugins.MockMaker'
     }
 
-    compileSdkVersion 'android-L'
+    compileSdkVersion 20
     buildToolsVersion "20.0.0"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName "0.6.0"
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
@@ -102,7 +102,7 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v13:20.0.0'
     compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar')
 }
 
