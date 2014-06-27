@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package com.klinker.android.theme_spotlight;
+package com.klinker.android.theme_spotlight.fragment;
 
+import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
+import org.junit.Test;
 
-@Ignore
-@RunWith(RobolectricTestRunner.class)
-public abstract class AbstractSpotlightTest {
+import static junit.framework.Assert.assertNotNull;
+
+public class ThemeFragmentTest extends AbstractSpotlightTest {
+
+    private ThemeFragment fragment;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        super.setup();
+        fragment = ThemeFragment.newInstance("com.klinker.android.evolve_sms");
+    }
+
+    @Test
+    public void testNewInstance() throws Exception {
+        assertNotNull(fragment);
     }
 
 }

@@ -17,6 +17,11 @@
   -->
 
 <changelog>
+    <version name="0.4.0" description="Yay, load more list items">
+        <text>Load more items as you scroll on the list of themes</text>
+        <text>Tons of bug fixes</text>
+        <text>Good looking tablet support</text>
+    </version>
     <version name="0.2.0" description="Mmmh, unit testing.">
         <text>Code cleanup</text>
         <text>Add unit testing with Robolectric and Mockito</text>

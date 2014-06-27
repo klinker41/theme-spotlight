@@ -38,6 +38,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.ThemeActivity" />
         <activity android:name=".activity.SettingsActivity" />
 
     </application>

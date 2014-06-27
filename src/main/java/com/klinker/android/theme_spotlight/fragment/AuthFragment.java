@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package com.klinker.android.theme_spotlight;
+package com.klinker.android.theme_spotlight.fragment;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
+import android.app.Activity;
+import android.app.Fragment;
+import com.klinker.android.theme_spotlight.activity.AuthActivity;
 
-@Ignore
-@RunWith(RobolectricTestRunner.class)
-public abstract class AbstractSpotlightTest {
+public class AuthFragment extends Fragment {
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    private AuthActivity mContext;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mContext = (AuthActivity) activity;
     }
 
+    public AuthActivity getAuthActivity() {
+        return mContext;
+    }
 }

@@ -31,9 +31,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
+import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 
 public class SpotlightActivity extends AuthActivity {
@@ -50,8 +52,8 @@ public class SpotlightActivity extends AuthActivity {
     private static final Typeface BOLD_TEXT = Typeface.create("sans-serif", Typeface.BOLD);
 
     // base searches
-    private static final String EVOLVE_SMS = "EvolveSMS";
-    private static final String TALON = "Talon theme";
+    public static final String EVOLVE_SMS = "EvolveSMS";
+    public static final String TALON = "Talon theme";
 
     private Context mContext;
     private Handler mHandler;
@@ -189,8 +191,8 @@ public class SpotlightActivity extends AuthActivity {
         });
     }
 
+    // Loop through and bold the correct items
     private void boldDrawerItem(int position) {
-        // Loop through and bold the correct items
         for (int i = 0; i < drawerButtons.length; i++) {
             if (i == position) {
                 ((TextView) drawerButtons[i]).setTypeface(BOLD_TEXT);
@@ -241,15 +243,23 @@ public class SpotlightActivity extends AuthActivity {
         intent.putExtra(Intent.EXTRA_EMAIL, "support@klinkerapps.com");
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
 
+        // create a chooser to handle the intent and attach a title
         startActivity(Intent.createChooser(intent, getString(R.string.send_feedback)));
+    }
+
+    // this will be called from the fragment when an item is clicked and two pane is true
+    public void themeItemClicked(Market.App item) {
+        String packageName = item.getPackageName();
+
+        // attach the theme fragment to the current frame since we are two pane
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.theme_frame, ThemeFragment.newInstance(packageName))
+                .commit();
     }
 
     public int getActionbarIcon() {
         return mIcon;
-    }
-
-    public DrawerLayout getNavigationDrawer() {
-        return mDrawer;
     }
 
     public Fragment getCurrentFragment() {

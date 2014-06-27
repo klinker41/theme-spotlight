@@ -17,35 +17,47 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.Activity;
-import android.app.ListFragment;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
-import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
+import com.klinker.android.theme_spotlight.activity.ThemeActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ThemeListFragment extends ListFragment {
+public class ThemeListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private static final String TAG = "AbstractThemeFragment";
+    private static final String TAG = "ThemeListFragment";
 
     public static final String BASE_SEARCH = "base_search_parameter";
     private static final int NUM_THEMES_TO_QUERY = 10;
+    private static final String EVOLVE_PACKAGE = "com.klinker.android.evolve_sms";
+    private static final String TALON_PACKAGE = "com.klinker.android.twitter";
 
-    private AuthActivity mContext;
+    private SpotlightActivity mContext;
     private Handler mHandler;
 
     private String mBaseSearch;
     private String currentSearch = "";
     private int currentSearchIndex = 0;
+    private List<Market.App> mApps;
+
+    private ListView mListView;
+    private ThemeArrayAdapter adapter;
+
+    private boolean isSyncing = false;
 
     // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
@@ -69,6 +81,7 @@ public class ThemeListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         superOnCreate(savedInstanceState);
         mBaseSearch = getArguments().getString(BASE_SEARCH);
+        mApps = new ArrayList<Market.App>();
     }
 
     public void superOnCreate(Bundle savedInstanceState) {
@@ -78,27 +91,29 @@ public class ThemeListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mContext = (AuthActivity) activity;
+        mContext = (SpotlightActivity) activity;
+        mHandler = new Handler();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mHandler = new Handler();
-
         // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
 
-        // set up our view
-        View v = super.onCreateView(inflater, container, savedInstanceState);
-        ListView list = (ListView) v.findViewById(android.R.id.list);
-        list.setDivider(getResources().getDrawable(R.drawable.list_divider));
-        list.setDividerHeight(getResources().getDimensionPixelSize(R.dimen.list_divider_height));
+        mListView = inflateListView(inflater);
+        return mListView;
+    }
 
-        if (((SpotlightActivity) mContext).isTwoPane()) {
-            v.setBackgroundResource(android.R.color.white);
+    // set up our view, broken out for testing purposes
+    public ListView inflateListView(LayoutInflater inflater) {
+        ListView list = (ListView) inflater.inflate(R.layout.fragment_theme_list, null);
+        list.setOnItemClickListener(this);
+
+        if (mContext.isTwoPane()) {
+            list.setBackgroundResource(android.R.color.white);
         }
 
-        return v;
+        return list;
     }
 
     public void getThemes(int startIndex) {
@@ -112,6 +127,7 @@ public class ThemeListFragment extends ListFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                isSyncing = true;
                 try {
                     // create our session to look at themes from
                     MarketSession session = new MarketSession();
@@ -119,7 +135,7 @@ public class ThemeListFragment extends ListFragment {
                     session.getContext().setAndroidId(mContext.getAuthToken().getAndroidId());
 
                     // create a simple query
-                    String query = getSearch(currentSearch);
+                    final String query = getSearch(currentSearch);
                     Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder()
                             .setQuery(query)
                             .setStartIndex(startIndex)
@@ -131,8 +147,21 @@ public class ThemeListFragment extends ListFragment {
                     session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
                         @Override
                         public void onResult(Market.ResponseContext context, Market.AppsResponse response) {
-                            List<Market.App> apps = response.getAppList();
+                            // response.getAppList() is marked as unmodifiable, we need to change that so we can
+                            // strip items out when necessary
+                            ArrayList<Market.App> apps = new ArrayList<Market.App>(response.getAppList());
+
+                            // check the first for whether or not it is evolve or talon, and if so
+                            // strip it out as we don't want to display it. want to also verify the query
+                            // is correct so that later if I choose to do a Klinker Apps featured themer as
+                            // an example, it will still show those packages
+                            if ((apps.get(0).getPackageName().equals(EVOLVE_PACKAGE) && query.contains(SpotlightActivity.EVOLVE_SMS)) ||
+                                    (apps.get(0).getPackageName().equals(TALON_PACKAGE) && query.contains(SpotlightActivity.TALON))) {
+                                apps.remove(0);
+                            }
+
                             setApps(apps);
+                            isSyncing = false;
                         }
                     });
                     session.flush();
@@ -143,12 +172,50 @@ public class ThemeListFragment extends ListFragment {
         }).start();
     }
 
+    public void getMoreThemes() {
+        currentSearchIndex += NUM_THEMES_TO_QUERY;
+        getThemes(currentSearchIndex);
+    }
+
     // set the apps to the listview and initialize other parts of the list
-    private void setApps(final List<Market.App> apps) {
-        mHandler.post(new Runnable() {
+    public void setApps(final List<Market.App> apps) {
+        mApps.addAll(apps);
+        setListAdapterPost(mHandler, mApps);
+    }
+
+    public void setListAdapterPost(Handler handler, final List<Market.App> apps) {
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                setListAdapter(new ThemeArrayAdapter(mContext, apps));
+                // if we haven't yet set an adapter, set it now. If we have already, just
+                // notify that our data has changed and it should reload
+                if (adapter == null) {
+                    adapter = new ThemeArrayAdapter(mContext, apps);
+                    mListView.setAdapter(adapter);
+
+                    mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView absListView, int i) {
+                            // dont care
+                        }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem,
+                                             int visibleItemCount, int totalItemCount) {
+                            // if we scroll to 2 items from the bottom, start grabbing more right away
+                            if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && !isSyncing) {
+                                isSyncing = true;
+                                getMoreThemes();
+                            }
+                        }
+                    });
+
+                    // after the first run, immediately get more themes since we can only
+                    // pull 10 at a time
+                    getMoreThemes();
+                } else {
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -156,5 +223,29 @@ public class ThemeListFragment extends ListFragment {
     // combine the base search and current search param
     public String getSearch(String search) {
         return mBaseSearch + " " + search;
+    }
+
+    public List<Market.App> getApps() {
+        return mApps;
+    }
+
+    public ListView getList() {
+        return mListView;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Market.App clickedApp = mApps.get(i);
+
+        // if this is a single pane view, then start a new activity to display our theme
+        // if this is a dual pane view, then post this to the spotlight activity themeItemClicked
+        // where we will then display that theme in a fragment on the screen
+        if (mContext.isTwoPane()) {
+            mContext.themeItemClicked(clickedApp);
+        } else {
+            Intent intent = new Intent(getActivity(), ThemeActivity.class);
+            intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
+            startActivity(intent);
+        }
     }
 }
