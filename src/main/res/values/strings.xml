@@ -42,5 +42,7 @@
 
     <!-- Theme Selected strings -->
     <string name="select_a_theme">Select an item!</string>
+    <string name="download">Download</string>
+    <string name="view_source">View Source Code</string>
 
 </resources>

@@ -36,20 +36,24 @@ public class IconLoader implements Runnable {
     private Market.App item;
     private ImageView imageView;
     private LruCache<String, Bitmap> cache;
+    private Market.GetImageRequest.AppImageUsage usage;
 
-    public IconLoader(Market.App item, ImageView imageView, AuthActivity context, LruCache<String, Bitmap> cache) {
+    public IconLoader(Market.App item, ImageView imageView, AuthActivity context,
+                      LruCache<String, Bitmap> cache, Market.GetImageRequest.AppImageUsage usage) {
         mHandler = new Handler();
         this.context = context;
         this.item = item;
         this.imageView = imageView;
         this.cache = cache;
+        this.usage = usage;
     }
 
     @Override
     public void run() {
         // cache the file in our cache directory and keep it around so we don't have to keep downloading
         // it every time we access the item
-        final String fileName = context.getCacheDir() + "/" + item.getPackageName() + ".png";
+        String screenshot = (usage == Market.GetImageRequest.AppImageUsage.SCREENSHOT) ? "_screenshot" : "";
+        final String fileName = context.getCacheDir() + "/" + item.getPackageName() + screenshot + ".png";
 
         if (new File(fileName).exists()) {
             // if the file exists already, skip downloading and processing it and just apply it
@@ -62,7 +66,7 @@ public class IconLoader implements Runnable {
 
             // get the icon for the app
             Market.GetImageRequest imgReq = Market.GetImageRequest.newBuilder().setAppId(item.getId())
-                    .setImageUsage(Market.GetImageRequest.AppImageUsage.ICON)
+                    .setImageUsage(usage)
                     .setImageId("0")
                     .build();
 
@@ -110,6 +114,8 @@ public class IconLoader implements Runnable {
     }
 
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        cache.put(key, bitmap);
+        if (cache != null) {
+            cache.put(key, bitmap);
+        }
     }
 }

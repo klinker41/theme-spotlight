@@ -19,10 +19,12 @@ package com.klinker.android.theme_spotlight.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
+import com.klinker.android.theme_spotlight.data.AuthToken;
 
 public class AuthFragment extends Fragment {
 
     private AuthActivity mContext;
+    private AuthToken mAuthToken;
 
     @Override
     public void onAttach(Activity activity) {

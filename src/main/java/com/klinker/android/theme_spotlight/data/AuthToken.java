@@ -52,6 +52,7 @@ public class AuthToken {
                 public void run() {
                     authToken = updateToken(false, context);
                     androidId = getAndroidID(context);
+                    storeToPrefs(context);
 
                     handler.post(new Runnable() {
                         @Override

@@ -17,7 +17,29 @@
   -->
 
 <changelog>
-    <version name="0.5.0">
+    <version name="1.0.0" description="Oh yeah, done.">
+        <text>Awesome icon and ready for release</text>
+    </version>
+    <version name="0.9.0" description="Even more themer stuff">
+        <text>Click individual themes for each themer</text>
+    </version>
+    <version name="0.8.0" description="More themer stuff">
+        <text>List themes for each featured themer</text>
+    </version>
+    <version name="0.7.0" description="Now's where the interactive fun starts :)">
+        <text>Featured themers list</text>
+        <text>More unit testing</text>
+    </version>
+    <version name="0.6.5">
+        <text>Landscape theme viewer</text>
+    </version>
+    <version name="0.6.0" description="That sure is starting to look great...">
+        <text>Fancy animation for fragment as drawer pulls out</text>
+        <text>Multiple screenshots</text>
+        <text>More unit testing</text>
+    </version>
+    <version name="0.5.0" description="Hey, those are real themes, let's download!">
+        <text>View themes when you click on one</text>
         <text>Spinner at the bottom of the theme list</text>
     </version>
     <version name="0.4.0" description="Yay, load more list items">

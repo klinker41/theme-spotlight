@@ -105,7 +105,7 @@ public class ThemeArrayAdapter extends ArrayAdapter<Market.App> {
             holder.icon.setImageResource(android.R.color.transparent);
 
             // start a new thread to download and cache our icon
-            IconLoader loader = new IconLoader(item, holder.icon, context, mIconCache);
+            IconLoader loader = new IconLoader(item, holder.icon, context, mIconCache, Market.GetImageRequest.AppImageUsage.ICON);
             new Thread(loader).start();
         }
 
