@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
@@ -48,6 +49,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
 
     private SpotlightActivity mContext;
     private Handler mHandler;
+    private LayoutInflater mInflater;
 
     private String mBaseSearch;
     private String currentSearch = "";
@@ -97,6 +99,8 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mInflater = inflater;
+
         // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
 
@@ -175,6 +179,12 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
     public void getMoreThemes() {
         currentSearchIndex += NUM_THEMES_TO_QUERY;
         getThemes(currentSearchIndex);
+
+        if (mListView.getFooterViewsCount() == 0) {
+            // set a footer to always spin at the bottom of the list
+            ProgressBar spinner = (ProgressBar) mInflater.inflate(R.layout.loading_footer, null);
+            mListView.addFooterView(spinner);
+        }
     }
 
     // set the apps to the listview and initialize other parts of the list
