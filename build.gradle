@@ -39,13 +39,13 @@ android {
     }
 
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 20
         versionCode 1
-        versionName "0.6.0"
+        versionName '0.6.0'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
@@ -68,7 +68,7 @@ android {
 
 dependencies {
     androidTestCompile 'com.google.guava:guava:14.0.1',
-            'com.squareup.dagger:dagger:1.1.0',
+            'com.squareup.dagger:dagger:1.2.1',
             'org.hamcrest:hamcrest-integration:1.1',
             'org.hamcrest:hamcrest-core:1.1',
             'org.hamcrest:hamcrest-library:1.1'
@@ -103,7 +103,13 @@ dependencies {
     }
 
     compile 'com.android.support:support-v13:20.0.0'
+//    compile "com.android.support:cardview-v7:+"
+//    compile "com.android.support:recyclerview-v7:+"
     compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar')
+
+    // dependency injection
+    compile 'com.squareup.dagger:dagger:1.2.1'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
 }
 
 apply plugin: 'idea'
