@@ -17,11 +17,10 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThemeListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ThemeListFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "ThemeListFragment";
 
@@ -101,24 +100,26 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mListView = getListView();
+        setupListView();
 
         // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
-
-        mListView = inflateListView(inflater);
-        return mListView;
     }
 
     // set up our view, broken out for testing purposes
-    public ListView inflateListView(LayoutInflater inflater) {
-        ListView list = (ListView) inflater.inflate(R.layout.fragment_theme_list, null);
-        list.setOnItemClickListener(this);
+    public void setupListView() {
+        mListView.setOnItemClickListener(this);
 
         if (mContext.isTwoPane()) {
-            list.setBackgroundResource(android.R.color.white);
+            mListView.setBackgroundResource(android.R.color.white);
         }
-
-        return list;
     }
 
     public void getThemes(int startIndex) {
@@ -202,7 +203,7 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                 // notify that our data has changed and it should reload
                 if (adapter == null) {
                     adapter = new ThemeArrayAdapter(mContext, apps);
-                    mListView.setAdapter(adapter);
+                    setListAdapter(adapter);
 
                     mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
@@ -238,10 +239,6 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
 
     public List<Market.App> getApps() {
         return mApps;
-    }
-
-    public ListView getList() {
-        return mListView;
     }
 
     @Override

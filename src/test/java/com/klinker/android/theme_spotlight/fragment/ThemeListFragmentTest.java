@@ -86,8 +86,10 @@ public class ThemeListFragmentTest extends AbstractSpotlightTest {
     public void testCreateView() throws Exception {
         ThemeListFragment spy = Mockito.spy(fragment);
         doNothing().when(spy).getThemes(anyInt());
-        doReturn(listView).when(spy).inflateListView(inflater);
+        doNothing().when(spy).setupListView();
+        doReturn(listView).when(spy).getListView();
         spy.onCreateView(inflater, viewGroup, bundle);
-        assertNotNull(spy.getList());
+        spy.onActivityCreated(bundle);
+        assertNotNull(spy.getListView());
     }
 }
