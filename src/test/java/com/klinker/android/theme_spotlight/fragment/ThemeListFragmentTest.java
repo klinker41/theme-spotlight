@@ -88,6 +88,8 @@ public class ThemeListFragmentTest extends AbstractSpotlightTest {
         doNothing().when(spy).getThemes(anyInt());
         doNothing().when(spy).setupListView();
         doReturn(listView).when(spy).getListView();
+        doReturn(listView).when(spy).superOnCreateView(inflater, viewGroup, bundle);
+        doReturn(false).when(spy).isTwoPane();
         spy.onCreateView(inflater, viewGroup, bundle);
         spy.onActivityCreated(bundle);
         assertNotNull(spy.getListView());

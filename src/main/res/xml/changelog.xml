@@ -35,6 +35,7 @@
     <version name="0.6.5" description="That sure is starting to look great...">
         <text>Fancy animation for fragment as drawer pulls out</text>
         <text>Multiple screenshots</text>
+        <text>Theme reviews for tablets</text>
         <text>More unit testing</text>
     </version>
     <version name="0.6.0" description="Android L.">
