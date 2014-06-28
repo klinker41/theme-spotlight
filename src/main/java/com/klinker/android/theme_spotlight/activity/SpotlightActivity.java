@@ -18,12 +18,10 @@ package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -55,10 +53,8 @@ public class SpotlightActivity extends AuthActivity {
     public static final String EVOLVE_SMS = "EvolveSMS";
     public static final String TALON = "Talon theme";
 
-    private Context mContext;
-    private Handler mHandler;
-
     // stuff to manage the drawer
+    private View contentHolder;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mTitle;
@@ -74,8 +70,7 @@ public class SpotlightActivity extends AuthActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spotlight);
 
-        mContext = this;
-        mHandler = new Handler();
+        contentHolder = findViewById(R.id.content_holder);
 
         // initialize the drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -94,6 +89,13 @@ public class SpotlightActivity extends AuthActivity {
                 getActionBar().setTitle(R.string.app_name);
                 getActionBar().setIcon(R.drawable.spotlight_logo);
                 invalidateOptionsMenu();
+            }
+
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                int totalSlide = getResources().getDimensionPixelSize(R.dimen.total_content_slide_distance);
+                float currentSlide = slideOffset * totalSlide;
+                contentHolder.setTranslationX(currentSlide);
             }
         };
 
