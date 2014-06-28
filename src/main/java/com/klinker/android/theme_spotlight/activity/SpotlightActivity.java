@@ -63,6 +63,7 @@ public class SpotlightActivity extends AuthActivity {
 
     // current fragment being shown
     private Fragment mFragment;
+    private TextView selectItem;
     private int currentPosition = 0;
 
     @Override
@@ -71,6 +72,7 @@ public class SpotlightActivity extends AuthActivity {
         setContentView(R.layout.activity_spotlight);
 
         contentHolder = findViewById(R.id.content_holder);
+        selectItem = (TextView) findViewById(R.id.select_item_label);
 
         // initialize the drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -135,6 +137,8 @@ public class SpotlightActivity extends AuthActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, mFragment)
                 .commit();
+
+        showTextLabel(true);
 
         // Highlight the selected item, update the title, and close the drawer
         boldDrawerItem(position);
@@ -231,6 +235,17 @@ public class SpotlightActivity extends AuthActivity {
         // TODO hide search icon when opened
         // menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    // whether or not to show the hint text on a tablet
+    public void showTextLabel(boolean show) {
+        if (selectItem != null) {
+            if (show) {
+                selectItem.setVisibility(View.VISIBLE);
+            } else {
+                selectItem.setVisibility(View.GONE);
+            }
+        }
     }
 
     // handle settings button clicked in the drawer
