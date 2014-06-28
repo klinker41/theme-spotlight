@@ -100,7 +100,13 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+
+        if (mContext.isTwoPane()) {
+            v.setBackgroundResource(android.R.color.white);
+        }
+
+        return v;
     }
 
     @Override
@@ -116,10 +122,6 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
     // set up our view, broken out for testing purposes
     public void setupListView() {
         mListView.setOnItemClickListener(this);
-
-        if (mContext.isTwoPane()) {
-            mListView.setBackgroundResource(android.R.color.white);
-        }
     }
 
     public void getThemes(int startIndex) {
