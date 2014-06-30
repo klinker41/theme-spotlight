@@ -38,12 +38,12 @@ android {
         exclude 'mockito-extensions/org.mockito.plugins.MockMaker'
     }
 
-    compileSdkVersion 20
+    compileSdkVersion 'android-L'
     buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 20
+        targetSdkVersion 'L'
         versionCode 1
         versionName '0.6.0'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
