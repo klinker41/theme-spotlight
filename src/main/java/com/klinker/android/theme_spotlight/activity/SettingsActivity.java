@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.text.Spanned;
+import android.view.MenuItem;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.ChangelogAdapter;
 import com.klinker.android.theme_spotlight.util.XmlChangelogUtils;
@@ -42,6 +43,8 @@ public class SettingsActivity extends PreferenceActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     // used for mocking testing
@@ -81,4 +84,15 @@ public class SettingsActivity extends PreferenceActivity {
             return true;
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return true;
+    }
 }

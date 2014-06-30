@@ -114,7 +114,7 @@ public class IconLoader implements Runnable {
     }
 
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (cache != null) {
+        if (cache != null && key != null && bitmap != null) {
             cache.put(key, bitmap);
         }
     }
