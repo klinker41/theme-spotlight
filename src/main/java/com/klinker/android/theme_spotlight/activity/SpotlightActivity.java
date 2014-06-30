@@ -52,6 +52,7 @@ import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
+import com.klinker.android.theme_spotlight.util.Utils;
 
 public class SpotlightActivity extends AuthActivity {
 
@@ -76,7 +77,7 @@ public class SpotlightActivity extends AuthActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mTitle;
     private int mIcon;
-    private View[] drawerButtons;
+    private TextView[] drawerButtons;
 
     // current fragment being shown
     private Fragment mFragment;
@@ -189,10 +190,10 @@ public class SpotlightActivity extends AuthActivity {
 
     // initialize buttons in drawer and handle clicking on them
     private void setupDrawerButtons() {
-        drawerButtons = new View[3];
-        drawerButtons[0] = findViewById(R.id.evolve_button);
-        drawerButtons[1] = findViewById(R.id.talon_button);
-        drawerButtons[2] = findViewById(R.id.featured_button);
+        drawerButtons = new TextView[3];
+        drawerButtons[0] = (TextView) findViewById(R.id.evolve_button);
+        drawerButtons[1] = (TextView) findViewById(R.id.talon_button);
+        drawerButtons[2] = (TextView) findViewById(R.id.featured_button);
 
         drawerButtons[0].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,9 +219,17 @@ public class SpotlightActivity extends AuthActivity {
     private void boldDrawerItem(int position) {
         for (int i = 0; i < drawerButtons.length; i++) {
             if (i == position) {
-                ((TextView) drawerButtons[i]).setTypeface(BOLD_TEXT);
+                drawerButtons[i].setTypeface(BOLD_TEXT);
+
+                if (Utils.isAndroidL()) {
+                    drawerButtons[i].setTextColor(getResources().getColor(R.color.primary_color));
+                }
             } else {
-                ((TextView) drawerButtons[i]).setTypeface(LIGHT_TEXT);
+                drawerButtons[i].setTypeface(LIGHT_TEXT);
+
+                if (Utils.isAndroidL()) {
+                    drawerButtons[i].setTextColor(getResources().getColor(R.color.drawer_text_color));
+                }
             }
         }
     }

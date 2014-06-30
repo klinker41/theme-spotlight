@@ -21,8 +21,9 @@
     <color name="window_background">#e5e5e5</color>
     <color name="list_divider_color">#cecece</color>
     <color name="orange">#55ffbb33</color>
-    <color name="primary_color">@android:color/holo_orange_dark</color>
-    <color name="primary_color_dark">#c96f05</color>
+    <color name="primary_color">#ff9800</color>
+    <color name="primary_color_dark">#ef6c00</color>
+    <color name="accent_color">#3f51b5</color>
 
     <!-- Drawer colors -->
     <color name="drawer_options_background">#f7f7f7</color>

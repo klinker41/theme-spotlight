@@ -17,6 +17,7 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Activity;
+import android.util.Log;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 
 // abstract class for keeping all of my auth stuff. AuthTokens will
@@ -24,6 +25,8 @@ import com.klinker.android.theme_spotlight.data.AuthToken;
 // the auth has finished and ensure that all boilerplate work is done in the
 // implementing class
 public abstract class AuthActivity extends Activity {
+
+    private static final String TAG = "AuthActivity";
 
     private AuthToken authToken;
 
@@ -44,6 +47,7 @@ public abstract class AuthActivity extends Activity {
                 }
             });
         } else {
+            Log.v(TAG, "authToken: " + authToken.getAuthToken() + "\nandroidId: " + authToken.getAndroidId());
             onAuthFinished(authToken);
         }
     }
