@@ -21,7 +21,8 @@
               android:layout_width="280dp"
               android:layout_height="match_parent"
               android:background="@color/drawer_background"
-              android:layout_gravity="start">
+              android:layout_gravity="start"
+              android:elevation="2dp">
 
     <TextView
             android:layout_width="match_parent"
