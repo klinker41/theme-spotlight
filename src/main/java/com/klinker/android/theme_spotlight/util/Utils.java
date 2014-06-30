@@ -20,8 +20,10 @@ import android.os.Build;
 
 public class Utils {
 
+    private static final String TAG = "Utils";
+
     public static boolean isAndroidL() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.L) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             return true;
         } else {
             return false;

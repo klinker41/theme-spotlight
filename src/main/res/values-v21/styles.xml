@@ -39,9 +39,4 @@
         <item name="android:textColor">@color/drawer_text_color</item>
     </style>
 
-    <style name="Button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
 </resources>
