@@ -201,45 +201,45 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
 
     // set the apps to the listview and initialize other parts of the list
     public void setApps(final List<Market.App> apps) {
-        mApps.addAll(apps);
-        setListAdapterPost(mHandler, mApps);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mApps.addAll(apps);
+                setListAdapterPost(mHandler, mApps);
+            }
+        });
     }
 
     public void setListAdapterPost(Handler handler, final List<Market.App> apps) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                // if we haven't yet set an adapter, set it now. If we have already, just
-                // notify that our data has changed and it should reload
-                if (adapter == null) {
-                    adapter = new ThemeArrayAdapter(mContext, apps);
-                    setListAdapter(adapter);
+        // if we haven't yet set an adapter, set it now. If we have already, just
+        // notify that our data has changed and it should reload
+        if (adapter == null) {
+            adapter = new ThemeArrayAdapter(mContext, apps);
+            setListAdapter(adapter);
 
-                    mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(AbsListView absListView, int i) {
-                            // dont care
-                        }
-
-                        @Override
-                        public void onScroll(AbsListView view, int firstVisibleItem,
-                                             int visibleItemCount, int totalItemCount) {
-                            // if we scroll to 2 items from the bottom, start grabbing more right away
-                            if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && !isSyncing) {
-                                isSyncing = true;
-                                getMoreThemes();
-                            }
-                        }
-                    });
-
-                    // after the first run, immediately get more themes since we can only
-                    // pull 10 at a time
-                    getMoreThemes();
-                } else {
-                    adapter.notifyDataSetChanged();
+            mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView absListView, int i) {
+                    // dont care
                 }
-            }
-        });
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem,
+                                     int visibleItemCount, int totalItemCount) {
+                    // if we scroll to 2 items from the bottom, start grabbing more right away
+                    if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && !isSyncing) {
+                        isSyncing = true;
+                        getMoreThemes();
+                    }
+                }
+            });
+
+            // after the first run, immediately get more themes since we can only
+            // pull 10 at a time
+            getMoreThemes();
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     // combine the base search and current search param
