@@ -150,7 +150,8 @@ public class ThemeFragment extends AuthFragment {
             }
         });
 
-        if (app.hasPrice()) {
+        // show the price on the download button if there is one
+        if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
             download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
         }
 

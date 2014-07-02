@@ -95,6 +95,7 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
         super.onAttach(activity);
         mContext = (SpotlightActivity) activity;
         mHandler = new Handler();
+        setRetainInstance(true);
     }
 
     @Override
