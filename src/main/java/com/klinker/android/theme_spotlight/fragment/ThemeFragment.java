@@ -16,10 +16,13 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +54,7 @@ public class ThemeFragment extends AuthFragment {
     private TextView publisherName;
     private Button download;
     private Button viewSource;
+    private View titleHolder;
 
     private ListView commentsList;
     private CommentsAdapter commentsAdapter;
@@ -91,6 +95,7 @@ public class ThemeFragment extends AuthFragment {
         commentsList = (ListView) mLayout.findViewById(R.id.review_list);
         download = (Button) mLayout.findViewById(R.id.download);
         viewSource = (Button) mLayout.findViewById(R.id.view_source);
+        titleHolder = mLayout.findViewById(R.id.theme_name_holder);
 
         return mLayout;
     }
@@ -123,7 +128,7 @@ public class ThemeFragment extends AuthFragment {
                 .start();
 
         // load the comments if applicable
-        if (commentsList != null) {
+        if (commentsList != null && commentsAdapter == null) {
             loadComments(app, mCommentStartIndex, mHandler, new OnCommentsLoadFinishedListener() {
                 @Override
                 public void onLoadFinished(Market.CommentsResponse response) {
@@ -132,6 +137,18 @@ public class ThemeFragment extends AuthFragment {
             });
         }
 
+        // show a dialog when clicking on the title of the app
+        titleHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(app.getTitle())
+                        .setMessage(getAppDetails(app))
+                        .setPositiveButton(R.string.ok, null)
+                        .show();
+            }
+        });
+
         // download the app
         download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,6 +156,10 @@ public class ThemeFragment extends AuthFragment {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + app.getPackageName())));
             }
         });
+
+        if (app.hasPrice()) {
+            download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
+        }
 
         // TODO handle view source button
     }
@@ -153,5 +174,45 @@ public class ThemeFragment extends AuthFragment {
         } else {
             commentsAdapter.notifyDataSetChanged();
         }
+    }
+
+    // get the app details that I feel are relevant for it
+    private Spanned getAppDetails(Market.App app) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(boldTextHtml("Publisher: ") + app.getCreator() + "<br>");
+
+        if (app.hasRating()) {
+            builder.append(boldTextHtml("Total Rating: ") + app.getRating() + "<br>");
+            builder.append(boldTextHtml("Number of Ratings: ") + app.getRatingsCount() + "<br>");
+        }
+
+        if (app.hasPrice()) {
+            builder.append(boldTextHtml("Price: ") + app.getPrice() + "<br>");
+        }
+
+        if (app.hasExtendedInfo()) {
+            Market.App.ExtendedInfo info = app.getExtendedInfo();
+
+            if (info.hasDownloadsCount()) {
+                builder.append(boldTextHtml("Downloads: ") + info.getDownloadsCountText() + "<br>");
+            }
+
+            if (info.hasInstallSize()) {
+                builder.append(boldTextHtml("Size: ") + info.getInstallSize() / 1000.0 + " kb<br><br>");
+            }
+
+            if (info.hasDescription()) {
+                builder.append(boldTextHtml("Description: ") + info.getDescription().replace("\n", "<br>")
+                        .replace("Recent changes:", "<b>Recent Changes: </b>")
+                        .replace("Content rating: ", "<b>Content Rating: </b>"));
+            }
+        }
+
+        return Html.fromHtml(builder.toString());
+    }
+
+    // return a bolded text string to show when using Html.fromHtml()
+    private String boldTextHtml(String text) {
+        return "<b>" + text + "</b>";
     }
 }
