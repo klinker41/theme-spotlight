@@ -32,4 +32,8 @@
     <color name="drawer_divider_color">#e5e5e5</color>
     <color name="drawer_subtext_color">#666666</color>
 
+    <!-- Android L Text Colors -->
+    <color name="primary_text_color">#D9000000</color>
+    <color name="secondary_text_color">#8C000000</color>
+
 </resources>
