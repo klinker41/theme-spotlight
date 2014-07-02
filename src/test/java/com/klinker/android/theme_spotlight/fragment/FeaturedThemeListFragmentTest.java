@@ -17,18 +17,17 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
+import com.klinker.android.theme_spotlight.util.FragmentTestUtils;
 import org.junit.Test;
-import org.robolectric.util.FragmentTestUtil;
 
 import static junit.framework.Assert.assertNotNull;
 
-public class AuthFragmentTest extends AbstractSpotlightTest {
+public class FeaturedThemeListFragmentTest extends AbstractSpotlightTest {
 
     @Test
-    public void testCreateFragment() throws Exception {
-        AuthFragment fragment = AuthFragment.newInstance();
-        FragmentTestUtil.startFragment(fragment);
+    public void testNewInstance() throws Exception {
+        FeaturedThemeListFragment fragment = FeaturedThemeListFragment.newInstance();
+        FragmentTestUtils.startFragment(fragment);
         assertNotNull(fragment);
-        assertNotNull(fragment.getAuthActivity());
     }
 }
