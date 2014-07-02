@@ -31,17 +31,31 @@ import java.io.FileOutputStream;
 // handles downloading, caching a reusing the app's icon
 public class IconLoader implements Runnable {
 
+    private static final String TAG = "IconLoader";
+
     private Handler mHandler;
     private AuthActivity context;
+    private int imageNumber;
     private Market.App item;
     private ImageView imageView;
     private LruCache<String, Bitmap> cache;
     private Market.GetImageRequest.AppImageUsage usage;
 
+    public IconLoader(Market.App item, ImageView imageView, AuthActivity context, int imageNumber,
+                      Market.GetImageRequest.AppImageUsage usage) {
+        this(item, imageView, context, imageNumber, null, usage);
+    }
+
     public IconLoader(Market.App item, ImageView imageView, AuthActivity context,
+                      LruCache<String, Bitmap> cache, Market.GetImageRequest.AppImageUsage usage) {
+        this(item, imageView, context, 1, cache, usage);
+    }
+
+    public IconLoader(Market.App item, ImageView imageView, AuthActivity context, int imageNumber,
                       LruCache<String, Bitmap> cache, Market.GetImageRequest.AppImageUsage usage) {
         mHandler = new Handler();
         this.context = context;
+        this.imageNumber = imageNumber;
         this.item = item;
         this.imageView = imageView;
         this.cache = cache;
@@ -52,7 +66,7 @@ public class IconLoader implements Runnable {
     public void run() {
         // cache the file in our cache directory and keep it around so we don't have to keep downloading
         // it every time we access the item
-        String screenshot = (usage == Market.GetImageRequest.AppImageUsage.SCREENSHOT) ? "_screenshot" : "";
+        String screenshot = (usage == Market.GetImageRequest.AppImageUsage.SCREENSHOT) ? ("_screenshot_" + imageNumber) : "";
         final String fileName = context.getCacheDir() + "/" + item.getPackageName() + screenshot + ".png";
 
         if (new File(fileName).exists()) {
@@ -67,7 +81,7 @@ public class IconLoader implements Runnable {
             // get the icon for the app
             Market.GetImageRequest imgReq = Market.GetImageRequest.newBuilder().setAppId(item.getId())
                     .setImageUsage(usage)
-                    .setImageId("0")
+                    .setImageId(Integer.toString(imageNumber))
                     .build();
 
             // post the request

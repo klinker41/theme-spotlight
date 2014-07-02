@@ -26,14 +26,13 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
+import com.klinker.android.theme_spotlight.adapter.ScreenshotAdapter;
 import com.klinker.android.theme_spotlight.data.IconLoader;
+import com.klinker.android.theme_spotlight.view.HorizontalListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class ThemeFragment extends AuthFragment {
     private String mPackageName;
 
     private ImageView icon;
-    private ImageView screenshot;
+    private HorizontalListView screenshotList;
     private TextView themeName;
     private TextView publisherName;
     private Button download;
@@ -89,7 +88,7 @@ public class ThemeFragment extends AuthFragment {
 
         // load all the views for later
         icon = (ImageView) mLayout.findViewById(R.id.icon);
-        screenshot = (ImageView) mLayout.findViewById(R.id.screenshot);
+        screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
         themeName = (TextView) mLayout.findViewById(R.id.theme_name);
         publisherName = (TextView) mLayout.findViewById(R.id.publisher_name);
         commentsList = (ListView) mLayout.findViewById(R.id.review_list);
@@ -122,19 +121,13 @@ public class ThemeFragment extends AuthFragment {
         themeName.setText(app.getTitle());
         publisherName.setText(app.getCreator());
 
-        // also load the screenshot on a new thread
-        screenshot.setTag(app.getId());
-        new Thread(new IconLoader(app, screenshot, getAuthActivity(), null, Market.GetImageRequest.AppImageUsage.SCREENSHOT))
-                .start();
+        // load the screenshots in a horizontal list view
+        screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), app, screenshotList.getHeight(),
+                screenshotList.getWidth() - getResources().getDimensionPixelSize(R.dimen.screenshot_width_padding)));
 
         // load the comments if applicable
         if (commentsList != null && commentsAdapter == null) {
-            loadComments(app, mCommentStartIndex, mHandler, new OnCommentsLoadFinishedListener() {
-                @Override
-                public void onLoadFinished(Market.CommentsResponse response) {
-                    setComments(response);
-                }
-            });
+            loadComments(app, mCommentStartIndex, mHandler, commentsListener);
         }
 
         // show a dialog when clicking on the title of the app
@@ -215,4 +208,11 @@ public class ThemeFragment extends AuthFragment {
     private String boldTextHtml(String text) {
         return "<b>" + text + "</b>";
     }
+
+    private OnCommentsLoadFinishedListener commentsListener = new OnCommentsLoadFinishedListener() {
+        @Override
+        public void onLoadFinished(Market.CommentsResponse response) {
+            setComments(response);
+        }
+    };
 }
