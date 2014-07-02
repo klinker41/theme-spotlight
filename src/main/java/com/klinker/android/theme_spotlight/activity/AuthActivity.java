@@ -33,7 +33,10 @@ public abstract class AuthActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        initAuthToken(this);
+
+        if (authToken == null) {
+            initAuthToken(this);
+        }
     }
 
     public void initAuthToken(Activity activity) {

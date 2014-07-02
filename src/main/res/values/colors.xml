@@ -20,7 +20,7 @@
     <!-- Main screen colors -->
     <color name="window_background">#e5e5e5</color>
     <color name="list_divider_color">#cecece</color>
-    <color name="orange">#55ffbb33</color>
+    <color name="button_pressed">#22000000</color>
     <color name="primary_color">#ff9800</color>
     <color name="primary_color_dark">#ef6c00</color>
     <color name="accent_color">#3f51b5</color>
@@ -32,5 +32,9 @@
     <color name="drawer_text_color">#505050</color>
     <color name="drawer_divider_color">#e5e5e5</color>
     <color name="drawer_subtext_color">#666666</color>
+
+    <!-- Android L Text Colors -->
+    <color name="primary_text_color">#D9000000</color>
+    <color name="secondary_text_color">#8C000000</color>
 
 </resources>

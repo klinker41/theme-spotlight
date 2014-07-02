@@ -16,21 +16,26 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import com.gc.android.market.api.MarketSession;
+import android.widget.*;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
+import com.klinker.android.theme_spotlight.adapter.ScreenshotAdapter;
 import com.klinker.android.theme_spotlight.data.IconLoader;
+import com.klinker.android.theme_spotlight.view.HorizontalListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ThemeFragment extends AuthFragment {
 
@@ -43,11 +48,17 @@ public class ThemeFragment extends AuthFragment {
     private String mPackageName;
 
     private ImageView icon;
-    private ImageView screenshot;
+    private HorizontalListView screenshotList;
     private TextView themeName;
     private TextView publisherName;
     private Button download;
     private Button viewSource;
+    private View titleHolder;
+
+    private ListView commentsList;
+    private CommentsAdapter commentsAdapter;
+    private List<Market.Comment> mComments;
+    private int mCommentStartIndex = 0;
 
     public static ThemeFragment newInstance(String packageName) {
         ThemeFragment fragment = new ThemeFragment();
@@ -59,6 +70,7 @@ public class ThemeFragment extends AuthFragment {
 
     public ThemeFragment() {
         // all fragments should always have a default constructor
+        mComments = new ArrayList<Market.Comment>();
     }
 
     @Override
@@ -76,11 +88,13 @@ public class ThemeFragment extends AuthFragment {
 
         // load all the views for later
         icon = (ImageView) mLayout.findViewById(R.id.icon);
-        screenshot = (ImageView) mLayout.findViewById(R.id.screenshot);
+        screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
         themeName = (TextView) mLayout.findViewById(R.id.theme_name);
         publisherName = (TextView) mLayout.findViewById(R.id.publisher_name);
+        commentsList = (ListView) mLayout.findViewById(R.id.review_list);
         download = (Button) mLayout.findViewById(R.id.download);
         viewSource = (Button) mLayout.findViewById(R.id.view_source);
+        titleHolder = mLayout.findViewById(R.id.theme_name_holder);
 
         return mLayout;
     }
@@ -88,51 +102,12 @@ public class ThemeFragment extends AuthFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadApp(mPackageName);
-    }
-
-    // load the app by creating a new session and requesting by the package name. we can then load
-    // just one result and get what we are looking for
-    public void loadApp(final String packageName) {
-        new Thread(new Runnable() {
+        loadApp(mPackageName, mHandler, new OnAppLoadFinishedListener() {
             @Override
-            public void run() {
-                try {
-                    // create our session to look at themes from
-                    MarketSession session = new MarketSession();
-                    session.getContext().setAuthSubToken(getAuthActivity().getAuthToken().getAuthToken());
-                    session.getContext().setAndroidId(getAuthActivity().getAuthToken().getAndroidId());
-
-                    // create a simple query
-                    String query = getPackageQuery(packageName);
-                    Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder()
-                            .setQuery(query)
-                            .setStartIndex(0)
-                            .setEntriesCount(1)
-                            .setWithExtendedInfo(true)
-                            .build();
-
-                    // post our request
-                    session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
-                        @Override
-                        public void onResult(Market.ResponseContext context, Market.AppsResponse response) {
-                            final Market.App app = response.getAppList().get(0);
-
-                            // post back to the ui thread to update the view
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setApp(app);
-                                }
-                            });
-                        }
-                    });
-                    session.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onLoadFinished(Market.App app) {
+                setApp(app);
             }
-        }).start();
+        });
     }
 
     // set up the view we want to show finally, need to post back to the ui thread
@@ -146,10 +121,26 @@ public class ThemeFragment extends AuthFragment {
         themeName.setText(app.getTitle());
         publisherName.setText(app.getCreator());
 
-        // also load the screenshot on a new thread
-        screenshot.setTag(app.getId());
-        new Thread(new IconLoader(app, screenshot, getAuthActivity(), null, Market.GetImageRequest.AppImageUsage.SCREENSHOT))
-                .start();
+        // load the screenshots in a horizontal list view
+        screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), app, screenshotList.getHeight(),
+                screenshotList.getWidth() - getResources().getDimensionPixelSize(R.dimen.screenshot_width_padding)));
+
+        // load the comments if applicable
+        if (commentsList != null && commentsAdapter == null) {
+            loadComments(app, mCommentStartIndex, mHandler, commentsListener);
+        }
+
+        // show a dialog when clicking on the title of the app
+        titleHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(app.getTitle())
+                        .setMessage(getAppDetails(app))
+                        .setPositiveButton(R.string.ok, null)
+                        .show();
+            }
+        });
 
         // download the app
         download.setOnClickListener(new View.OnClickListener() {
@@ -159,10 +150,70 @@ public class ThemeFragment extends AuthFragment {
             }
         });
 
+        // show the price on the download button if there is one
+        if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
+            download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
+        }
+
         // TODO handle view source button
     }
 
-    public String getPackageQuery(String packageName) {
-        return "pname:" + packageName;
+    // set up the comments list and update it as you scroll down it
+    public void setComments(Market.CommentsResponse comments) {
+        mComments.addAll(comments.getCommentsList());
+
+        if (commentsAdapter == null) {
+            commentsAdapter = new CommentsAdapter(getAuthActivity(), mComments);
+            commentsList.setAdapter(commentsAdapter);
+        } else {
+            commentsAdapter.notifyDataSetChanged();
+        }
     }
+
+    // get the app details that I feel are relevant for it
+    private Spanned getAppDetails(Market.App app) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(boldTextHtml("Publisher: ") + app.getCreator() + "<br>");
+
+        if (app.hasRating()) {
+            builder.append(boldTextHtml("Total Rating: ") + app.getRating() + "<br>");
+            builder.append(boldTextHtml("Number of Ratings: ") + app.getRatingsCount() + "<br>");
+        }
+
+        if (app.hasPrice()) {
+            builder.append(boldTextHtml("Price: ") + app.getPrice() + "<br>");
+        }
+
+        if (app.hasExtendedInfo()) {
+            Market.App.ExtendedInfo info = app.getExtendedInfo();
+
+            if (info.hasDownloadsCount()) {
+                builder.append(boldTextHtml("Downloads: ") + info.getDownloadsCountText() + "<br>");
+            }
+
+            if (info.hasInstallSize()) {
+                builder.append(boldTextHtml("Size: ") + info.getInstallSize() / 1000.0 + " kb<br><br>");
+            }
+
+            if (info.hasDescription()) {
+                builder.append(boldTextHtml("Description: ") + info.getDescription().replace("\n", "<br>")
+                        .replace("Recent changes:", "<b>Recent Changes: </b>")
+                        .replace("Content rating: ", "<b>Content Rating: </b>"));
+            }
+        }
+
+        return Html.fromHtml(builder.toString());
+    }
+
+    // return a bolded text string to show when using Html.fromHtml()
+    private String boldTextHtml(String text) {
+        return "<b>" + text + "</b>";
+    }
+
+    private OnCommentsLoadFinishedListener commentsListener = new OnCommentsLoadFinishedListener() {
+        @Override
+        public void onLoadFinished(Market.CommentsResponse response) {
+            setComments(response);
+        }
+    };
 }

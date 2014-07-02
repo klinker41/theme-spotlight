@@ -43,7 +43,7 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
     private static final String TAG = "ThemeListFragment";
 
     public static final String BASE_SEARCH = "base_search_parameter";
-    private static final int NUM_THEMES_TO_QUERY = 10;
+    public static final int NUM_THEMES_TO_QUERY = 10;
     private static final String EVOLVE_PACKAGE = "com.klinker.android.evolve_sms";
     private static final String TALON_PACKAGE = "com.klinker.android.twitter";
 
@@ -95,6 +95,7 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
         super.onAttach(activity);
         mContext = (SpotlightActivity) activity;
         mHandler = new Handler();
+        setRetainInstance(true);
     }
 
     @Override

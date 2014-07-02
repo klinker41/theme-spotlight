@@ -158,13 +158,13 @@ public class SpotlightActivity extends AuthActivity {
 
         showTextLabel(true);
 
-        // Highlight the selected item, update the title, and close the drawer
+        // Highlight the selected item, update the author, and close the drawer
         boldDrawerItem(position);
         setupActionbar(position);
         mDrawer.closeDrawer(Gravity.START);
     }
 
-    // set title and icon in the actionbar
+    // set author and icon in the actionbar
     public void setupActionbar(int position) {
         switch (position) {
             case EVOLVE_FRAGMENT:
@@ -286,7 +286,7 @@ public class SpotlightActivity extends AuthActivity {
         intent.putExtra(Intent.EXTRA_EMAIL, "support@klinkerapps.com");
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
 
-        // create a chooser to handle the intent and attach a title
+        // create a chooser to handle the intent and attach a author
         startActivity(Intent.createChooser(intent, getString(R.string.send_feedback)));
     }
 
