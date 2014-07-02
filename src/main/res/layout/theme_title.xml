@@ -29,7 +29,8 @@
             android:layout_width="64dp"
             android:layout_height="match_parent"
             android:id="@+id/icon"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:viewName="themeIcon"/>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                 android:id="@+id/theme_name"
                 android:singleLine="true"
                 android:layout_marginRight="10dp"
-                android:textSize="22sp"/>
+                android:textSize="22sp"
+                android:viewName="themeName"/>
 
         <TextView
                 android:layout_width="match_parent"
@@ -54,7 +56,8 @@
                 android:id="@+id/publisher_name"
                 android:singleLine="true"
                 android:layout_marginRight="10dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:viewName="themePublisher"/>
 
     </LinearLayout>
 </LinearLayout>

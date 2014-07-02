@@ -29,6 +29,7 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:id="@+id/icon"
+        android:viewName="themeIcon"
         android:padding="4dp"/>
 
     <LinearLayout
@@ -43,7 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:viewName="themeTitle"/>
 
         <TextView
             android:id="@+id/publisher"
@@ -51,7 +53,8 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:fontFamily="sans-serif-light"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:viewName="themePublisher"/>
 
     </LinearLayout>
 </LinearLayout>

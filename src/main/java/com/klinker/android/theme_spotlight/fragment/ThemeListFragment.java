@@ -17,10 +17,13 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.ListFragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -264,7 +267,16 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
         } else {
             Intent intent = new Intent(getActivity(), ThemeActivity.class);
             intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
-            startActivity(intent);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.L) {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                        Pair.create(view.findViewById(R.id.icon), "themeIcon"),
+                        Pair.create(view.findViewById(R.id.title), "themeName"),
+                        Pair.create(view.findViewById(R.id.publisher), "themePublisher"));
+                startActivity(intent, options.toBundle());
+            } else {
+                startActivity(intent);
+            }
         }
     }
 }
