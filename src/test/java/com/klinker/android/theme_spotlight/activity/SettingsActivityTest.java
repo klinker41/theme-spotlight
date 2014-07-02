@@ -16,6 +16,7 @@
 
 package com.klinker.android.theme_spotlight.activity;
 
+import android.app.ActionBar;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -35,12 +36,16 @@ public class SettingsActivityTest extends AbstractSpotlightTest {
     @Mock
     private Preference preference;
 
+    @Mock
+    private ActionBar actionbar;
+
     @Test
     public void testOnCreate() throws PackageManager.NameNotFoundException {
         SettingsActivity spy = Mockito.spy(new SettingsActivity());
         doNothing().when(spy).superOnCreate(bundle);
         doNothing().when(spy).addPreferencesFromResource(R.xml.preferences);
         doNothing().when(spy).initAboutPreference();
+        doReturn(actionbar).when(spy).getActionBar();
 
         spy.onCreate(bundle);
 

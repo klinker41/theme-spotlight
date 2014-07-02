@@ -17,10 +17,13 @@
 package com.klinker.android.theme_spotlight.fragment;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.ListFragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -266,5 +269,9 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
             intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
             startActivity(intent);
         }
+    }
+
+    public void setHandler(Handler handler) {
+        mHandler = handler;
     }
 }
