@@ -19,6 +19,8 @@
 <resources>
 
     <style name="Theme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:windowContentTransitions">true</item>
+
         <item name="android:colorPrimary">@color/primary_color</item>
         <item name="android:colorPrimaryDark">@color/primary_color_dark</item>
         <item name="android:colorAccent">@color/accent_color</item>
