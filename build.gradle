@@ -42,10 +42,11 @@ android {
     buildToolsVersion '20'
 
     defaultConfig {
+        applicationId 'com.klinker.android.theme_spotlight'
         minSdkVersion 14
         targetSdkVersion 'L'
         versionCode 1
-        versionName '0.6.0'
+        versionName '0.6.5'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
@@ -102,14 +103,10 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    compile 'com.android.support:support-v13:20.0.0'
-//    compile "com.android.support:cardview-v7:+"
-//    compile "com.android.support:recyclerview-v7:+"
+    compile 'com.android.support:support-v13:+'
+    compile "com.android.support:cardview-v7:+"
+    compile "com.android.support:recyclerview-v7:+"
     compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar')
-
-    // dependency injection
-    compile 'com.squareup.dagger:dagger:1.2.1'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
 }
 
 apply plugin: 'idea'

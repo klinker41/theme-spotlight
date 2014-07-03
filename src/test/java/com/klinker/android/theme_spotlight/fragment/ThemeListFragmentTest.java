@@ -52,6 +52,9 @@ public class ThemeListFragmentTest extends AbstractSpotlightTest {
     @Mock
     private ListView listView;
 
+    @Mock
+    private Handler handler;
+
     @Before
     public void setup() {
         super.setup();
@@ -78,6 +81,7 @@ public class ThemeListFragmentTest extends AbstractSpotlightTest {
         doNothing().when(spy).setListAdapterPost(any(Handler.class), anyList());
         doNothing().when(spy).superOnCreate(any(Bundle.class));
         spy.onCreate(bundle);
+        spy.setHandler(handler);
         spy.setApps(new ArrayList<Market.App>());
         assertNotNull(spy.getApps());
     }

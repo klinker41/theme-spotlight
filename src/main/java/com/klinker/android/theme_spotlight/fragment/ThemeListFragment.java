@@ -279,4 +279,8 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
             }
         }
     }
+
+    public void setHandler(Handler handler) {
+        mHandler = handler;
+    }
 }

@@ -30,7 +30,6 @@
     </version>
     <version name="0.7.0" description="Now's where the interactive fun starts :)">
         <text>Featured themers list</text>
-        <text>More unit testing</text>
     </version>
     <version name="0.6.5" description="That sure is starting to look great...">
         <text>Fancy animation for fragment as drawer pulls out</text>

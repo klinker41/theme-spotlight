@@ -27,12 +27,24 @@ import com.klinker.android.theme_spotlight.data.AuthToken;
 public class AuthFragment extends Fragment {
 
     private AuthActivity mContext;
-    private AuthToken mAuthToken;
+
+    public static AuthFragment newInstance() {
+        AuthFragment fragment = new AuthFragment();
+        return fragment;
+    }
+
+    public AuthFragment() {
+
+    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = (AuthActivity) activity;
+    }
+
+    public AuthToken getAuthToken() {
+        return getAuthActivity().getAuthToken();
     }
 
     public AuthActivity getAuthActivity() {
@@ -48,8 +60,8 @@ public class AuthFragment extends Fragment {
                 try {
                     // create our session to look at themes from
                     MarketSession session = new MarketSession();
-                    session.getContext().setAuthSubToken(getAuthActivity().getAuthToken().getAuthToken());
-                    session.getContext().setAndroidId(getAuthActivity().getAuthToken().getAndroidId());
+                    session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
+                    session.getContext().setAndroidId(getAuthToken().getAndroidId());
 
                     // create a simple query
                     String query = getPackageQuery(packageName);
@@ -94,39 +106,34 @@ public class AuthFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            // create our session to look at themes from
-                            MarketSession session = new MarketSession();
-                            session.getContext().setAuthSubToken(getAuthActivity().getAuthToken().getAuthToken());
-                            session.getContext().setAndroidId(getAuthActivity().getAuthToken().getAndroidId());
+                try {
+                    // create our session to look at themes from
+                    MarketSession session = new MarketSession();
+                    session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
+                    session.getContext().setAndroidId(getAuthToken().getAndroidId());
 
-                            // create a simple query
-                            Market.CommentsRequest commentsRequest = Market.CommentsRequest.newBuilder()
-                                    .setAppId(app.getId())
-                                    .setStartIndex(startIndex)
-                                    .setEntriesCount(entriesCount)
-                                    .build();
+                    // create a simple query
+                    Market.CommentsRequest commentsRequest = Market.CommentsRequest.newBuilder()
+                            .setAppId(app.getId())
+                            .setStartIndex(startIndex)
+                            .setEntriesCount(entriesCount)
+                            .build();
 
-                            session.append(commentsRequest, new MarketSession.Callback<Market.CommentsResponse>() {
+                    session.append(commentsRequest, new MarketSession.Callback<Market.CommentsResponse>() {
+                        @Override
+                        public void onResult(Market.ResponseContext context, final Market.CommentsResponse response) {
+                            handler.post(new Runnable() {
                                 @Override
-                                public void onResult(Market.ResponseContext context, final Market.CommentsResponse response) {
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            listener.onLoadFinished(response);
-                                        }
-                                    });
+                                public void run() {
+                                    listener.onLoadFinished(response);
                                 }
                             });
-                            session.flush();
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                }).start();
+                    });
+                    session.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
