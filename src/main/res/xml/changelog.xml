@@ -27,9 +27,11 @@
     <version name="0.8.0" description="More themer stuff">
         <text>List themes for each featured themer</text>
         <text>Searching icon added on EvolveSMS and Talon pages</text>
+        <text>Loading indicator at bottom of recycler view</text>
     </version>
     <version name="0.7.0" description="Now's where the interactive fun starts :)">
         <text>Featured themers list</text>
+        <text>Start using recycler views</text>
     </version>
     <version name="0.6.5" description="That sure is starting to look great...">
         <text>Fancy animation for fragment as drawer pulls out</text>

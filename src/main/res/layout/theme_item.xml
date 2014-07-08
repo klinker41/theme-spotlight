@@ -16,42 +16,60 @@
 ~ limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
-              android:paddingTop="4dp"
-              android:paddingBottom="4dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:id="@+id/icon"
-        android:padding="4dp"/>
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:paddingLeft="10dp"
+                  android:paddingRight="10dp"
+                  android:paddingTop="4dp"
+                  android:paddingBottom="4dp"
+                  android:background="?android:listChoiceBackgroundIndicator">
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp">
+        <ImageView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:id="@+id/icon"
+                android:padding="4dp"/>
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:singleLine="true"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp">
 
-        <TextView
-            android:id="@+id/publisher"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif-light"
-            android:singleLine="true"/>
+            <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:singleLine="true"/>
 
+            <TextView
+                    android:id="@+id/publisher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-light"
+                    android:singleLine="true"/>
+
+        </LinearLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@drawable/list_divider"/>
     </LinearLayout>
-</LinearLayout>
+
+    <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:id="@+id/loading"/>
+
+</FrameLayout>

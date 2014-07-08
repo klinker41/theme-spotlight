@@ -18,25 +18,26 @@ package com.klinker.android.theme_spotlight.fragment;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ProgressBar;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
-import com.klinker.android.theme_spotlight.activity.ThemeActivity;
-import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
+import com.klinker.android.theme_spotlight.adapter.ThemeRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThemeListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ThemeListFragment extends AuthFragment {
 
     private static final String TAG = "ThemeListFragment";
 
@@ -53,11 +54,10 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
     private String mBaseSearch;
     private String currentSearch = "";
     private int currentSearchIndex = 0;
-    private List<Market.App> mApps;
 
-    private ListView mListView;
-    private ProgressBar mProgressBar;
-    private ThemeArrayAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private View mProgressBar;
+    private ThemeRecyclerAdapter mAdapter;
 
     private boolean isSyncing = false;
 
@@ -83,7 +83,6 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         superOnCreate(savedInstanceState);
         mBaseSearch = getArguments().getString(BASE_SEARCH);
-        mApps = new ArrayList<Market.App>();
     }
 
     public void superOnCreate(Bundle savedInstanceState) {
@@ -104,8 +103,12 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         superOnCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_theme_list, null);
 
-        mListView = (ListView) v.findViewById(android.R.id.list);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.loading_progress);
+        mRecyclerView = (RecyclerView) v.findViewById(android.R.id.list);
+        setUpRecyclerView();
+        mProgressBar = v.findViewById(R.id.loading_progress);
+
+        mAdapter = new ThemeRecyclerAdapter(this, new ArrayList<Market.App>());
+        setRecyclerViewAdapter(mAdapter);
 
         if (isTwoPane()) {
             v.setBackgroundResource(android.R.color.white);
@@ -118,22 +121,26 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         return mContext.isTwoPane();
     }
 
+    public void themeItemClicked(Market.App app) {
+        mContext.themeItemClicked(app);
+    }
+
     public View superOnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    public void setUpRecyclerView() {
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setupListView();
 
         // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
-    }
-
-    // set up our view, broken out for testing purposes
-    public void setupListView() {
-        mListView.setOnItemClickListener(this);
     }
 
     public void getThemes(int startIndex) {
@@ -162,6 +169,10 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
                             .setEntriesCount(length)
                             .setWithExtendedInfo(false) // don't need extended info, this will slow us down
                             .build();
+
+                    // pause the loading for a short amount of time, this helps the recycler view
+                    // keep up and prevents it from scrolling janky when more views are added
+                    try { Thread.sleep(500); } catch (Exception e) { }
 
                     // post our request
                     session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
@@ -196,11 +207,12 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         currentSearchIndex += NUM_THEMES_TO_QUERY;
         getThemes(currentSearchIndex);
 
-        if (mListView.getFooterViewsCount() == 0) {
-            // set a footer to always spin at the bottom of the list
-            ProgressBar spinner = (ProgressBar) mInflater.inflate(R.layout.loading_footer, null);
-            mListView.addFooterView(spinner);
-        }
+        // recycler views do not support footers, yet... damn
+//        if (mRecyclerView.getFooterViewsCount() == 0) {
+//            // set a footer to always spin at the bottom of the list
+//            ProgressBar spinner = (ProgressBar) mInflater.inflate(R.layout.loading_footer, null);
+//            mRecyclerView.addFooterView(spinner);
+//        }
     }
 
     // set the apps to the listview and initialize other parts of the list
@@ -208,48 +220,30 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mApps.addAll(apps);
-                setListAdapterPost(mHandler, mApps);
+                setListAdapterPost();
+
+                for (Market.App app : apps) {
+                    // adjust the size by one so that
+                    mAdapter.add(app, mAdapter.getRealItemCount());
+                }
             }
         });
     }
 
-    public void setListAdapterPost(Handler handler, final List<Market.App> apps) {
+    public void setListAdapterPost() {
         // if we haven't yet set an adapter, set it now. If we have already, just
         // notify that our data has changed and it should reload
-        if (adapter == null) {
-            adapter = new ThemeArrayAdapter(mContext, apps);
-            setListAdapter(adapter);
-
-            ObjectAnimator listAnimator = ObjectAnimator.ofFloat(mListView, View.ALPHA, 0.0f, 1.0f);
+        if (mAdapter.getRealItemCount() == 0) {
+            ObjectAnimator listAnimator = ObjectAnimator.ofFloat(mRecyclerView, View.ALPHA, 0.0f, 1.0f);
             listAnimator.setDuration(FADE_DURATION);
             listAnimator.start();
             ObjectAnimator progressAnimator = ObjectAnimator.ofFloat(mProgressBar, View.ALPHA, 1.0f, 0.0f);
             progressAnimator.setDuration(FADE_DURATION);
             progressAnimator.start();
 
-            mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView absListView, int i) {
-                    // dont care
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem,
-                                     int visibleItemCount, int totalItemCount) {
-                    // if we scroll to 2 items from the bottom, start grabbing more right away
-                    if (firstVisibleItem + visibleItemCount >= totalItemCount - 2 && !isSyncing) {
-                        isSyncing = true;
-                        getMoreThemes();
-                    }
-                }
-            });
-
             // after the first run, immediately get more themes since we can only
             // pull 10 at a time
             getMoreThemes();
-        } else {
-            adapter.notifyDataSetChanged();
         }
     }
 
@@ -258,23 +252,10 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         return mBaseSearch + " " + search;
     }
 
-    public List<Market.App> getApps() {
-        return mApps;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Market.App clickedApp = mApps.get(i);
-
-        // if this is a single pane view, then start a new activity to display our theme
-        // if this is a dual pane view, then post this to the spotlight activity themeItemClicked
-        // where we will then display that theme in a fragment on the screen
-        if (mContext.isTwoPane()) {
-            mContext.themeItemClicked(clickedApp);
-        } else {
-            Intent intent = new Intent(getActivity(), ThemeActivity.class);
-            intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
-            startActivity(intent);
+    public void syncMoreThemes(int position) {
+        if (position >= mAdapter.getRealItemCount() - 2 && !isSyncing) {
+            isSyncing = true;
+            getMoreThemes();
         }
     }
 
@@ -282,11 +263,11 @@ public class ThemeListFragment extends Fragment implements AdapterView.OnItemCli
         mHandler = handler;
     }
 
-    public ListView getListView() {
-        return mListView;
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 
-    public void setListAdapter(ListAdapter adapter) {
-        mListView.setAdapter(adapter);
+    public void setRecyclerViewAdapter(RecyclerView.Adapter adapter) {
+        mRecyclerView.setAdapter(adapter);
     }
 }
