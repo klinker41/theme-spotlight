@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
+import com.klinker.android.theme_spotlight.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -35,6 +36,7 @@ import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 public class ThemeListFragmentTest extends AbstractSpotlightTest {
 
@@ -91,6 +93,7 @@ public class ThemeListFragmentTest extends AbstractSpotlightTest {
         ThemeListFragment spy = Mockito.spy(fragment);
         doNothing().when(spy).getThemes(anyInt());
         doNothing().when(spy).setupListView();
+        when(inflater.inflate(R.layout.fragment_theme_list, null)).thenReturn(listView);
         doReturn(listView).when(spy).getListView();
         doReturn(listView).when(spy).superOnCreateView(inflater, viewGroup, bundle);
         doReturn(false).when(spy).isTwoPane();
