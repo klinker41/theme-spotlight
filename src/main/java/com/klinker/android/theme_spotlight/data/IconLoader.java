@@ -111,7 +111,7 @@ public class IconLoader implements Runnable {
         final Bitmap icon = BitmapFactory.decodeFile(fileName);
         addBitmapToMemoryCache(item.getId(), icon);
 
-        if (imageView.getTag().toString().equals(item.getId())) {
+        if (imageView.getTag() == null || imageView.getTag().toString().equals(item.getId())) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {

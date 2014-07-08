@@ -32,6 +32,7 @@ import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
 import com.klinker.android.theme_spotlight.adapter.ScreenshotAdapter;
 import com.klinker.android.theme_spotlight.data.IconLoader;
+import com.klinker.android.theme_spotlight.util.PackageUtils;
 import com.klinker.android.theme_spotlight.view.HorizontalListView;
 
 import java.util.ArrayList;
@@ -151,8 +152,13 @@ public class ThemeFragment extends AuthFragment {
         });
 
         // show the price on the download button if there is one
-        if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
-            download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
+        if (PackageUtils.isPackageExisted(getActivity(), mPackageName)) {
+            download.setText(getString(R.string.installed));
+            download.setEnabled(false);
+        } else {
+            if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
+                download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
+            }
         }
 
         // TODO handle view source button

@@ -16,21 +16,16 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.ActivityOptions;
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.*;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
@@ -41,12 +36,13 @@ import com.klinker.android.theme_spotlight.adapter.ThemeArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThemeListFragment extends ListFragment implements AdapterView.OnItemClickListener {
+public class ThemeListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "ThemeListFragment";
 
     public static final String BASE_SEARCH = "base_search_parameter";
     public static final int NUM_THEMES_TO_QUERY = 10;
+    private static final int FADE_DURATION = 400;
     private static final String EVOLVE_PACKAGE = "com.klinker.android.evolve_sms";
     private static final String TALON_PACKAGE = "com.klinker.android.twitter";
 
@@ -60,6 +56,7 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
     private List<Market.App> mApps;
 
     private ListView mListView;
+    private ProgressBar mProgressBar;
     private ThemeArrayAdapter adapter;
 
     private boolean isSyncing = false;
@@ -104,7 +101,11 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mInflater = inflater;
-        View v = superOnCreateView(inflater, container, savedInstanceState);
+        superOnCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_theme_list, null);
+
+        mListView = (ListView) v.findViewById(android.R.id.list);
+        mProgressBar = (ProgressBar) v.findViewById(R.id.loading_progress);
 
         if (isTwoPane()) {
             v.setBackgroundResource(android.R.color.white);
@@ -124,7 +125,6 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mListView = getListView();
         setupListView();
 
         // get the themes that we want to display, can only load 10 at a time
@@ -221,6 +221,13 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
             adapter = new ThemeArrayAdapter(mContext, apps);
             setListAdapter(adapter);
 
+            ObjectAnimator listAnimator = ObjectAnimator.ofFloat(mListView, View.ALPHA, 0.0f, 1.0f);
+            listAnimator.setDuration(FADE_DURATION);
+            listAnimator.start();
+            ObjectAnimator progressAnimator = ObjectAnimator.ofFloat(mProgressBar, View.ALPHA, 1.0f, 0.0f);
+            progressAnimator.setDuration(FADE_DURATION);
+            progressAnimator.start();
+
             mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView absListView, int i) {
@@ -282,5 +289,13 @@ public class ThemeListFragment extends ListFragment implements AdapterView.OnIte
 
     public void setHandler(Handler handler) {
         mHandler = handler;
+    }
+
+    public ListView getListView() {
+        return mListView;
+    }
+
+    public void setListAdapter(ListAdapter adapter) {
+        mListView.setAdapter(adapter);
     }
 }
