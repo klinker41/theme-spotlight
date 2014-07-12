@@ -23,11 +23,9 @@ import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
@@ -64,7 +62,7 @@ public class ThemeListFragment extends AuthFragment {
     // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
         ThemeListFragment frag = new ThemeListFragment();
-        setArguements(frag, baseSearch);
+        setArguments(frag, baseSearch);
         return frag;
     }
 
@@ -73,7 +71,7 @@ public class ThemeListFragment extends AuthFragment {
     }
 
     // set up our base search via arguments
-    public static void setArguements(ThemeListFragment frag, String baseSearch) {
+    public static void setArguments(ThemeListFragment frag, String baseSearch) {
         Bundle args = new Bundle();
         args.putString(BASE_SEARCH, baseSearch);
         frag.setArguments(args);
@@ -167,8 +165,8 @@ public class ThemeListFragment extends AuthFragment {
                             .setQuery(query)
                             .setStartIndex(startIndex)
                             .setEntriesCount(length)
-                            .setWithExtendedInfo(false) // don't need extended info, this will slow us down
-                            .build();
+                            .setWithExtendedInfo(true) // get extended info so that we can verify the theme name against
+                            .build();                  // either the name evolvesms or talon
 
                     // pause the loading for a short amount of time, this helps the recycler view
                     // keep up and prevents it from scrolling janky when more views are added
@@ -217,14 +215,23 @@ public class ThemeListFragment extends AuthFragment {
 
     // set the apps to the listview and initialize other parts of the list
     public void setApps(final List<Market.App> apps) {
+        // verify the base search so that I don't show junk results
+        final String verifyTitle;
+        if (mBaseSearch.equals(SpotlightActivity.EVOLVE_SMS)) {
+            verifyTitle = "Evolve";
+        } else {
+            verifyTitle = "Talon";
+        }
+        
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 setListAdapterPost();
 
                 for (Market.App app : apps) {
-                    // adjust the size by one so that
-                    mAdapter.add(app, mAdapter.getRealItemCount());
+                    if (app.getTitle().contains(verifyTitle) || app.getExtendedInfo().getDescription().contains(verifyTitle)) {
+                        mAdapter.add(app, mAdapter.getRealItemCount());
+                    }
                 }
             }
         });
