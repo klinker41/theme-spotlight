@@ -18,7 +18,7 @@ package com.klinker.android.theme_spotlight.activity;
 
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import com.klinker.android.theme_spotlight.R;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,6 +67,6 @@ public class SpotlightActivityTest extends AbstractSpotlightTest {
         assertEquals(((ThemeListFragment) activity.getCurrentFragment()).getSearch(""), "Talon theme ");
 
         activity.switchFragments(2);
-        assertTrue(activity.getCurrentFragment() instanceof FeaturedThemeListFragment);
+        assertTrue(activity.getCurrentFragment() instanceof FeaturedThemerFragment);
     }
 }

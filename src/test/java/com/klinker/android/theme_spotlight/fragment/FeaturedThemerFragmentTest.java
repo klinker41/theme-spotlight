@@ -22,11 +22,11 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertNotNull;
 
-public class FeaturedThemeListFragmentTest extends AbstractSpotlightTest {
+public class FeaturedThemerFragmentTest extends AbstractSpotlightTest {
 
     @Test
     public void testNewInstance() throws Exception {
-        FeaturedThemeListFragment fragment = FeaturedThemeListFragment.newInstance();
+        FeaturedThemerFragment fragment = FeaturedThemerFragment.newInstance();
         FragmentTestUtils.startFragment(fragment);
         assertNotNull(fragment);
     }

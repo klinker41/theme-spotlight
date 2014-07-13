@@ -49,7 +49,7 @@ import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 
@@ -145,7 +145,7 @@ public class SpotlightActivity extends AuthActivity {
                 break;
             case FEATURED_FRAGMENT:
             default:
-                mFragment = FeaturedThemeListFragment.newInstance();
+                mFragment = FeaturedThemerFragment.newInstance();
                 break;
         }
 

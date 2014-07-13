@@ -30,7 +30,7 @@ import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
-import com.klinker.android.theme_spotlight.adapter.ThemeRecyclerAdapter;
+import com.klinker.android.theme_spotlight.adapter.ThemeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ThemeListFragment extends AuthFragment {
 
     private RecyclerView mRecyclerView;
     private View mProgressBar;
-    private ThemeRecyclerAdapter mAdapter;
+    private ThemeAdapter mAdapter;
 
     private boolean isSyncing = false;
 
@@ -105,7 +105,7 @@ public class ThemeListFragment extends AuthFragment {
         setUpRecyclerView();
         mProgressBar = v.findViewById(R.id.loading_progress);
 
-        mAdapter = new ThemeRecyclerAdapter(this, new ArrayList<Market.App>());
+        mAdapter = new ThemeAdapter(this, new ArrayList<Market.App>());
         setRecyclerViewAdapter(mAdapter);
 
         if (isTwoPane()) {
