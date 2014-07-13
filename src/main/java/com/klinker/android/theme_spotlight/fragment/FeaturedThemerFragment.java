@@ -38,7 +38,6 @@ public class FeaturedThemerFragment extends AuthFragment {
 
     private RecyclerView mRecyclerView;
     private FeaturedThemerAdapter mAdapter;
-    private View mProgressBar;
 
     // create new instance of our featured list
     public static FeaturedThemerFragment newInstance() {
@@ -63,32 +62,31 @@ public class FeaturedThemerFragment extends AuthFragment {
         View v = inflater.inflate(R.layout.fragment_theme_list, null);
 
         mRecyclerView = (RecyclerView) v.findViewById(android.R.id.list);
-        setUpRecyclerView();
-        mProgressBar = v.findViewById(R.id.loading_progress);
-        mProgressBar.setVisibility(View.GONE);
+        setUpRecyclerView(v.findViewById(R.id.loading_progress));
 
         mAdapter = new FeaturedThemerAdapter(this, Themers.FEATURED_THEMERS);
         setRecyclerViewAdapter(mAdapter);
 
-        if (((SpotlightActivity) getActivity()).isTwoPane()) {
+        if (isTwoPane()) {
             v.setBackgroundResource(android.R.color.white);
         }
 
         return v;
     }
 
-    public void superOnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+    public View superOnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     public boolean isTwoPane() {
         return mContext.isTwoPane();
     }
 
-    public void setUpRecyclerView() {
+    public void setUpRecyclerView(View progressBar) {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        progressBar.setVisibility(View.GONE);
     }
 
     public RecyclerView getRecyclerView() {

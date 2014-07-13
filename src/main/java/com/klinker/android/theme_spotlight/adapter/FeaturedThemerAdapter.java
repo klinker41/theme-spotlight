@@ -56,8 +56,8 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(fragment.getActivity()).inflate(R.layout.theme_item, parent, false);
-        final ViewHolder holder = new ViewHolder(v);
+        View v = getLayoutInflater().inflate(R.layout.theme_item, parent, false);
+        final ViewHolder holder = createViewHolder(v);
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +78,14 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
         });
 
         return holder;
+    }
+
+    public LayoutInflater getLayoutInflater() {
+        return LayoutInflater.from(fragment.getActivity());
+    }
+
+    public ViewHolder createViewHolder(View v) {
+        return new ViewHolder(v);
     }
 
     @Override
