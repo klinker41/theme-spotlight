@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.antonioleiva.recyclerviewextensions.GridLayoutManager;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.Themers;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
@@ -84,7 +85,9 @@ public class FeaturedThemerFragment extends AuthFragment {
 
     public void setUpRecyclerView(View progressBar) {
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        GridLayoutManager manager = new GridLayoutManager(mContext);
+        manager.setColumns(getResources().getInteger(R.integer.featured_themers_columns));
+        mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         progressBar.setVisibility(View.GONE);
     }

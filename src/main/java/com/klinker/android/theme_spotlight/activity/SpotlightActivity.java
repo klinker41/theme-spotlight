@@ -61,6 +61,7 @@ public class SpotlightActivity extends AuthActivity {
     private static final int EVOLVE_FRAGMENT = 0;
     private static final int TALON_FRAGMENT = 1;
     private static final int FEATURED_FRAGMENT = 2;
+    private static final String CURRENT_FRAGMENT = "current_fragment";
 
     // typefaces to use in the drawer
     private static final Typeface LIGHT_TEXT = Typeface.create("sans-serif-light", Typeface.NORMAL);
@@ -81,7 +82,7 @@ public class SpotlightActivity extends AuthActivity {
     // current fragment being shown
     private Fragment mFragment;
     private TextView selectItem;
-    private int currentPosition = 0;
+    private int currentPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +125,12 @@ public class SpotlightActivity extends AuthActivity {
         getActionBar().setHomeButtonEnabled(true);
 
         setupDrawerButtons();
+
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt(CURRENT_FRAGMENT, 0);
+        } else {
+            currentPosition = 0;
+        }
     }
 
     @Override
@@ -149,6 +156,8 @@ public class SpotlightActivity extends AuthActivity {
                 break;
         }
 
+        showDualPane(mFragment);
+
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction()
@@ -161,6 +170,17 @@ public class SpotlightActivity extends AuthActivity {
         boldDrawerItem(position);
         setupActionbar(position);
         mDrawer.closeDrawer(Gravity.START);
+    }
+
+    // handle whether or not view should be shown as two pane
+    private void showDualPane(Fragment fragment) {
+        if (isTwoPane()) {
+            if (fragment instanceof FeaturedThemerFragment) {
+                findViewById(R.id.theme_frame).setVisibility(View.GONE);
+            } else {
+                findViewById(R.id.theme_frame).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     // set author and icon in the actionbar
@@ -235,6 +255,12 @@ public class SpotlightActivity extends AuthActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(CURRENT_FRAGMENT, currentPosition);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override

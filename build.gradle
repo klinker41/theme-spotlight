@@ -106,7 +106,7 @@ dependencies {
     compile 'com.android.support:support-v13:+'
     compile "com.android.support:cardview-v7:+"
     compile "com.android.support:recyclerview-v7:+"
-    compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar')
+    compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar', 'lib/gridlayoutmanager.jar')
 }
 
 apply plugin: 'idea'

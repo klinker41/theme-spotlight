@@ -56,7 +56,7 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = getLayoutInflater().inflate(R.layout.theme_item, parent, false);
+        View v = getLayoutInflater().inflate(R.layout.themer_item, parent, false);
         final ViewHolder holder = createViewHolder(v);
 
         v.setOnClickListener(new View.OnClickListener() {

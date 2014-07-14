@@ -16,13 +16,9 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
-import android.content.Context;
-import android.text.Spanned;
-import android.text.SpannedString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
@@ -31,8 +27,6 @@ import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
-import java.util.zip.Inflater;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -75,7 +69,7 @@ public class FeaturedThemerAdapterTest extends AbstractSpotlightTest {
     public void testCreateViewHolder() {
         doReturn(null).when(adapter).createViewHolder(any(View.class));
         doReturn(inflater).when(adapter).getLayoutInflater();
-        doReturn(view).when(inflater).inflate(R.layout.theme_item, parent, false);
+        doReturn(view).when(inflater).inflate(R.layout.themer_item, parent, false);
 
         adapter.onCreateViewHolder(parent, 1);
 
