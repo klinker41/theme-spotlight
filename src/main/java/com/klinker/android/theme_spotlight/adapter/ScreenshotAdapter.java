@@ -17,6 +17,7 @@
 package com.klinker.android.theme_spotlight.adapter;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,26 +27,41 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.data.IconLoader;
+import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 
 public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
+    private static final String TAG = "ScreenshotAdapter";
+
     private final AuthActivity context;
     private final Market.App app;
-    private final Bitmap[] items;
+    private final int numItems;
     private final int minHeight;
     private final int minWidth;
+    private final String downloadUrl;
 
     public ScreenshotAdapter(AuthActivity context, Market.App app, int minHeight, int minWidth) {
         super(context, R.layout.screenshot_item);
         this.context = context;
         this.app = app;
-        this.items = new Bitmap[app.getExtendedInfo().getScreenshotsCount()];
+        this.numItems = app.getExtendedInfo().getScreenshotsCount();
         this.minHeight = minHeight;
         this.minWidth = minWidth;
+        this.downloadUrl = null;
+    }
+
+    public ScreenshotAdapter(AuthActivity context, String downloadUrl, int minHeight, int minWidth) {
+        super(context, R.layout.screenshot_item);
+        this.context = context;
+        this.app = null;
+        this.numItems = 1;
+        this.minHeight = minHeight;
+        this.minWidth = minWidth;
+        this.downloadUrl = downloadUrl;
     }
 
     @Override
     public int getCount() {
-        return items.length;
+        return numItems;
     }
 
     @Override
@@ -57,8 +73,13 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
         v.setMinimumWidth(minWidth);
 
         // load the new image off of the ui thread
-        v.setTag(app.getId());
-        new Thread(new IconLoader(app, v, context, position, Market.GetImageRequest.AppImageUsage.SCREENSHOT)).start();
+        if (downloadUrl == null) {
+            v.setTag(app.getId());
+            new Thread(new IconLoader(app, v, context, position, Market.GetImageRequest.AppImageUsage.SCREENSHOT)).start();
+        } else {
+            v.setTag(downloadUrl);
+            new Thread(new NetworkIconLoader(downloadUrl, v, downloadUrl)).start();
+        }
 
         return v;
     }

@@ -160,8 +160,6 @@ public class ThemeFragment extends AuthFragment {
                 download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
             }
         }
-
-        // TODO handle view source button
     }
 
     // set up the comments list and update it as you scroll down it

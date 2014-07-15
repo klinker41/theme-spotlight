@@ -19,15 +19,16 @@
 <changelog>
     <version name="1.0.0" description="Oh yeah, done.">
         <text>Ready for release</text>
+        <text>Allow themes to be applied from inside the theme spotlight app</text>
+        <text>Android L jazz</text>
     </version>
-    <version name="0.9.0" description="Even more themer stuff">
-        <text>Click individual themes for each featured themer</text>
-        <text>Finished searching for themes</text>
+    <version name="0.9.0" description="Searchin\'">
+        <text>Search through Talon and Evolve themes</text>
+        <text>Loading indicator at bottom of recycler view</text>
     </version>
     <version name="0.8.0" description="More themer stuff">
         <text>List themes for each featured themer</text>
-        <text>Searching icon added on EvolveSMS and Talon pages</text>
-        <text>Loading indicator at bottom of recycler view</text>
+        <text>Click individual themes for each featured themer</text>
     </version>
     <version name="0.7.0" description="Now's where the interactive fun starts :)">
         <text>Featured themers list</text>

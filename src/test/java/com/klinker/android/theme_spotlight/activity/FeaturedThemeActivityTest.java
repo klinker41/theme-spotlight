@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package com.klinker.android.theme_spotlight.fragment;
+package com.klinker.android.theme_spotlight.activity;
 
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
-import com.klinker.android.theme_spotlight.util.FragmentTestUtils;
 import org.junit.Test;
+import org.robolectric.Robolectric;
 
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-public class FeaturedThemeListFragmentTest extends AbstractSpotlightTest {
+public class FeaturedThemeActivityTest extends AbstractSpotlightTest {
 
     @Test
-    public void testNewInstance() throws Exception {
-        FeaturedThemeListFragment fragment = FeaturedThemeListFragment.newInstance();
-        FragmentTestUtils.startFragment(fragment);
-        assertNotNull(fragment);
+    public void testOnCreate() throws Exception {
+        FeaturedThemeActivity activity = Robolectric.buildActivity(FeaturedThemeActivity.class).create().get();
+        assertNotNull(activity);
     }
+
 }

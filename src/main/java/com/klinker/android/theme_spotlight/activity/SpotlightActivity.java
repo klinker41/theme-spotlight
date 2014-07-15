@@ -14,22 +14,6 @@
  * limitations under the License.
  */
 
-/*
- * Copyright (C) 2014 Klinker Apps, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Fragment;
@@ -41,15 +25,16 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.util.Log;
+import android.view.*;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemeListFragment;
+import com.klinker.android.theme_spotlight.data.FeaturedTheme;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 import com.klinker.android.theme_spotlight.util.Utils;
@@ -62,6 +47,7 @@ public class SpotlightActivity extends AuthActivity {
     private static final int EVOLVE_FRAGMENT = 0;
     private static final int TALON_FRAGMENT = 1;
     private static final int FEATURED_FRAGMENT = 2;
+    private static final String CURRENT_FRAGMENT = "current_fragment";
 
     // typefaces to use in the drawer
     private static final Typeface LIGHT_TEXT = Typeface.create("sans-serif-light", Typeface.NORMAL);
@@ -82,7 +68,7 @@ public class SpotlightActivity extends AuthActivity {
     // current fragment being shown
     private Fragment mFragment;
     private TextView selectItem;
-    private int currentPosition = 0;
+    private int currentPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +77,45 @@ public class SpotlightActivity extends AuthActivity {
 
         contentHolder = findViewById(R.id.content_holder);
         selectItem = (TextView) findViewById(R.id.select_item_label);
-
-        // initialize the drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        setupDrawerToggle();
+        setupDrawerButtons();
+
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt(CURRENT_FRAGMENT, 0);
+        } else {
+            currentPosition = 0;
+        }
+    }
+
+    @Override
+    public void onAuthFinished(AuthToken token) {
+        switchFragments(currentPosition);
+    }
+
+    // perform transaction and switch the old fragment for the new one
+    public void switchFragments(int position) {
+        currentPosition = position;
+        setUpFragment(position);
+        showDualPane(mFragment);
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, mFragment);
+        replaceThemeWithBlank(transaction).commit();
+
+        showTextLabel(true);
+
+        // Highlight the selected item, update the author, and close the drawer
+        boldDrawerItem(position);
+        setupActionbar(position);
+        mDrawer.closeDrawer(Gravity.START);
+    }
+
+    public void setupDrawerToggle() {
+        // initialize the drawer
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.drawable.ic_drawer, R.string.app_name, R.string.evolve_sms_themes) {
 
@@ -123,19 +145,9 @@ public class SpotlightActivity extends AuthActivity {
         mDrawer.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
-        setupDrawerButtons();
     }
 
-    @Override
-    public void onAuthFinished(AuthToken token) {
-        switchFragments(currentPosition);
-    }
-
-    // perform transaction and switch the old fragment for the new one
-    public void switchFragments(int position) {
-        currentPosition = position;
-
+    public void setUpFragment(int position) {
         // Create a new fragment
         switch (position) {
             case EVOLVE_FRAGMENT:
@@ -146,22 +158,26 @@ public class SpotlightActivity extends AuthActivity {
                 break;
             case FEATURED_FRAGMENT:
             default:
-                mFragment = FeaturedThemeListFragment.newInstance();
+                mFragment = FeaturedThemerFragment.newInstance();
                 break;
         }
+    }
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, mFragment);
-        replaceThemeWithBlank(transaction).commit();
-
-        showTextLabel(true);
-
-        // Highlight the selected item, update the author, and close the drawer
-        boldDrawerItem(position);
-        setupActionbar(position);
-        mDrawer.closeDrawer(Gravity.START);
+    // handle whether or not view should be shown as two pane
+    private void showDualPane(Fragment fragment) {
+        View themeFrame = findViewById(R.id.theme_frame);
+        if (themeFrame != null) {
+            View contentFrame = findViewById(R.id.content_frame);
+            LinearLayout.LayoutParams params;
+            if (fragment instanceof FeaturedThemerFragment) {
+                params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                themeFrame.setVisibility(View.GONE);
+            } else {
+                params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.tablet_list_width), ViewGroup.LayoutParams.MATCH_PARENT);
+                themeFrame.setVisibility(View.VISIBLE);
+            }
+            contentFrame.setLayoutParams(params);
+        }
     }
 
     // set author and icon in the actionbar
@@ -237,19 +253,35 @@ public class SpotlightActivity extends AuthActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+
+        if (mDrawerToggle != null)
+            mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+
+        if (mDrawerToggle != null)
+            mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(CURRENT_FRAGMENT, currentPosition);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -261,6 +293,11 @@ public class SpotlightActivity extends AuthActivity {
         // TODO hide search icon when opened
         // menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    // allows for locking the drawer outside the activity
+    public void lockDrawer(boolean locked) {
+        mDrawer.setDrawerLockMode(locked ? DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     // whether or not to show the hint text on a tablet
@@ -303,6 +340,17 @@ public class SpotlightActivity extends AuthActivity {
         showTextLabel(false);
     }
 
+    // called when clicking on a theme in a specific featured themers arsenal
+    public void themeItemClicked(FeaturedTheme theme) {
+        // attach the theme fragment to the current frame since we are two pane
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.theme_frame, FeaturedThemeFragment.newInstance(theme))
+                .commit();
+
+        showTextLabel(false);
+    }
+
     private FragmentTransaction replaceThemeWithBlank(FragmentTransaction transaction) {
         if (isTwoPane()) {
             transaction.replace(R.id.theme_frame, new Fragment());
@@ -318,7 +366,12 @@ public class SpotlightActivity extends AuthActivity {
         return mFragment;
     }
 
+    public void setCurrentFragment(Fragment fragment) {
+        mFragment = fragment;
+    }
+
     public boolean isTwoPane() {
-        return findViewById(R.id.theme_frame) != null;
+        View themeFrame = findViewById(R.id.theme_frame);
+        return themeFrame != null && themeFrame.getVisibility() == View.VISIBLE;
     }
 }
