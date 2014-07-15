@@ -29,7 +29,7 @@
             android:id="@+id/content_holder">
 
         <FrameLayout
-                android:layout_width="400dp"
+                android:layout_width="@dimen/tablet_list_width"
                 android:layout_height="match_parent"
                 android:id="@+id/content_frame"/>
 
@@ -54,7 +54,6 @@
 
     </LinearLayout>
 
-    <include
-            layout="@layout/navigation_drawer"/>
+    <include layout="@layout/navigation_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -41,10 +41,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.util.Log;
+import android.view.*;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
@@ -179,12 +178,18 @@ public class SpotlightActivity extends AuthActivity {
 
     // handle whether or not view should be shown as two pane
     private void showDualPane(Fragment fragment) {
-        if (isTwoPane()) {
+        View themeFrame = findViewById(R.id.theme_frame);
+        if (themeFrame != null) {
+            View contentFrame = findViewById(R.id.content_frame);
+            LinearLayout.LayoutParams params;
             if (fragment instanceof FeaturedThemerFragment) {
-                findViewById(R.id.theme_frame).setVisibility(View.GONE);
+                params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                themeFrame.setVisibility(View.GONE);
             } else {
-                findViewById(R.id.theme_frame).setVisibility(View.VISIBLE);
+                params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.tablet_list_width), ViewGroup.LayoutParams.MATCH_PARENT);
+                themeFrame.setVisibility(View.VISIBLE);
             }
+            contentFrame.setLayoutParams(params);
         }
     }
 
@@ -360,6 +365,7 @@ public class SpotlightActivity extends AuthActivity {
     }
 
     public boolean isTwoPane() {
-        return findViewById(R.id.theme_frame) != null;
+        View themeFrame = findViewById(R.id.theme_frame);
+        return themeFrame != null && themeFrame.getVisibility() == View.VISIBLE;
     }
 }
