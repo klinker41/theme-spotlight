@@ -19,7 +19,7 @@
 <resources>
 
     <style name="Theme" parent="@android:style/Theme.Material.Light.DarkActionBar">
-        <item name="android:windowContentTransitions">true</item>
+        <!--<item name="android:windowContentTransitions">true</item>-->
 
         <item name="android:colorPrimary">@color/primary_color</item>
         <item name="android:colorPrimaryDark">@color/primary_color_dark</item>
@@ -39,6 +39,11 @@
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@color/drawer_text_color</item>
+    </style>
+
+    <style name="ScreenshotViewer" parent="@style/Theme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorPrimaryDark">@color/secondary_text_color</item>
     </style>
 
 </resources>
