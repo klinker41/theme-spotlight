@@ -16,6 +16,7 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
+import com.klinker.android.theme_spotlight.activity.ScreenshotViewerActivity;
 import com.klinker.android.theme_spotlight.data.IconLoader;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 
@@ -78,8 +80,17 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
             new Thread(new IconLoader(app, v, context, position, Market.GetImageRequest.AppImageUsage.SCREENSHOT)).start();
         } else {
             v.setTag(downloadUrl);
-            new Thread(new NetworkIconLoader(downloadUrl, v, downloadUrl)).start();
+            new Thread(new NetworkIconLoader(context, downloadUrl, v, downloadUrl)).start();
         }
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ScreenshotViewerActivity.class);
+                intent.putExtra(ScreenshotViewerActivity.EXTRA_FILE_NAME, context.getCacheDir() + "/" + downloadUrl + ".png");
+                context.startActivity(intent);
+            }
+        });
 
         return v;
     }

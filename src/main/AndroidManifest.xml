@@ -54,7 +54,10 @@
                   android:icon="@android:color/transparent"/>
 
         <activity android:name=".activity.SettingsActivity"
-                  android:icon="@android:color/transparent" />
+                  android:icon="@android:color/transparent"/>
+
+        <activity android:name=".activity.ScreenshotViewerActivity"
+                  android:theme="@style/ScreenshotViewer"/>
 
     </application>
 </manifest>

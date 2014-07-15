@@ -29,6 +29,7 @@
     <version name="0.8.0" description="More themer stuff">
         <text>List themes for each featured themer</text>
         <text>Click individual themes for each featured themer</text>
+        <text>Full screen image previews when an image is clicked on</text>
     </version>
     <version name="0.7.0" description="Now's where the interactive fun starts :)">
         <text>Featured themers list</text>

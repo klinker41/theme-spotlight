@@ -24,6 +24,9 @@
     <color name="primary_color">@android:color/holo_orange_dark</color>
     <color name="primary_color_dark">#c96f05</color>
 
+    <!-- Other activity colors -->
+    <color name="screenshot_viewer_background">#cc000000</color>
+
     <!-- Drawer colors -->
     <color name="drawer_options_background">#f7f7f7</color>
     <color name="drawer_options_item_selected">#e3e3e3</color>

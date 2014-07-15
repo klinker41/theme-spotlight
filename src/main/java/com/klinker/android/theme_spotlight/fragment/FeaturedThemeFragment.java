@@ -76,18 +76,14 @@ public class FeaturedThemeFragment extends AuthFragment {
         download = (Button) mLayout.findViewById(R.id.download);
         viewSource = (Button) mLayout.findViewById(R.id.view_source);
 
-        return mLayout;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         setUpApp();
+
+        return mLayout;
     }
 
     private void setUpApp() {
         // start a new thread to download and cache our icon
-        NetworkIconLoader loader = new NetworkIconLoader(mTheme.getIconUrl(), icon, mTheme.getIconUrl());
+        NetworkIconLoader loader = new NetworkIconLoader(getActivity(), mTheme.getIconUrl(), icon, mTheme.getIconUrl());
         new Thread(loader).start();
 
         themeName.setText(mTheme.getName());
