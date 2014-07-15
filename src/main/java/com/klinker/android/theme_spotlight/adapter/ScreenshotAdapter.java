@@ -86,8 +86,17 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String fileName;
+
+                if (downloadUrl == null) {
+                    String screenshot = "_screenshot_" + position;
+                    fileName = context.getCacheDir() + "/" + app.getPackageName() + screenshot + ".png";
+                } else {
+                    fileName = context.getCacheDir() + "/" + downloadUrl + ".png";
+                }
+
                 Intent intent = new Intent(context, ScreenshotViewerActivity.class);
-                intent.putExtra(ScreenshotViewerActivity.EXTRA_FILE_NAME, context.getCacheDir() + "/" + downloadUrl + ".png");
+                intent.putExtra(ScreenshotViewerActivity.EXTRA_FILE_NAME, fileName);
                 context.startActivity(intent);
             }
         });
