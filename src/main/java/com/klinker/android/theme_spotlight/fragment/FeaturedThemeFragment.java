@@ -19,6 +19,7 @@ package com.klinker.android.theme_spotlight.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,8 +118,14 @@ public class FeaturedThemeFragment extends AuthFragment {
             viewSource.setVisibility(View.GONE);
         }
 
-        screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), mTheme.getDownloadUrl(), screenshotList.getHeight(),
-                screenshotList.getWidth() - getResources().getDimensionPixelSize(R.dimen.screenshot_width_padding)));
+        // delay this loading to make sure that everything is being laid out correctly first
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), mTheme.getScreenshotUrl(),
+                        screenshotList.getHeight(), screenshotList.getWidth()));
+            }
+        }, 100);
     }
 
     private void startWebViewer(String url) {
