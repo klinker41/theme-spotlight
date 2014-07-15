@@ -16,12 +16,14 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.activity.FeaturedThemerActivity;
 import com.klinker.android.theme_spotlight.data.FeaturedThemer;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
@@ -62,18 +64,9 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FeaturedThemer clickedThemer = items[holder.position];
-
-                // if this is a single pane view, then start a new activity to display our theme
-                // if this is a dual pane view, then post this to the spotlight activity themeItemClicked
-                // where we will then display that theme in a fragment on the screen
-                if (fragment.isTwoPane()) {
-//                    fragment.themeItemClicked(clickedApp);
-                } else {
-//                    Intent intent = new Intent(fragment.getActivity(), ThemeActivity.class);
-//                    intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
-//                    fragment.getActivity().startActivity(intent);
-                }
+                Intent featuredThemerIntent = new Intent(fragment.getActivity(), FeaturedThemerActivity.class);
+                featuredThemerIntent.putExtra(FeaturedThemerActivity.EXTRA_THEMER_POSITION, holder.position);
+                fragment.getActivity().startActivity(featuredThemerIntent);
             }
         });
 

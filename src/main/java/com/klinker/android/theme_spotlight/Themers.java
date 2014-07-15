@@ -47,7 +47,7 @@ public class Themers {
             "Klinker Apps"
     );
 
-    // list of all themers
+    // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
             KLINKER_APPS,

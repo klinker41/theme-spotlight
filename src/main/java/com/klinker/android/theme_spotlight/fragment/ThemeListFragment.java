@@ -229,12 +229,20 @@ public class ThemeListFragment extends AuthFragment {
                 setListAdapterPost();
 
                 for (Market.App app : apps) {
-                    if (app.getTitle().contains(verifyTitle) || app.getExtendedInfo().getDescription().contains(verifyTitle)) {
+                    if (titleVerified(verifyTitle, app)) {
                         mAdapter.add(app, mAdapter.getRealItemCount());
                     }
                 }
             }
         });
+    }
+
+    // verify that we should add the app to the list. this should occur when the title or description contains
+    // the text for evolve or talon, or the base search is based on publisher name
+    private boolean titleVerified(String verify, Market.App app) {
+        return app.getTitle().contains(verify) ||
+                app.getExtendedInfo().getDescription().contains(verify) ||
+                mBaseSearch.startsWith("pub:");
     }
 
     public void setListAdapterPost() {

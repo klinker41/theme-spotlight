@@ -91,9 +91,45 @@ public class SpotlightActivity extends AuthActivity {
 
         contentHolder = findViewById(R.id.content_holder);
         selectItem = (TextView) findViewById(R.id.select_item_label);
-
-        // initialize the drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        setupDrawerToggle();
+        setupDrawerButtons();
+
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt(CURRENT_FRAGMENT, 0);
+        } else {
+            currentPosition = 0;
+        }
+    }
+
+    @Override
+    public void onAuthFinished(AuthToken token) {
+        switchFragments(currentPosition);
+    }
+
+    // perform transaction and switch the old fragment for the new one
+    public void switchFragments(int position) {
+        currentPosition = position;
+        setUpFragment(position);
+        showDualPane(mFragment);
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, mFragment);
+        replaceThemeWithBlank(transaction).commit();
+
+        showTextLabel(true);
+
+        // Highlight the selected item, update the author, and close the drawer
+        boldDrawerItem(position);
+        setupActionbar(position);
+        mDrawer.closeDrawer(Gravity.START);
+    }
+
+    public void setupDrawerToggle() {
+        // initialize the drawer
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.drawable.ic_drawer, R.string.app_name, R.string.evolve_sms_themes) {
 
@@ -123,25 +159,9 @@ public class SpotlightActivity extends AuthActivity {
         mDrawer.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
-        setupDrawerButtons();
-
-        if (savedInstanceState != null) {
-            currentPosition = savedInstanceState.getInt(CURRENT_FRAGMENT, 0);
-        } else {
-            currentPosition = 0;
-        }
     }
 
-    @Override
-    public void onAuthFinished(AuthToken token) {
-        switchFragments(currentPosition);
-    }
-
-    // perform transaction and switch the old fragment for the new one
-    public void switchFragments(int position) {
-        currentPosition = position;
-
+    public void setUpFragment(int position) {
         // Create a new fragment
         switch (position) {
             case EVOLVE_FRAGMENT:
@@ -155,21 +175,6 @@ public class SpotlightActivity extends AuthActivity {
                 mFragment = FeaturedThemerFragment.newInstance();
                 break;
         }
-
-        showDualPane(mFragment);
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, mFragment);
-        replaceThemeWithBlank(transaction).commit();
-
-        showTextLabel(true);
-
-        // Highlight the selected item, update the author, and close the drawer
-        boldDrawerItem(position);
-        setupActionbar(position);
-        mDrawer.closeDrawer(Gravity.START);
     }
 
     // handle whether or not view should be shown as two pane
@@ -248,13 +253,17 @@ public class SpotlightActivity extends AuthActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+
+        if (mDrawerToggle != null)
+            mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+
+        if (mDrawerToggle != null)
+            mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -265,8 +274,14 @@ public class SpotlightActivity extends AuthActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -278,6 +293,11 @@ public class SpotlightActivity extends AuthActivity {
         // TODO hide search icon when opened
         // menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    // allows for locking the drawer outside the activity
+    public void lockDrawer(boolean locked) {
+        mDrawer.setDrawerLockMode(locked ? DrawerLayout.LOCK_MODE_LOCKED_CLOSED : DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     // whether or not to show the hint text on a tablet
@@ -333,6 +353,10 @@ public class SpotlightActivity extends AuthActivity {
 
     public Fragment getCurrentFragment() {
         return mFragment;
+    }
+
+    public void setCurrentFragment(Fragment fragment) {
+        mFragment = fragment;
     }
 
     public boolean isTwoPane() {

@@ -44,10 +44,13 @@
         </activity>
 
         <activity android:name=".activity.ThemeActivity"
-                  android:icon="@drawable/spotlight_logo"/>
+                  android:icon="@android:color/transparent"/>
+
+        <activity android:name=".activity.FeaturedThemerActivity"
+                  android:icon="@android:color/transparent"/>
 
         <activity android:name=".activity.SettingsActivity"
-                  android:icon="@drawable/spotlight_logo" />
+                  android:icon="@android:color/transparent" />
 
     </application>
 </manifest>
