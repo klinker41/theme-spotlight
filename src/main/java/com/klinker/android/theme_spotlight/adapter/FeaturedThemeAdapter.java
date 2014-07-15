@@ -99,7 +99,7 @@ public class FeaturedThemeAdapter extends AbstractRecyclerAdapter {
             holder.icon.setImageResource(android.R.color.transparent);
 
             // start a new thread to download and cache our icon
-            NetworkIconLoader loader = new NetworkIconLoader(theme.getIconUrl(), holder.icon, theme.getIconUrl());
+            NetworkIconLoader loader = new NetworkIconLoader(fragment.getActivity(), theme.getIconUrl(), holder.icon, theme.getIconUrl());
             new Thread(loader).start();
         }
     }

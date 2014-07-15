@@ -16,24 +16,28 @@
 
 package com.klinker.android.theme_spotlight.data;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URL;
 
 public class NetworkIconLoader implements Runnable {
 
     private static final String TAG = "NetworkIconLoader";
 
+    private Context context;
     private Handler mHandler;
     private String location;
     private String imageTag;
     private ImageView imageView;
 
-    public NetworkIconLoader(String location, ImageView imageView, String tag) {
+    public NetworkIconLoader(Context context, String location, ImageView imageView, String tag) {
+        this.context = context;
         mHandler = new Handler();
         this.location = location;
         this.imageView = imageView;
@@ -42,12 +46,26 @@ public class NetworkIconLoader implements Runnable {
 
     @Override
     public void run() {
-        try {
-            URL url = new URL(location);
-            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        File f = new File(context.getCacheDir() + "/" + location + ".png");
+
+        if (f.exists()) {
+            Bitmap image = BitmapFactory.decodeFile(f.getPath());
             setIcon(image);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            try {
+                URL url = new URL(location);
+                Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                setIcon(image);
+
+                // cache the image for use later
+                f.getParentFile().mkdirs();
+                f.createNewFile();
+                FileOutputStream output = new FileOutputStream(f);
+                image.compress(Bitmap.CompressFormat.PNG, 100, output);
+                output.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
