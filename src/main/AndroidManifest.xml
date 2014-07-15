@@ -46,6 +46,9 @@
         <activity android:name=".activity.ThemeActivity"
                   android:icon="@android:color/transparent"/>
 
+        <activity android:name=".activity.FeaturedThemeActivity"
+                  android:icon="@android:color/transparent"/>
+
         <activity android:name=".activity.FeaturedThemerActivity"
                   android:icon="@android:color/transparent"/>
 

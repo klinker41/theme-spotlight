@@ -16,13 +16,37 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.klinker.android.theme_spotlight.R;
 
 abstract class AbstractRecyclerAdapter extends RecyclerView.Adapter<AbstractRecyclerAdapter.ViewHolder> {
+
+    private LruCache<String, Bitmap> mIconCache;
+
+    public AbstractRecyclerAdapter() {
+        // set up the icon cacher
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        mIconCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
+
+    public LruCache<String, Bitmap> getIconCache() {
+        return this.mIconCache;
+    }
+
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mIconCache.get(key);
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;

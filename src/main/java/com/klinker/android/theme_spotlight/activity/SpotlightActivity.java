@@ -14,22 +14,6 @@
  * limitations under the License.
  */
 
-/*
- * Copyright (C) 2014 Klinker Apps, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Fragment;
@@ -48,6 +32,8 @@ import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
+import com.klinker.android.theme_spotlight.data.FeaturedTheme;
+import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
@@ -340,6 +326,17 @@ public class SpotlightActivity extends AuthActivity {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.theme_frame, ThemeFragment.newInstance(packageName))
+                .commit();
+
+        showTextLabel(false);
+    }
+
+    // called when clicking on a theme in a specific featured themers arsenal
+    public void themeItemClicked(FeaturedTheme theme) {
+        // attach the theme fragment to the current frame since we are two pane
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.theme_frame, FeaturedThemeFragment.newInstance(theme))
                 .commit();
 
         showTextLabel(false);

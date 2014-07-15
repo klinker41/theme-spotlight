@@ -16,7 +16,9 @@
 
 package com.klinker.android.theme_spotlight.data;
 
-public class FeaturedTheme {
+import java.io.Serializable;
+
+public class FeaturedTheme implements Serializable {
 
     private final String screenshotUrl;
     private final String downloadUrl;

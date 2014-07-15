@@ -37,21 +37,10 @@ public class ThemeAdapter extends AbstractRecyclerAdapter {
     private final ThemeListFragment fragment;
     private final List<Market.App> items;
 
-    private LruCache<String, Bitmap> mIconCache;
-
     public ThemeAdapter(ThemeListFragment fragment, List<Market.App> items) {
+        super();
         this.fragment = fragment;
         this.items = items;
-
-        // set up the icon cacher
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
-        mIconCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                return bitmap.getByteCount() / 1024;
-            }
-        };
     }
 
     @Override
@@ -122,7 +111,7 @@ public class ThemeAdapter extends AbstractRecyclerAdapter {
                 holder.icon.setImageResource(android.R.color.transparent);
 
                 // start a new thread to download and cache our icon
-                IconLoader loader = new IconLoader(item, holder.icon, fragment.getAuthActivity(), mIconCache, Market.GetImageRequest.AppImageUsage.ICON);
+                IconLoader loader = new IconLoader(item, holder.icon, fragment.getAuthActivity(), getIconCache(), Market.GetImageRequest.AppImageUsage.ICON);
                 new Thread(loader).start();
             }
 
@@ -137,15 +126,5 @@ public class ThemeAdapter extends AbstractRecyclerAdapter {
     public void add(Market.App item, int position) {
         items.add(position, item);
         notifyItemInserted(position);
-    }
-
-    public void remove(Market.App item) {
-        int position = items.indexOf(item);
-        items.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mIconCache.get(key);
     }
 }

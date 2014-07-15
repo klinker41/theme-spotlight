@@ -34,21 +34,10 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
     private final FeaturedThemerFragment fragment;
     private final FeaturedThemer[] items;
 
-    private LruCache<String, Bitmap> mIconCache;
-
     public FeaturedThemerAdapter(FeaturedThemerFragment fragment, FeaturedThemer[] items) {
+        super();
         this.fragment = fragment;
         this.items = items;
-
-        // set up the icon cacher
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
-        mIconCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                return bitmap.getByteCount() / 1024;
-            }
-        };
     }
 
     @Override
@@ -115,9 +104,5 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
         if (holder.progressBar.getVisibility() == View.VISIBLE) {
             holder.progressBar.setVisibility(View.GONE);
         }
-    }
-
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mIconCache.get(key);
     }
 }

@@ -17,32 +17,18 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
-import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.Robolectric;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-public class FeaturedThemerActivityTest extends AbstractSpotlightTest {
-
-    private FeaturedThemerActivity activity;
-
-    @Before
-    public void setup() {
-        activity = Robolectric.buildActivity(FeaturedThemerActivity.class)
-                .create()
-                .get();
-    }
+public class FeaturedThemeActivityTest extends AbstractSpotlightTest {
 
     @Test
-    public void testOnCreate() {
+    public void testOnCreate() throws Exception {
+        FeaturedThemeActivity activity = Robolectric.buildActivity(FeaturedThemeActivity.class).create().get();
         assertNotNull(activity);
     }
 
-    @Test
-    public void testGetPublisherQuery() throws Exception {
-        String testString = "test";
-        assertEquals("pub:" + testString, activity.getPublisherQuery(testString));
-    }
 }
