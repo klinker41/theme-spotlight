@@ -19,6 +19,7 @@
 <changelog>
     <version name="1.0.0" description="Oh yeah, done.">
         <text>Ready for release</text>
+        <text>Allow themes to be applied from inside the theme spotlight</text>
     </version>
     <version name="0.9.0" description="Even more themer stuff">
         <text>Click individual themes for each featured themer</text>
