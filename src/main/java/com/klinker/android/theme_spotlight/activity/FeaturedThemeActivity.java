@@ -21,10 +21,11 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
 
-public class FeaturedThemeActivity extends Activity {
+public class FeaturedThemeActivity extends AuthActivity {
 
     private FeaturedThemeFragment mFragment;
 
@@ -57,5 +58,10 @@ public class FeaturedThemeActivity extends Activity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onAuthFinished(AuthToken token) {
+        // do nothing
     }
 }

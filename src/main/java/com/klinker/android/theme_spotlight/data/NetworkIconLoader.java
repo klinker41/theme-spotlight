@@ -19,6 +19,7 @@ package com.klinker.android.theme_spotlight.data;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.net.URL;

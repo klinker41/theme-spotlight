@@ -74,6 +74,7 @@ public class FeaturedThemeAdapter extends AbstractRecyclerAdapter {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final FeaturedTheme theme = themes[position];
 
+        holder.position = position;
         holder.title.setText(theme.getName());
 
         String description = theme.getShortDescription();

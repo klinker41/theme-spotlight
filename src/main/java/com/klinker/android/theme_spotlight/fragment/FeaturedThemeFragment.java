@@ -16,15 +16,34 @@
 
 package com.klinker.android.theme_spotlight.fragment;
 
-import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.adapter.ScreenshotAdapter;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
+import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
+import com.klinker.android.theme_spotlight.view.HorizontalListView;
 
-public class FeaturedThemeFragment extends Fragment {
+public class FeaturedThemeFragment extends AuthFragment {
 
     public static final String EXTRA_THEME = "extra_featured_theme";
 
     private FeaturedTheme mTheme;
+
+    private View mLayout;
+    private ImageView icon;
+    private HorizontalListView screenshotList;
+    private TextView themeName;
+    private TextView themeDescription;
+    private Button download;
+    private Button viewSource;
 
     public static FeaturedThemeFragment newInstance(FeaturedTheme theme) {
         FeaturedThemeFragment fragment = new FeaturedThemeFragment();
@@ -42,5 +61,69 @@ public class FeaturedThemeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTheme = (FeaturedTheme) getArguments().getSerializable(EXTRA_THEME);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mLayout = inflater.inflate(R.layout.fragment_theme, container, false);
+
+        // load all the views for later
+        icon = (ImageView) mLayout.findViewById(R.id.icon);
+        screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
+        themeName = (TextView) mLayout.findViewById(R.id.theme_name);
+        themeDescription = (TextView) mLayout.findViewById(R.id.publisher_name);
+        download = (Button) mLayout.findViewById(R.id.download);
+        viewSource = (Button) mLayout.findViewById(R.id.view_source);
+
+        return mLayout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpApp();
+    }
+
+    private void setUpApp() {
+        // start a new thread to download and cache our icon
+        NetworkIconLoader loader = new NetworkIconLoader(mTheme.getIconUrl(), icon, mTheme.getIconUrl());
+        new Thread(loader).start();
+
+        themeName.setText(mTheme.getName());
+
+        String description = mTheme.getShortDescription();
+        if (description == null) {
+            themeDescription.setVisibility(View.GONE);
+        } else {
+            themeDescription.setText(mTheme.getShortDescription());
+        }
+
+        download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startWebViewer(mTheme.getDownloadUrl());
+            }
+        });
+
+        if (mTheme.getSourceUrl() != null) {
+            viewSource.setVisibility(View.VISIBLE);
+            viewSource.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startWebViewer(mTheme.getSourceUrl());
+                }
+            });
+        } else {
+            viewSource.setVisibility(View.GONE);
+        }
+
+        screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), mTheme.getDownloadUrl(), screenshotList.getHeight(),
+                screenshotList.getWidth() - getResources().getDimensionPixelSize(R.dimen.screenshot_width_padding)));
+    }
+
+    private void startWebViewer(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 }
