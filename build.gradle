@@ -98,10 +98,6 @@ dependencies {
     }
     androidTestCompile 'com.squareup:fest-android:1.0.+'
     compile 'org.mockito:mockito-all:+'
-    compile ('org.powermock:powermock-mockito-release-full:+') {
-        exclude module: 'hamcrest-core'
-        exclude module: 'objenesis'
-    }
 
     compile 'com.android.support:support-v13:+'
     compile "com.android.support:cardview-v7:+"
