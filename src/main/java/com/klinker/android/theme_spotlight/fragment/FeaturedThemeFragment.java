@@ -68,7 +68,6 @@ public class FeaturedThemeFragment extends AuthFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mLayout = inflater.inflate(R.layout.fragment_theme, container, false);
 
-        // load all the views for later
         icon = (ImageView) mLayout.findViewById(R.id.icon);
         screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
         themeName = (TextView) mLayout.findViewById(R.id.theme_name);
@@ -82,8 +81,7 @@ public class FeaturedThemeFragment extends AuthFragment {
     }
 
     private void setUpApp() {
-        // start a new thread to download and cache our icon
-        NetworkIconLoader loader = new NetworkIconLoader(getActivity(), mTheme.getIconUrl(), icon, mTheme.getIconUrl());
+        NetworkIconLoader loader = new NetworkIconLoader(getAuthActivity(), mTheme.getIconUrl(), icon, mTheme.getIconUrl());
         new Thread(loader).start();
 
         themeName.setText(mTheme.getName());
@@ -114,7 +112,6 @@ public class FeaturedThemeFragment extends AuthFragment {
             viewSource.setVisibility(View.GONE);
         }
 
-        // delay this loading to make sure that everything is being laid out correctly first
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

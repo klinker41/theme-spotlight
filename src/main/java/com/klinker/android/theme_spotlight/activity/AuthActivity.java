@@ -17,6 +17,8 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 
 // abstract class for keeping all of my auth stuff. AuthTokens will
@@ -49,6 +51,14 @@ public abstract class AuthActivity extends Activity {
         } else {
             onAuthFinished(authToken);
         }
+    }
+
+    // helper to replace a current view with a new fragment
+    public void attachFragment(int resourceId, Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(resourceId, fragment)
+                .commit();
     }
 
     public AuthToken getAuthToken() {

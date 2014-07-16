@@ -29,7 +29,7 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-        <include layout="@layout/theme_title" />
+        <include layout="@layout/theme_title"/>
 
         <View
                 android:layout_width="match_parent"

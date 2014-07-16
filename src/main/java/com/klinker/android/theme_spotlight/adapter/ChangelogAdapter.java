@@ -49,19 +49,15 @@ public class ChangelogAdapter extends ArrayAdapter<Spanned> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         TextView rowView = (TextView) convertView;
-
-        // recycle the view correctly
         if (rowView == null) {
             rowView = inflateChangelog();
         }
 
-        // set the new text to the item
         rowView.setText(items[position]);
 
         return rowView;
     }
 
-    // inflate changelog view and return it
     public TextView inflateChangelog() {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         return (TextView) inflater.inflate(R.layout.changelog_item, null);

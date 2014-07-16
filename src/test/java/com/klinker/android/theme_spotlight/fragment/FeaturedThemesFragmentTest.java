@@ -24,8 +24,6 @@ import android.view.ViewGroup;
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.FeaturedThemeAdapter;
-import com.klinker.android.theme_spotlight.adapter.FeaturedThemerAdapter;
-import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.data.FeaturedThemer;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +31,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FeaturedThemesFragmentTest extends AbstractSpotlightTest {
 

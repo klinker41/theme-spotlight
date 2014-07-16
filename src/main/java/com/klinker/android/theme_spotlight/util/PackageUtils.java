@@ -17,16 +17,15 @@
 package com.klinker.android.theme_spotlight.util;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 public class PackageUtils {
 
-    public static boolean isPackageExisted(Context context, String targetPackage){
+    public static boolean doesPackageExist(Context context, String targetPackage) {
         PackageManager pm = context.getPackageManager();
 
         try {
-            PackageInfo info = pm.getPackageInfo(targetPackage,PackageManager.GET_META_DATA);
+            pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }

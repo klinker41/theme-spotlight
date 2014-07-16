@@ -18,7 +18,7 @@ package com.klinker.android.theme_spotlight.adapter;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.LruCache;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +88,6 @@ public class ThemeAdapter extends AbstractRecyclerAdapter {
             if (getRealItemCount() == 0) {
                 holder.progressBar.setVisibility(View.GONE);
             } else {
-                // view should be the loading view
                 holder.progressBar.setVisibility(View.VISIBLE);
             }
         } else {
@@ -106,11 +105,8 @@ public class ThemeAdapter extends AbstractRecyclerAdapter {
             if (icon != null) {
                 holder.icon.setImageBitmap(icon);
             } else {
-                // since we are loading on a different thread for the icon, set the current
-                // one to transparent (don't want it looking funny during recycling
-                holder.icon.setImageResource(android.R.color.transparent);
+                holder.icon.setImageDrawable(new ColorDrawable(android.R.color.transparent));
 
-                // start a new thread to download and cache our icon
                 IconLoader loader = new IconLoader(item, holder.icon, fragment.getAuthActivity(), getIconCache(), Market.GetImageRequest.AppImageUsage.ICON);
                 new Thread(loader).start();
             }

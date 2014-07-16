@@ -19,9 +19,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="preference_get_featured"
-        android:title="@string/open_source"
-        android:summary="@string/open_source_summary">
+            android:key="preference_get_featured"
+            android:title="@string/open_source"
+            android:summary="@string/open_source_summary">
 
         <intent android:action="android.intent.action.VIEW"
                 android:data="https://bitbucket.org/jklinker/theme-spotlight"
@@ -29,8 +29,8 @@
     </Preference>
 
     <Preference
-        android:key="preference_about"
-        android:title="@string/about"
-        android:summary="@string/version_number"/>
+            android:key="preference_about"
+            android:title="@string/about"
+            android:summary="@string/version_number"/>
 
 </PreferenceScreen>

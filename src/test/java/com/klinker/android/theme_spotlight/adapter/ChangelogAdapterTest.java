@@ -44,7 +44,7 @@ public class ChangelogAdapterTest extends AbstractSpotlightTest {
     public void setup() {
         super.setup();
 
-        Spanned[] array = new Spanned[] {
+        Spanned[] array = new Spanned[]{
                 new SpannedString("String 1"),
                 new SpannedString("String 2"),
                 new SpannedString("Changelog item 3")

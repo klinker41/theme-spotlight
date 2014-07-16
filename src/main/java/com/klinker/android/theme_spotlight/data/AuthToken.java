@@ -18,10 +18,8 @@ package com.klinker.android.theme_spotlight.data;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -29,7 +27,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import com.klinker.android.theme_spotlight.R;
 
 public class AuthToken {
 
@@ -42,6 +39,7 @@ public class AuthToken {
     private String androidId;
 
     public void initAuthToken(final Activity context, final OnLoadFinishedListener listener) {
+
         // if tokens are not available (ie this is first run, then we need to fetch
         // them. We authenticate with Google Play Services and get the correct account
         // token and then store that and the androidId in shared prefs for next time
@@ -50,7 +48,7 @@ public class AuthToken {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    authToken = updateToken(false, context);
+                    authToken = getAuthToken(false, context);
                     androidId = getAndroidID(context);
                     storeToPrefs(context);
 
@@ -74,7 +72,6 @@ public class AuthToken {
     }
 
     private void storeToPrefs(Context context) {
-        // update these in shared prefs
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(AUTH_TOKEN_PREF, authToken)
@@ -96,7 +93,7 @@ public class AuthToken {
 
     // get the android id from the device
     private String getAndroidID(Context context) {
-        String[] query = new String[] {"android_id"};
+        String[] query = new String[]{"android_id"};
         Cursor cursor = context.getContentResolver().query(Uri.parse("content://com.google.android.gsf.gservices"), null, null, query, null);
 
         if (cursor != null && cursor.moveToFirst() && cursor.getColumnCount() >= 2) {
@@ -106,39 +103,8 @@ public class AuthToken {
         return null;
     }
 
-    // one method for getting the google auth token
-    private String getAuthToken(Activity context, AccountManagerCallback<Bundle> callback) {
-        String authToken = "null";
-
-        try {
-            AccountManager am = AccountManager.get(context);
-            Bundle options = new Bundle();
-
-            // access google play services to get this token
-            if (am.getAccounts().length > 0) {
-                am.getAuthToken(
-                        am.getAccounts()[0],
-                        "android",
-                        options,
-                        context,
-                        callback,
-                        null);
-            } else {
-                new AlertDialog.Builder(context)
-                        .setTitle(R.string.error_no_accounts)
-                        .setMessage(R.string.error_no_accounts_summary)
-                        .setPositiveButton(R.string.ok, null)
-                        .show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return authToken;
-    }
-
-    // another method for getting the auth token, I like this more because of the invalidation if I ever needed to
-    private String updateToken(boolean invalidateToken, Activity activity) {
+    // get out auth token
+    private String getAuthToken(boolean invalidateToken, Activity activity) {
         String authToken = "null";
         try {
             AccountManager am = AccountManager.get(activity);
@@ -150,10 +116,10 @@ public class AuthToken {
                 accountManagerFuture = am.getAuthToken(accounts[0], "android", null, activity, null, null);
             }
             Bundle authTokenBundle = accountManagerFuture.getResult();
-            authToken = authTokenBundle.getString(AccountManager.KEY_AUTHTOKEN).toString();
+            authToken = authTokenBundle.getString(AccountManager.KEY_AUTHTOKEN);
             if (invalidateToken) {
                 am.invalidateAuthToken("com.google", authToken);
-                authToken = updateToken(false, activity);
+                authToken = getAuthToken(false, activity);
             }
         } catch (Exception e) {
             e.printStackTrace();

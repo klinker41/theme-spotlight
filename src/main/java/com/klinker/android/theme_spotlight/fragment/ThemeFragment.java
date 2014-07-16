@@ -26,7 +26,10 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
@@ -53,7 +56,6 @@ public class ThemeFragment extends AuthFragment {
     private TextView themeName;
     private TextView publisherName;
     private Button download;
-    private Button viewSource;
     private View titleHolder;
 
     private ListView commentsList;
@@ -70,16 +72,14 @@ public class ThemeFragment extends AuthFragment {
     }
 
     public ThemeFragment() {
-        // all fragments should always have a default constructor
         mComments = new ArrayList<Market.Comment>();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHandler = new Handler();
 
-        // get the package name that we want to load in the fragment
+        mHandler = new Handler();
         mPackageName = getArguments().getString(ARG_PACKAGE_NAME);
     }
 
@@ -87,14 +87,12 @@ public class ThemeFragment extends AuthFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mLayout = inflater.inflate(R.layout.fragment_theme, null);
 
-        // load all the views for later
         icon = (ImageView) mLayout.findViewById(R.id.icon);
         screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
         themeName = (TextView) mLayout.findViewById(R.id.theme_name);
         publisherName = (TextView) mLayout.findViewById(R.id.publisher_name);
         commentsList = (ListView) mLayout.findViewById(R.id.review_list);
         download = (Button) mLayout.findViewById(R.id.download);
-        viewSource = (Button) mLayout.findViewById(R.id.view_source);
         titleHolder = mLayout.findViewById(R.id.theme_name_holder);
 
         return mLayout;
@@ -114,7 +112,6 @@ public class ThemeFragment extends AuthFragment {
     // set up the view we want to show finally, need to post back to the ui thread
     // since we queried on a separate thread
     public void setApp(final Market.App app) {
-        // set the icon on a new thread
         icon.setTag(app.getId());
         new Thread(new IconLoader(app, icon, getAuthActivity(), null, Market.GetImageRequest.AppImageUsage.ICON))
                 .start();
@@ -122,16 +119,13 @@ public class ThemeFragment extends AuthFragment {
         themeName.setText(app.getTitle());
         publisherName.setText(app.getCreator());
 
-        // load the screenshots in a horizontal list view
         screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), app, screenshotList.getHeight(),
                 screenshotList.getWidth() - getResources().getDimensionPixelSize(R.dimen.screenshot_width_padding)));
 
-        // load the comments if applicable
         if (commentsList != null && commentsAdapter == null) {
             loadComments(app, mCommentStartIndex, mHandler, commentsListener);
         }
 
-        // show a dialog when clicking on the title of the app
         titleHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +137,6 @@ public class ThemeFragment extends AuthFragment {
             }
         });
 
-        // download the app
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,8 +144,7 @@ public class ThemeFragment extends AuthFragment {
             }
         });
 
-        // show the price on the download button if there is one
-        if (PackageUtils.isPackageExisted(getActivity(), mPackageName)) {
+        if (PackageUtils.doesPackageExist(getActivity(), mPackageName)) {
             download.setText(getString(R.string.installed));
             download.setEnabled(false);
         } else {

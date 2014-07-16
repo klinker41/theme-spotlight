@@ -47,7 +47,6 @@ public class ThemeListFragment extends AuthFragment {
 
     private SpotlightActivity mContext;
     private Handler mHandler;
-    private LayoutInflater mInflater;
 
     private String mBaseSearch;
     private String currentSearch = "";
@@ -59,7 +58,6 @@ public class ThemeListFragment extends AuthFragment {
 
     private boolean isSyncing = false;
 
-    // get an instance of this fragment
     public static ThemeListFragment newInstance(String baseSearch) {
         ThemeListFragment frag = new ThemeListFragment();
         setArguments(frag, baseSearch);
@@ -70,7 +68,6 @@ public class ThemeListFragment extends AuthFragment {
         // all fragments should contain an empty constructor
     }
 
-    // set up our base search via arguments
     public static void setArguments(ThemeListFragment frag, String baseSearch) {
         Bundle args = new Bundle();
         args.putString(BASE_SEARCH, baseSearch);
@@ -97,7 +94,6 @@ public class ThemeListFragment extends AuthFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mInflater = inflater;
         superOnCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_theme_list, null);
 
@@ -109,7 +105,7 @@ public class ThemeListFragment extends AuthFragment {
         setRecyclerViewAdapter(mAdapter);
 
         if (isTwoPane()) {
-            v.setBackgroundResource(android.R.color.white);
+            v.setBackgroundColor(getResources().getColor(android.R.color.white));
         }
 
         return v;
@@ -136,8 +132,6 @@ public class ThemeListFragment extends AuthFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        // get the themes that we want to display, can only load 10 at a time
         getThemes(currentSearchIndex);
     }
 
@@ -145,16 +139,14 @@ public class ThemeListFragment extends AuthFragment {
         getThemes(startIndex, NUM_THEMES_TO_QUERY);
     }
 
-    // get all of the themes in the supplied range
+    // get all of the themes in the supplied range. Due to API limitations, I can only get
+    // 10 at a time before needing to load more
     private void getThemes(final int startIndex, final int length) {
-        // network call, so we need to start a thread and then post a callback back to the ui
-        // once the call is completed
         new Thread(new Runnable() {
             @Override
             public void run() {
                 isSyncing = true;
                 try {
-                    // create our session to look at themes from
                     MarketSession session = new MarketSession();
                     session.getContext().setAuthSubToken(mContext.getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(mContext.getAuthToken().getAndroidId());
@@ -168,16 +160,16 @@ public class ThemeListFragment extends AuthFragment {
                             .setWithExtendedInfo(true) // get extended info so that we can verify the theme name against
                             .build();                  // either the name evolvesms or talon
 
-                    // pause the loading for a short amount of time, this helps the recycler view
-                    // keep up and prevents it from scrolling janky when more views are added
-                    try { Thread.sleep(500); } catch (Exception e) { }
+                    try {
+                        // pause the loading for a short amount of time, this helps the recycler view
+                        // keep up and prevents it from scrolling janky when more views are added
+                        Thread.sleep(500);
+                    } catch (Exception e) {
+                    }
 
-                    // post our request
                     session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
                         @Override
                         public void onResult(Market.ResponseContext context, Market.AppsResponse response) {
-                            // response.getAppList() is marked as unmodifiable, we need to change that so we can
-                            // strip items out when necessary
                             ArrayList<Market.App> apps = new ArrayList<Market.App>(response.getAppList());
 
                             // check the first for whether or not it is evolve or talon, and if so
@@ -205,7 +197,7 @@ public class ThemeListFragment extends AuthFragment {
         currentSearchIndex += NUM_THEMES_TO_QUERY;
         getThemes(currentSearchIndex);
 
-        // recycler views do not support footers, yet... damn
+        // TODO recycler view needs a footer, nothing for this by default... damn.
 //        if (mRecyclerView.getFooterViewsCount() == 0) {
 //            // set a footer to always spin at the bottom of the list
 //            ProgressBar spinner = (ProgressBar) mInflater.inflate(R.layout.loading_footer, null);
@@ -215,18 +207,17 @@ public class ThemeListFragment extends AuthFragment {
 
     // set the apps to the listview and initialize other parts of the list
     public void setApps(final List<Market.App> apps) {
-        // verify the base search so that I don't show junk results
         final String verifyTitle;
         if (mBaseSearch.equals(SpotlightActivity.EVOLVE_SMS)) {
             verifyTitle = "Evolve";
         } else {
             verifyTitle = "Talon";
         }
-        
+
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                setListAdapterPost();
+                afterListAdapterSet();
 
                 for (Market.App app : apps) {
                     if (titleVerified(verifyTitle, app)) {
@@ -245,9 +236,7 @@ public class ThemeListFragment extends AuthFragment {
                 mBaseSearch.startsWith("pub:");
     }
 
-    public void setListAdapterPost() {
-        // if we haven't yet set an adapter, set it now. If we have already, just
-        // notify that our data has changed and it should reload
+    public void afterListAdapterSet() {
         if (mAdapter.getRealItemCount() == 0) {
             ObjectAnimator listAnimator = ObjectAnimator.ofFloat(mRecyclerView, View.ALPHA, 0.0f, 1.0f);
             listAnimator.setDuration(FADE_DURATION);
@@ -272,10 +261,6 @@ public class ThemeListFragment extends AuthFragment {
             isSyncing = true;
             getMoreThemes();
         }
-    }
-
-    public void setHandler(Handler handler) {
-        mHandler = handler;
     }
 
     public RecyclerView getRecyclerView() {

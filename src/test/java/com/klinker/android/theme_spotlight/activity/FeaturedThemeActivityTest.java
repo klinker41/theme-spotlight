@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.robolectric.Robolectric;
 
 import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.*;
 
 public class FeaturedThemeActivityTest extends AbstractSpotlightTest {
 

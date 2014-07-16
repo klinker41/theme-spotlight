@@ -17,15 +17,12 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -99,22 +96,15 @@ public class SpotlightActivity extends AuthActivity {
         setUpFragment(position);
         showDualPane(mFragment);
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, mFragment);
-        replaceThemeWithBlank(transaction).commit();
-
+        attachFragment(R.id.content_frame, mFragment);
         showTextLabel(true);
 
-        // Highlight the selected item, update the author, and close the drawer
         boldDrawerItem(position);
         setupActionbar(position);
         mDrawer.closeDrawer(Gravity.START);
     }
 
     public void setupDrawerToggle() {
-        // initialize the drawer
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer,
                 R.drawable.ic_drawer, R.string.app_name, R.string.evolve_sms_themes) {
 
@@ -140,14 +130,12 @@ public class SpotlightActivity extends AuthActivity {
             }
         };
 
-        // Set the drawer toggle as the DrawerListener
         mDrawer.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
     }
 
     public void setUpFragment(int position) {
-        // Create a new fragment
         switch (position) {
             case EVOLVE_FRAGMENT:
                 mFragment = ThemeListFragment.newInstance(EVOLVE_SMS);
@@ -321,32 +309,14 @@ public class SpotlightActivity extends AuthActivity {
     // this will be called from the fragment when an item is clicked and two pane is true
     public void themeItemClicked(Market.App item) {
         String packageName = item.getPackageName();
-
-        // attach the theme fragment to the current frame since we are two pane
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.theme_frame, ThemeFragment.newInstance(packageName))
-                .commit();
-
+        attachFragment(R.id.theme_frame, ThemeFragment.newInstance(packageName));
         showTextLabel(false);
     }
 
-    // called when clicking on a theme in a specific featured themers arsenal
+    // called when clicking on a theme in a specific featured themer's arsenal
     public void themeItemClicked(FeaturedTheme theme) {
-        // attach the theme fragment to the current frame since we are two pane
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.theme_frame, FeaturedThemeFragment.newInstance(theme))
-                .commit();
-
+        attachFragment(R.id.theme_frame, FeaturedThemeFragment.newInstance(theme));
         showTextLabel(false);
-    }
-
-    private FragmentTransaction replaceThemeWithBlank(FragmentTransaction transaction) {
-        if (isTwoPane()) {
-            transaction.replace(R.id.theme_frame, new Fragment());
-        }
-        return transaction;
     }
 
     public int getActionbarIcon() {

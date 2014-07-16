@@ -35,7 +35,6 @@ public class SettingsActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         superOnCreate(savedInstanceState);
 
-        // add the preferences from xml
         addPreferencesFromResource(R.xml.preferences);
 
         try {
@@ -47,7 +46,7 @@ public class SettingsActivity extends PreferenceActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    // used for mocking testing
+    // used for testing
     public void superOnCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -64,7 +63,6 @@ public class SettingsActivity extends PreferenceActivity {
         String current = getString(R.string.version_number);
         about.setSummary(current.replace("%s", versionName));
 
-        // show changelog when item is clicked
         about.setOnPreferenceClickListener(aboutClick);
     }
 
@@ -87,7 +85,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;

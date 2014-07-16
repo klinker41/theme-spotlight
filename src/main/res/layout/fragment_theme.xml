@@ -22,7 +22,7 @@
               android:layout_height="match_parent"
               android:padding="2dp">
 
-    <include layout="@layout/theme_title" />
+    <include layout="@layout/theme_title"/>
 
     <View
             android:layout_width="match_parent"

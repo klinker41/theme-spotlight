@@ -19,14 +19,14 @@
 <resources>
 
     <!--<style name="Theme" parent="@android:style/Theme.Material.Light.DarkActionBar">-->
-        <!--<item name="android:colorPrimary">@android:color/holo_orange_dark</item>-->
-        <!--<item name="android:colorPrimaryDark">@color/primary_color_dark</item>-->
-        <!--<item name="android:colorAccent">@color/primary_color</item>-->
-        <!--<item name="android:windowBackground">@color/window_background</item>-->
+    <!--<item name="android:colorPrimary">@android:color/holo_orange_dark</item>-->
+    <!--<item name="android:colorPrimaryDark">@color/primary_color_dark</item>-->
+    <!--<item name="android:colorAccent">@color/primary_color</item>-->
+    <!--<item name="android:windowBackground">@color/window_background</item>-->
 
-        <!--<item name="drawer_button_background">?android:attr/selectableItemBackgroundBorderless</item>-->
-        <!--<item name="drawer_options_button_background">?android:attr/selectableItemBackgroundBorderless</item>-->
-        <!--<item name="button_background">?android:attr/selectableItemBackgroundBorderless</item>-->
+    <!--<item name="drawer_button_background">?android:attr/selectableItemBackgroundBorderless</item>-->
+    <!--<item name="drawer_options_button_background">?android:attr/selectableItemBackgroundBorderless</item>-->
+    <!--<item name="button_background">?android:attr/selectableItemBackgroundBorderless</item>-->
     <!--</style>-->
 
     <style name="DrawerButton">
