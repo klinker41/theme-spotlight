@@ -89,7 +89,6 @@ public class ThemeListFragment extends AuthFragment {
         super.onAttach(activity);
         mContext = (SpotlightActivity) activity;
         mHandler = new Handler();
-        setRetainInstance(true);
     }
 
     @Override
