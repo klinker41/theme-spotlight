@@ -99,8 +99,8 @@ public class ThemeFragment extends AuthFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         loadApp(mPackageName, mHandler, new OnAppLoadFinishedListener() {
             @Override
             public void onLoadFinished(Market.App app) {
