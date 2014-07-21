@@ -53,6 +53,7 @@ public class SpotlightActivity extends AuthActivity implements SearchView.OnQuer
     public static final String TALON = "Talon theme";
     private SearchView mSearchView;
     private boolean searchable = false;
+    private String currentSearch = "";
 
     // stuff to manage the drawer
     private View contentHolder;
@@ -385,6 +386,12 @@ public class SpotlightActivity extends AuthActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if (isTwoPane() && !currentSearch.equals(newText)) {
+            attachFragment(R.id.theme_frame, new Fragment());
+            showTextLabel(true);
+        }
+
+        currentSearch = newText;
         return mFragment.onQueryTextChange(newText);
     }
 }
