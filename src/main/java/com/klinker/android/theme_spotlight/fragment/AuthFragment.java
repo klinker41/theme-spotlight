@@ -135,4 +135,14 @@ public abstract class AuthFragment extends Fragment {
     }
 
     public abstract boolean isSearchable();
+
+    public boolean onQueryTextChange(String search) {
+        // do nothing, can be overriden by fragments that implement searching
+        return false;
+    }
+
+    public boolean onQueryTextSubmitted(String search) {
+        // do nothing, can be overriden by fragments that implement searching
+        return false;
+    }
 }

@@ -131,6 +131,10 @@ public class ThemeListFragment extends AuthFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getThemes();
+    }
+
+    public void getThemes() {
         getThemes(currentSearchIndex);
     }
 
@@ -175,9 +179,11 @@ public class ThemeListFragment extends AuthFragment {
                             // strip it out as we don't want to display it. want to also verify the query
                             // is correct so that later if I choose to do a Klinker Apps featured themer as
                             // an example, it will still show those packages
-                            if ((apps.get(0).getPackageName().equals(EVOLVE_PACKAGE) && query.contains(SpotlightActivity.EVOLVE_SMS)) ||
-                                    (apps.get(0).getPackageName().equals(TALON_PACKAGE) && query.contains(SpotlightActivity.TALON))) {
-                                apps.remove(0);
+                            if (apps.size() > 0) {
+                                if ((apps.get(0).getPackageName().equals(EVOLVE_PACKAGE) && query.contains(SpotlightActivity.EVOLVE_SMS)) ||
+                                        (apps.get(0).getPackageName().equals(TALON_PACKAGE) && query.contains(SpotlightActivity.TALON))) {
+                                    apps.remove(0);
+                                }
                             }
 
                             setApps(apps);
@@ -256,7 +262,7 @@ public class ThemeListFragment extends AuthFragment {
     }
 
     public void syncMoreThemes(int position) {
-        if (position >= mAdapter.getRealItemCount() - 2 && !isSyncing) {
+        if ((position >= mAdapter.getRealItemCount() - 2 || !currentSearch.equals("")) && !isSyncing) {
             isSyncing = true;
             getMoreThemes();
         }
@@ -272,6 +278,33 @@ public class ThemeListFragment extends AuthFragment {
 
     @Override
     public boolean isSearchable() {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String search) {
+        if (search.equals(currentSearch)) {
+            return false;
+        }
+
+        ObjectAnimator listAnimator = ObjectAnimator.ofFloat(mRecyclerView, View.ALPHA, 1.0f, 0.0f);
+        listAnimator.setDuration(FADE_DURATION);
+        listAnimator.start();
+        ObjectAnimator progressAnimator = ObjectAnimator.ofFloat(mProgressBar, View.ALPHA, 0.0f, 1.0f);
+        progressAnimator.setDuration(FADE_DURATION);
+        progressAnimator.start();
+
+        mAdapter.removeAll();
+        currentSearchIndex = 0;
+
+        return onQueryTextSubmitted(search);
+    }
+
+    @Override
+    public boolean onQueryTextSubmitted(String search) {
+        currentSearch = search;
+        syncMoreThemes(currentSearchIndex);
+
         return true;
     }
 }

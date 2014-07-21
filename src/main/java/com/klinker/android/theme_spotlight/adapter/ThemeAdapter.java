@@ -123,4 +123,10 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
         items.add(position, item);
         notifyItemInserted(position);
     }
+
+    public void removeAll() {
+        int size = items.size();
+        items.clear();
+        notifyItemRangeRemoved(0, size);
+    }
 }

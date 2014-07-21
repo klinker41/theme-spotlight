@@ -23,9 +23,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.*;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
@@ -378,13 +380,11 @@ public class SpotlightActivity extends AuthActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Log.v(TAG, "query submitted: " + query);
-        return false;
+        return mFragment.onQueryTextSubmitted(query);
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Log.v(TAG, "query changed: " + newText);
-        return false;
+        return mFragment.onQueryTextChange(newText);
     }
 }
