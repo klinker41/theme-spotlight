@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -33,10 +35,9 @@ import android.widget.TextView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
-import com.klinker.android.theme_spotlight.adapter.ScreenshotAdapter;
+import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
 import com.klinker.android.theme_spotlight.data.IconLoader;
 import com.klinker.android.theme_spotlight.util.PackageUtils;
-import com.klinker.android.theme_spotlight.view.HorizontalListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class ThemeFragment extends AuthFragment {
     private String mPackageName;
 
     private ImageView icon;
-    private HorizontalListView screenshotList;
+    private RecyclerView screenshotList;
     private TextView themeName;
     private TextView publisherName;
     private Button download;
@@ -88,12 +89,16 @@ public class ThemeFragment extends AuthFragment {
         mLayout = inflater.inflate(R.layout.fragment_theme, null);
 
         icon = (ImageView) mLayout.findViewById(R.id.icon);
-        screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
+        screenshotList = (RecyclerView) mLayout.findViewById(R.id.screenshot_list);
         themeName = (TextView) mLayout.findViewById(R.id.theme_name);
         publisherName = (TextView) mLayout.findViewById(R.id.publisher_name);
         commentsList = (ListView) mLayout.findViewById(R.id.review_list);
         download = (Button) mLayout.findViewById(R.id.download);
         titleHolder = mLayout.findViewById(R.id.theme_name_holder);
+
+        LinearLayoutManager manager = new LinearLayoutManager(getAuthActivity());
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        screenshotList.setLayoutManager(manager);
 
         return mLayout;
     }
@@ -119,7 +124,7 @@ public class ThemeFragment extends AuthFragment {
         themeName.setText(app.getTitle());
         publisherName.setText(app.getCreator());
 
-        screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), app, screenshotList.getHeight(),
+        screenshotList.setAdapter(new ScreenshotRecyclerAdapter(getAuthActivity(), app, screenshotList.getHeight(),
                 screenshotList.getWidth() - getResources().getDimensionPixelSize(R.dimen.screenshot_width_padding)));
 
         if (commentsList != null && commentsAdapter == null) {

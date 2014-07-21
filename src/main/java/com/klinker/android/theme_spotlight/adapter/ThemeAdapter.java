@@ -31,7 +31,7 @@ import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
 
 import java.util.List;
 
-public class ThemeAdapter extends AbstractRecyclerAdapter {
+public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
 
     private static final String TAG = "ThemeAdapter";
     private final ThemeListFragment fragment;

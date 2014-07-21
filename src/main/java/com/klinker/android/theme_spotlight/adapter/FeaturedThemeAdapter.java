@@ -29,7 +29,7 @@ import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemesFragment;
 
-public class FeaturedThemeAdapter extends AbstractRecyclerAdapter {
+public class FeaturedThemeAdapter extends AbstractCachingRecyclerAdapter {
 
     private FeaturedThemesFragment fragment;
     private FeaturedTheme[] themes;
