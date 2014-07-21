@@ -40,6 +40,13 @@ public class Themers {
             }
     );
 
+    private static final FeaturedThemer LUKE_KLINKER = new FeaturedThemer(
+            "Luke Klinker",
+            "Talon for Twitter Main Developer",
+            "http://www.gravatar.com/avatar/d27bf79782954066cc185f7207e0c5fd.png",
+            "Klinker Apps"
+    );
+
     private static final FeaturedThemer KLINKER_APPS = new FeaturedThemer(
             "Klinker Apps",
             null,
@@ -50,6 +57,7 @@ public class Themers {
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
+            LUKE_KLINKER,
             KLINKER_APPS,
     };
 
