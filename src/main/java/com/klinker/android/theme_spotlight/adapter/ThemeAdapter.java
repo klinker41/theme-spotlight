@@ -45,9 +45,8 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
 
     @Override
     public int getItemCount() {
-        // the + 1 was an attempt to add a loading indicator to the bottom to
-        // replace a listview footer, didn't work though
-        return items.size()/* + 1*/;
+        // + 1 provides an extra view to be used as a loading footer
+        return items.size() + 1;
     }
 
     public int getRealItemCount() {
@@ -85,12 +84,21 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
         holder.position = position;
 
         if (position == items.size()) {
+            // this is used as a loading footer since recycler views don't explicitly have footers available
+            holder.title.setVisibility(View.INVISIBLE);
+            holder.description.setVisibility(View.INVISIBLE);
+            holder.icon.setVisibility(View.INVISIBLE);
+
             if (getRealItemCount() == 0) {
                 holder.progressBar.setVisibility(View.GONE);
             } else {
                 holder.progressBar.setVisibility(View.VISIBLE);
             }
         } else {
+            holder.title.setVisibility(View.VISIBLE);
+            holder.description.setVisibility(View.VISIBLE);
+            holder.icon.setVisibility(View.VISIBLE);
+
             final Market.App item = items.get(position);
 
             holder.title.setText(item.getTitle());

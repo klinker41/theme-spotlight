@@ -150,6 +150,9 @@ public class SpotlightActivity extends AuthActivity implements SearchView.OnQuer
                 mFragment = FeaturedThemerFragment.newInstance();
                 break;
         }
+        if (isTwoPane()) {
+            attachFragment(R.id.theme_frame, new Fragment());
+        }
         showSearchIcon(mFragment.isSearchable());
     }
 
