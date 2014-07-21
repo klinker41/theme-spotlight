@@ -123,4 +123,9 @@ public class FeaturedThemesFragment extends AuthFragment {
     public void setThemer(FeaturedThemer themer) {
         mThemer = themer;
     }
+
+    @Override
+    public boolean isSearchable() {
+        return false;
+    }
 }

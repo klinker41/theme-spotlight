@@ -217,4 +217,9 @@ public class ThemeFragment extends AuthFragment {
             setComments(response);
         }
     };
+
+    @Override
+    public boolean isSearchable() {
+        return false;
+    }
 }

@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -75,5 +76,10 @@ public class FeaturedThemerFragmentTest extends AbstractSpotlightTest {
         spy.onCreateView(inflater, viewGroup, bundle);
         spy.onActivityCreated(bundle);
         assertNotNull(spy.getRecyclerView());
+    }
+
+    @Test
+    public void testSearchable() {
+        assertFalse(fragment.isSearchable());
     }
 }

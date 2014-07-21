@@ -94,4 +94,9 @@ public class FeaturedThemerFragment extends AuthFragment {
     public void setRecyclerViewAdapter(RecyclerView.Adapter adapter) {
         mRecyclerView.setAdapter(adapter);
     }
+
+    @Override
+    public boolean isSearchable() {
+        return false;
+    }
 }

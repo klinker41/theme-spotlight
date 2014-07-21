@@ -86,6 +86,10 @@ public class FeaturedThemeFragment extends AuthFragment {
     }
 
     private void setUpApp() {
+        if (mTheme == null) {
+            return;
+        }
+
         NetworkIconLoader loader = new NetworkIconLoader(getAuthActivity(), mTheme.getIconUrl(), icon, mTheme.getIconUrl());
         new Thread(loader).start();
 
@@ -130,5 +134,10 @@ public class FeaturedThemeFragment extends AuthFragment {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean isSearchable() {
+        return false;
     }
 }

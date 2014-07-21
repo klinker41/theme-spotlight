@@ -20,6 +20,7 @@ import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 
 public class ThemeFragmentTest extends AbstractSpotlightTest {
@@ -35,6 +36,11 @@ public class ThemeFragmentTest extends AbstractSpotlightTest {
     @Test
     public void testNewInstance() throws Exception {
         assertNotNull(fragment);
+    }
+
+    @Test
+    public void testSearchable() {
+        assertFalse(fragment.isSearchable());
     }
 
 }

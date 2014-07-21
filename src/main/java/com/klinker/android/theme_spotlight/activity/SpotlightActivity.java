@@ -23,19 +23,16 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.*;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
-import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
-import com.klinker.android.theme_spotlight.fragment.ThemeListFragment;
+import com.klinker.android.theme_spotlight.fragment.*;
 
-public class SpotlightActivity extends AuthActivity {
+public class SpotlightActivity extends AuthActivity implements SearchView.OnQueryTextListener {
 
     private static final String TAG = "SpotlightActivity";
 
@@ -52,6 +49,8 @@ public class SpotlightActivity extends AuthActivity {
     // base searches
     public static final String EVOLVE_SMS = "EvolveSMS";
     public static final String TALON = "Talon theme";
+    private SearchView mSearchView;
+    private boolean searchable = false;
 
     // stuff to manage the drawer
     private View contentHolder;
@@ -62,7 +61,7 @@ public class SpotlightActivity extends AuthActivity {
     private View[] drawerButtons;
 
     // current fragment being shown
-    private Fragment mFragment;
+    private AuthFragment mFragment;
     private TextView selectItem;
     private int currentPosition;
 
@@ -148,6 +147,7 @@ public class SpotlightActivity extends AuthActivity {
                 mFragment = FeaturedThemerFragment.newInstance();
                 break;
         }
+        showSearchIcon(mFragment.isSearchable());
     }
 
     // handle whether or not view should be shown as two pane
@@ -269,9 +269,49 @@ public class SpotlightActivity extends AuthActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean drawerOpen = mDrawer.isDrawerOpen(Gravity.START);
-        // TODO hide search icon when opened
-        // menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        menu.findItem(R.id.search).setVisible(!drawerOpen && searchable);
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_searchable, menu);
+        MenuItem search = menu.findItem(R.id.search);
+        mSearchView = (SearchView) search.getActionView();
+        mSearchView.setOnQueryTextListener(this);
+
+        hackSearchView();
+
+        return true;
+    }
+
+    public void showSearchIcon(boolean searchable) {
+        this.searchable = searchable;
+    }
+
+    private void hackSearchView() {
+        // hack to change the search actionbar icon from that crappy low res default
+        int searchImgId = getResources().getIdentifier("android:id/search_button", null, null);
+        ImageView view = (ImageView) mSearchView.findViewById(searchImgId);
+        view.setImageResource(R.drawable.ic_action_search);
+
+        // hack to change the magnifying glass low res image
+        searchImgId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
+        view = (ImageView) mSearchView.findViewById(searchImgId);
+        view.setImageResource(R.drawable.ic_action_search);
+
+        // hack to change the close button low res image
+        searchImgId = getResources().getIdentifier("android:id/search_close_btn", null, null);
+        view = (ImageView) mSearchView.findViewById(searchImgId);
+        view.setImageResource(R.drawable.ic_action_cancel);
+
+        // hack to change the search edit text background to white
+        int searchEditTextId = getResources().getIdentifier("android:id/search_plate", null, null);
+        View autoCompleteView = mSearchView.findViewById(searchEditTextId);
+        autoCompleteView.setBackgroundResource(R.drawable.searchview_textfield_activated_holo_light);
     }
 
     // allows for locking the drawer outside the activity
@@ -327,12 +367,24 @@ public class SpotlightActivity extends AuthActivity {
         return mFragment;
     }
 
-    public void setCurrentFragment(Fragment fragment) {
+    public void setCurrentFragment(AuthFragment fragment) {
         mFragment = fragment;
     }
 
     public boolean isTwoPane() {
         View themeFrame = findViewById(R.id.theme_frame);
         return themeFrame != null && themeFrame.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.v(TAG, "query submitted: " + query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.v(TAG, "query changed: " + newText);
+        return false;
     }
 }

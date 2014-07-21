@@ -24,17 +24,9 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 
-public class AuthFragment extends Fragment {
+public abstract class AuthFragment extends Fragment {
 
     private AuthActivity mContext;
-
-    public static AuthFragment newInstance() {
-        return new AuthFragment();
-    }
-
-    public AuthFragment() {
-
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -141,4 +133,6 @@ public class AuthFragment extends Fragment {
     public interface OnCommentsLoadFinishedListener {
         public void onLoadFinished(Market.CommentsResponse response);
     }
+
+    public abstract boolean isSearchable();
 }

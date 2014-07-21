@@ -48,4 +48,7 @@
     <string name="installed">Installed</string>
     <string name="loading">Loading&#8230;</string>
 
+    <!-- Search -->
+    <string name="search">Search</string>
+
 </resources>
