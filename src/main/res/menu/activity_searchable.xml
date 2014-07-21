@@ -16,17 +16,12 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical" android:layout_width="match_parent"
-                android:id="@+id/background"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:background="@color/screenshot_viewer_background">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-            android:id="@+id/picture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp"/>
+    <item android:id="@+id/search"
+          android:title="@string/search"
+          android:icon="@android:drawable/ic_menu_search"
+          android:showAsAction="always"
+          android:actionViewClass="android.widget.SearchView" />
 
-</RelativeLayout>
+</menu>

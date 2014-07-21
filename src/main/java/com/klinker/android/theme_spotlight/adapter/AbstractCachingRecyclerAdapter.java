@@ -24,11 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.klinker.android.theme_spotlight.R;
 
-abstract class AbstractRecyclerAdapter extends RecyclerView.Adapter<AbstractRecyclerAdapter.ViewHolder> {
+abstract class AbstractCachingRecyclerAdapter extends RecyclerView.Adapter<AbstractCachingRecyclerAdapter.ViewHolder> {
 
     private LruCache<String, Bitmap> mIconCache;
 
-    public AbstractRecyclerAdapter() {
+    public AbstractCachingRecyclerAdapter() {
         // set up the icon cacher
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;

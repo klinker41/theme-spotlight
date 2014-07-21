@@ -16,7 +16,6 @@
 
 package com.klinker.android.theme_spotlight.activity;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.klinker.android.theme_spotlight.R;
@@ -32,16 +31,9 @@ public class ThemeActivity extends AuthActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
 
-        // inflate the new fragment
         String packageName = getIntent().getStringExtra(ThemeFragment.ARG_PACKAGE_NAME);
         mFragment = ThemeFragment.newInstance(packageName);
-
-        // replace the entire content view of activity with our fragment, that's
-        // all that I want to show
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, mFragment)
-                .commit();
+        attachFragment(R.id.content_frame, mFragment);
 
         // show back arrow on actionbar
         getActionBar().setDisplayHomeAsUpEnabled(true);

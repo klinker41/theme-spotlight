@@ -19,7 +19,6 @@ package com.klinker.android.theme_spotlight.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,15 +34,12 @@ public class FeaturedThemerFragment extends AuthFragment {
     private static final String TAG = "FeaturedThemerFragment";
 
     private SpotlightActivity mContext;
-    private LayoutInflater mInflater;
 
     private RecyclerView mRecyclerView;
     private FeaturedThemerAdapter mAdapter;
 
-    // create new instance of our featured list
     public static FeaturedThemerFragment newInstance() {
-        FeaturedThemerFragment frag = new FeaturedThemerFragment();
-        return frag;
+        return new FeaturedThemerFragment();
     }
 
     public FeaturedThemerFragment() {
@@ -58,7 +54,6 @@ public class FeaturedThemerFragment extends AuthFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mInflater = inflater;
         superOnCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_theme_list, null);
 
@@ -69,7 +64,7 @@ public class FeaturedThemerFragment extends AuthFragment {
         setRecyclerViewAdapter(mAdapter);
 
         if (isTwoPane()) {
-            v.setBackgroundResource(android.R.color.white);
+            v.setBackgroundColor(getResources().getColor(android.R.color.white));
         }
 
         return v;
@@ -98,5 +93,10 @@ public class FeaturedThemerFragment extends AuthFragment {
 
     public void setRecyclerViewAdapter(RecyclerView.Adapter adapter) {
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean isSearchable() {
+        return false;
     }
 }

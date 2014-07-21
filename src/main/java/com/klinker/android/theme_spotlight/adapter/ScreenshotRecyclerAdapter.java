@@ -17,12 +17,10 @@
 package com.klinker.android.theme_spotlight.adapter;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
@@ -31,8 +29,7 @@ import com.klinker.android.theme_spotlight.activity.ScreenshotViewerActivity;
 import com.klinker.android.theme_spotlight.data.IconLoader;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 
-public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
-    private static final String TAG = "ScreenshotAdapter";
+public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRecyclerAdapter.ViewHolder> {
 
     private final AuthActivity context;
     private final Market.App app;
@@ -41,8 +38,7 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
     private final int minWidth;
     private final String downloadUrl;
 
-    public ScreenshotAdapter(AuthActivity context, Market.App app, int minHeight, int minWidth) {
-        super(context, R.layout.screenshot_item);
+    public ScreenshotRecyclerAdapter(AuthActivity context, Market.App app, int minHeight, int minWidth) {
         this.context = context;
         this.app = app;
         this.numItems = app.getExtendedInfo().getScreenshotsCount();
@@ -51,8 +47,7 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
         this.downloadUrl = null;
     }
 
-    public ScreenshotAdapter(AuthActivity context, String downloadUrl, int minHeight, int minWidth) {
-        super(context, R.layout.screenshot_item);
+    public ScreenshotRecyclerAdapter(AuthActivity context, String downloadUrl, int minHeight, int minWidth) {
         this.context = context;
         this.app = null;
         this.numItems = 1;
@@ -62,17 +57,22 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return numItems;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ImageView v = (ImageView) inflateScreenshot();
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View screenshot = inflateScreenshot();
+        screenshot.setMinimumHeight(minHeight);
+        screenshot.setMinimumWidth(minWidth);
 
-        // will not work unless we configure these values
-        v.setMinimumHeight(minHeight);
-        v.setMinimumWidth(minWidth);
+        return new ViewHolder(screenshot);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        ImageView v = viewHolder.image;
 
         // load the new image off of the ui thread
         if (downloadUrl == null) {
@@ -86,18 +86,34 @@ public class ScreenshotAdapter extends ArrayAdapter<Bitmap> {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String fileName;
+
+                if (downloadUrl == null) {
+                    String screenshot = "_screenshot_" + position;
+                    fileName = context.getCacheDir() + "/" + app.getPackageName() + screenshot + ".png";
+                } else {
+                    fileName = context.getCacheDir() + "/" + downloadUrl + ".png";
+                }
+
                 Intent intent = new Intent(context, ScreenshotViewerActivity.class);
-                intent.putExtra(ScreenshotViewerActivity.EXTRA_FILE_NAME, context.getCacheDir() + "/" + downloadUrl + ".png");
+                intent.putExtra(ScreenshotViewerActivity.EXTRA_FILE_NAME, fileName);
                 context.startActivity(intent);
             }
         });
-
-        return v;
     }
 
     // inflate screenshot view and return it
     public View inflateScreenshot() {
         LayoutInflater inflater = context.getLayoutInflater();
         return inflater.inflate(R.layout.screenshot_item, null);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView image;
+
+        public ViewHolder(View item) {
+            super(item);
+            this.image = (ImageView) item;
+        }
     }
 }

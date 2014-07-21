@@ -24,18 +24,9 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 
-public class AuthFragment extends Fragment {
+public abstract class AuthFragment extends Fragment {
 
     private AuthActivity mContext;
-
-    public static AuthFragment newInstance() {
-        AuthFragment fragment = new AuthFragment();
-        return fragment;
-    }
-
-    public AuthFragment() {
-
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -58,12 +49,10 @@ public class AuthFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    // create our session to look at themes from
                     MarketSession session = new MarketSession();
                     session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(getAuthToken().getAndroidId());
 
-                    // create a simple query
                     String query = getPackageQuery(packageName);
                     Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder()
                             .setQuery(query)
@@ -72,13 +61,10 @@ public class AuthFragment extends Fragment {
                             .setWithExtendedInfo(true)
                             .build();
 
-                    // post our request
                     session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
                         @Override
                         public void onResult(Market.ResponseContext context, Market.AppsResponse response) {
                             final Market.App app = response.getAppList().get(0);
-
-                            // post back to the ui thread to update the view
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -102,17 +88,15 @@ public class AuthFragment extends Fragment {
     }
 
     private void loadComments(final Market.App app, final int startIndex, final int entriesCount,
-                             final Handler handler, final OnCommentsLoadFinishedListener listener) {
+                              final Handler handler, final OnCommentsLoadFinishedListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    // create our session to look at themes from
                     MarketSession session = new MarketSession();
                     session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(getAuthToken().getAndroidId());
 
-                    // create a simple query
                     Market.CommentsRequest commentsRequest = Market.CommentsRequest.newBuilder()
                             .setAppId(app.getId())
                             .setStartIndex(startIndex)
@@ -148,5 +132,17 @@ public class AuthFragment extends Fragment {
 
     public interface OnCommentsLoadFinishedListener {
         public void onLoadFinished(Market.CommentsResponse response);
+    }
+
+    public abstract boolean isSearchable();
+
+    public boolean onQueryTextChange(String search) {
+        // do nothing, can be overriden by fragments that implement searching
+        return false;
+    }
+
+    public boolean onQueryTextSubmitted(String search) {
+        // do nothing, can be overriden by fragments that implement searching
+        return false;
     }
 }

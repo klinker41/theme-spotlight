@@ -18,22 +18,18 @@ package com.klinker.android.theme_spotlight.adapter;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.LruCache;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.FeaturedThemeActivity;
-import com.klinker.android.theme_spotlight.activity.ThemeActivity;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
-import com.klinker.android.theme_spotlight.data.IconLoader;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemeFragment;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemesFragment;
-import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
 
-public class FeaturedThemeAdapter extends AbstractRecyclerAdapter {
+public class FeaturedThemeAdapter extends AbstractCachingRecyclerAdapter {
 
     private FeaturedThemesFragment fragment;
     private FeaturedTheme[] themes;
@@ -94,12 +90,10 @@ public class FeaturedThemeAdapter extends AbstractRecyclerAdapter {
         if (icon != null) {
             holder.icon.setImageBitmap(icon);
         } else {
-            // since we are loading on a different thread for the icon, set the current
-            // one to transparent (don't want it looking funny during recycling
-            holder.icon.setImageResource(android.R.color.transparent);
+            holder.icon.setImageDrawable(new ColorDrawable(android.R.color.transparent));
 
             // start a new thread to download and cache our icon
-            NetworkIconLoader loader = new NetworkIconLoader(fragment.getActivity(), theme.getIconUrl(), holder.icon, theme.getIconUrl());
+            NetworkIconLoader loader = new NetworkIconLoader(fragment.getAuthActivity(), theme.getIconUrl(), holder.icon, theme.getIconUrl());
             new Thread(loader).start();
         }
     }

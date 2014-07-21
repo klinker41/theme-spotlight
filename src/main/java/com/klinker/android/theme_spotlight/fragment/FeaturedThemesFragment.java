@@ -40,14 +40,12 @@ public class FeaturedThemesFragment extends AuthFragment {
     private View mProgressBar;
     private FeaturedThemeAdapter mAdapter;
 
-    // get an instance of this fragment
     public static FeaturedThemesFragment newInstance(FeaturedThemer featuredThemer) {
         FeaturedThemesFragment frag = new FeaturedThemesFragment();
         setArguments(frag, featuredThemer);
         return frag;
     }
 
-    // set up our base search via arguments
     public static void setArguments(FeaturedThemesFragment frag, FeaturedThemer featuredThemer) {
         Bundle args = new Bundle();
         args.putSerializable(FEATURED_THEMER, featuredThemer);
@@ -61,8 +59,6 @@ public class FeaturedThemesFragment extends AuthFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         superOnCreate(savedInstanceState);
-
-        // get the featured themer from a serializable object
         mThemer = (FeaturedThemer) getArguments().getSerializable(FEATURED_THEMER);
     }
 
@@ -82,17 +78,15 @@ public class FeaturedThemesFragment extends AuthFragment {
         superOnCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_theme_list, null);
 
-        // get recycler view
         mRecyclerView = (RecyclerView) v.findViewById(android.R.id.list);
         setUpRecyclerView();
         mProgressBar = v.findViewById(R.id.loading_progress);
 
-        // set the adapter now since we don't have to load themes async
         mAdapter = new FeaturedThemeAdapter(this, mThemer.getThemes());
         setRecyclerViewAdapter(mAdapter);
 
         if (isTwoPane()) {
-            v.setBackgroundResource(android.R.color.white);
+            v.setBackgroundColor(getResources().getColor(android.R.color.white));
         }
 
         return v;
@@ -102,7 +96,6 @@ public class FeaturedThemesFragment extends AuthFragment {
         return mContext.isTwoPane();
     }
 
-    // callback
     public void themeItemClicked(FeaturedTheme app) {
         mContext.themeItemClicked(app);
     }
@@ -129,5 +122,10 @@ public class FeaturedThemesFragment extends AuthFragment {
 
     public void setThemer(FeaturedThemer themer) {
         mThemer = themer;
+    }
+
+    @Override
+    public boolean isSearchable() {
+        return false;
     }
 }

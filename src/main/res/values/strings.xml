@@ -32,7 +32,8 @@
     <string name="version_number">Version Number: %s</string>
     <string name="open_source">View Source Code</string>
     <string name="open_source_summary">Themers can also go here and add themselves to the \"Featured Themers\" section
-        to gain better visibility for their themes!</string>
+        to gain better visibility for their themes!
+    </string>
     <string name="changelog">Changelog</string>
 
     <!-- Error strings -->
@@ -46,5 +47,8 @@
     <string name="view_source">View Source Code</string>
     <string name="installed">Installed</string>
     <string name="loading">Loading&#8230;</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
 
 </resources>

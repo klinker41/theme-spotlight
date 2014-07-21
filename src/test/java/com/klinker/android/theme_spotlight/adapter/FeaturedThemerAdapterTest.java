@@ -52,8 +52,8 @@ public class FeaturedThemerAdapterTest extends AbstractSpotlightTest {
     public void setup() {
         super.setup();
 
-        FeaturedThemer[] themers = new FeaturedThemer[] {
-                new FeaturedThemer("1", null, "icon", new FeaturedTheme[] {}),
+        FeaturedThemer[] themers = new FeaturedThemer[]{
+                new FeaturedThemer("1", null, "icon", new FeaturedTheme[]{}),
                 new FeaturedThemer("2", "test description", "icon2", "klinker")
         };
 

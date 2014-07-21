@@ -16,37 +16,31 @@
 
 package com.klinker.android.theme_spotlight.data;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
 import android.widget.ImageView;
+import com.klinker.android.theme_spotlight.activity.AuthActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
 
-public class NetworkIconLoader implements Runnable {
+public class NetworkIconLoader extends AbstractImageLoader {
 
     private static final String TAG = "NetworkIconLoader";
 
-    private Context context;
-    private Handler mHandler;
     private String location;
     private String imageTag;
-    private ImageView imageView;
 
-    public NetworkIconLoader(Context context, String location, ImageView imageView, String tag) {
-        this.context = context;
-        mHandler = new Handler();
+    public NetworkIconLoader(AuthActivity context, String location, ImageView imageView, String tag) {
+        super(context, imageView);
         this.location = location;
-        this.imageView = imageView;
         this.imageTag = tag;
     }
 
     @Override
     public void run() {
-        File f = new File(context.getCacheDir() + "/" + location + ".png");
+        File f = new File(getContext().getCacheDir() + "/" + location + ".png");
 
         if (f.exists()) {
             Bitmap image = BitmapFactory.decodeFile(f.getPath());
@@ -69,21 +63,9 @@ public class NetworkIconLoader implements Runnable {
         }
     }
 
-    // set the icon and animate it in with a fade animation
     private void setIcon(final Bitmap bitmap) {
-        if (imageView.getTag() == null || imageView.getTag().toString().equals(imageTag)) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    imageView.setImageBitmap(bitmap);
-
-                    imageView.setAlpha(0.0f);
-                    imageView.animate()
-                            .alpha(1.0f)
-                            .setDuration(200)
-                            .start();
-                }
-            });
+        if (getImageView().getTag() == null || getImageView().getTag().toString().equals(imageTag)) {
+            animateImageView(bitmap);
         }
     }
 }

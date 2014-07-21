@@ -37,7 +37,6 @@ public class CommentsAdapter extends ArrayAdapter<Market.Comment> {
     private final AuthActivity context;
     private final List<Market.Comment> items;
 
-    // hold data for recycling
     static class ViewHolder {
         public TextView author;
         public TextView comment;
@@ -58,13 +57,10 @@ public class CommentsAdapter extends ArrayAdapter<Market.Comment> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
 
-        // recycle the view correctly
         if (rowView == null) {
-            // use the same layout that I used for the theme list and hide the icon
             LayoutInflater inflater = context.getLayoutInflater();
             rowView = inflater.inflate(R.layout.review_comment, null);
 
-            // initialize what we want to display views on
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.author = (TextView) rowView.findViewById(R.id.name);
             viewHolder.comment = (TextView) rowView.findViewById(R.id.review);
@@ -72,11 +68,9 @@ public class CommentsAdapter extends ArrayAdapter<Market.Comment> {
             rowView.setTag(viewHolder);
         }
 
-        // set the new text to the item
         final ViewHolder holder = (ViewHolder) rowView.getTag();
         final Market.Comment item = items.get(position);
 
-        // set the author and comment data
         holder.author.setText(parseName(item.getAuthorName(), item.getRating()));
         holder.comment.setText(parseComment(item.getText()));
 
@@ -95,7 +89,6 @@ public class CommentsAdapter extends ArrayAdapter<Market.Comment> {
 
     // parse the comment and display it formatted nicely
     private Spanned parseComment(String comment) {
-        // title and comment are separated by tab in comment returned
         String[] parts = comment.split("\t");
 
         if (parts.length == 1) { // there is no title

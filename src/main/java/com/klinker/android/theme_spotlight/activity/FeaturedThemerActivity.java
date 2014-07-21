@@ -16,6 +16,7 @@
 
 package com.klinker.android.theme_spotlight.activity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import com.klinker.android.theme_spotlight.Themers;
 import com.klinker.android.theme_spotlight.data.FeaturedThemer;
@@ -51,7 +52,7 @@ public class FeaturedThemerActivity extends SpotlightActivity {
     @Override
     public void setupActionbar(int position) {
         getActionBar().setTitle(mFeaturedThemer.getName());
-        getActionBar().setIcon(android.R.color.transparent);
+        getActionBar().setIcon(new ColorDrawable(android.R.color.transparent));
     }
 
     public String getPublisherQuery(String publisher) {
@@ -59,5 +60,6 @@ public class FeaturedThemerActivity extends SpotlightActivity {
     }
 
     @Override
-    public void setupDrawerToggle() { }
+    public void setupDrawerToggle() {
+    }
 }

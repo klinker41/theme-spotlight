@@ -17,12 +17,12 @@
   -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="12sp"
-            android:id="@+id/changelog_item"
-            android:fontFamily="sans-serif-light"/>
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingRight="10dp"
+          android:paddingLeft="10dp"
+          android:paddingTop="5dp"
+          android:paddingBottom="5dp"
+          android:textSize="12sp"
+          android:id="@+id/changelog_item"
+          android:fontFamily="sans-serif-light"/>

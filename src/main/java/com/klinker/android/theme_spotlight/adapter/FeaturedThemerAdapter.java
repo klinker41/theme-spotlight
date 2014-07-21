@@ -18,7 +18,7 @@ package com.klinker.android.theme_spotlight.adapter;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.LruCache;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +28,7 @@ import com.klinker.android.theme_spotlight.data.FeaturedThemer;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
 import com.klinker.android.theme_spotlight.fragment.FeaturedThemerFragment;
 
-public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
+public class FeaturedThemerAdapter extends AbstractCachingRecyclerAdapter {
 
     private static final String TAG = "ThemeAdapter";
     private final FeaturedThemerFragment fragment;
@@ -79,7 +79,6 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
         holder.title.setText(item.getName());
 
         String description = item.getDescription();
-
         if (description != null) {
             holder.description.setText(item.getDescription());
             holder.description.setVisibility(View.VISIBLE);
@@ -92,12 +91,10 @@ public class FeaturedThemerAdapter extends AbstractRecyclerAdapter {
         if (icon != null) {
             holder.icon.setImageBitmap(icon);
         } else {
-            // since we are loading on a different thread for the icon, set the current
-            // one to transparent (don't want it looking funny during recycling
-            holder.icon.setImageResource(android.R.color.transparent);
+            holder.icon.setImageDrawable(new ColorDrawable(android.R.color.transparent));
 
             // start a new thread to download and cache our icon
-            NetworkIconLoader loader = new NetworkIconLoader(fragment.getActivity(), item.getIconUrl(), holder.icon, item.getIconUrl());
+            NetworkIconLoader loader = new NetworkIconLoader(fragment.getAuthActivity(), item.getIconUrl(), holder.icon, item.getIconUrl());
             new Thread(loader).start();
         }
 

@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +29,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.klinker.android.theme_spotlight.R;
-import com.klinker.android.theme_spotlight.adapter.ScreenshotAdapter;
+import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
-import com.klinker.android.theme_spotlight.view.HorizontalListView;
 
 public class FeaturedThemeFragment extends AuthFragment {
 
@@ -40,7 +41,7 @@ public class FeaturedThemeFragment extends AuthFragment {
 
     private View mLayout;
     private ImageView icon;
-    private HorizontalListView screenshotList;
+    private RecyclerView screenshotList;
     private TextView themeName;
     private TextView themeDescription;
     private Button download;
@@ -68,13 +69,16 @@ public class FeaturedThemeFragment extends AuthFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mLayout = inflater.inflate(R.layout.fragment_theme, container, false);
 
-        // load all the views for later
         icon = (ImageView) mLayout.findViewById(R.id.icon);
-        screenshotList = (HorizontalListView) mLayout.findViewById(R.id.screenshot_list);
+        screenshotList = (RecyclerView) mLayout.findViewById(R.id.screenshot_list);
         themeName = (TextView) mLayout.findViewById(R.id.theme_name);
         themeDescription = (TextView) mLayout.findViewById(R.id.publisher_name);
         download = (Button) mLayout.findViewById(R.id.download);
         viewSource = (Button) mLayout.findViewById(R.id.view_source);
+
+        LinearLayoutManager manager = new LinearLayoutManager(getAuthActivity());
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        screenshotList.setLayoutManager(manager);
 
         setUpApp();
 
@@ -82,8 +86,11 @@ public class FeaturedThemeFragment extends AuthFragment {
     }
 
     private void setUpApp() {
-        // start a new thread to download and cache our icon
-        NetworkIconLoader loader = new NetworkIconLoader(getActivity(), mTheme.getIconUrl(), icon, mTheme.getIconUrl());
+        if (mTheme == null) {
+            return;
+        }
+
+        NetworkIconLoader loader = new NetworkIconLoader(getAuthActivity(), mTheme.getIconUrl(), icon, mTheme.getIconUrl());
         new Thread(loader).start();
 
         themeName.setText(mTheme.getName());
@@ -114,11 +121,10 @@ public class FeaturedThemeFragment extends AuthFragment {
             viewSource.setVisibility(View.GONE);
         }
 
-        // delay this loading to make sure that everything is being laid out correctly first
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                screenshotList.setAdapter(new ScreenshotAdapter(getAuthActivity(), mTheme.getScreenshotUrl(),
+                screenshotList.setAdapter(new ScreenshotRecyclerAdapter(getAuthActivity(), mTheme.getScreenshotUrl(),
                         screenshotList.getHeight(), screenshotList.getWidth()));
             }
         }, 100);
@@ -128,5 +134,10 @@ public class FeaturedThemeFragment extends AuthFragment {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean isSearchable() {
+        return false;
     }
 }
