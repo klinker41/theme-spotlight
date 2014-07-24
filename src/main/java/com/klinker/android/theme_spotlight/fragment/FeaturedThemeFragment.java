@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
@@ -138,6 +139,8 @@ public class FeaturedThemeFragment extends AuthFragment {
                     Intent intent = new Intent(FeaturedTheme.ACTION);
                     intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mTheme.getPackageName());
                     getActivity().sendBroadcast(intent);
+
+                    Toast.makeText(getActivity(), getString(R.string.theme_set), Toast.LENGTH_SHORT).show();
                 }
             });
         }

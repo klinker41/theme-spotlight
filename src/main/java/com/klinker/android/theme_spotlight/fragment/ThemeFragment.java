@@ -28,10 +28,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
@@ -158,6 +155,8 @@ public class ThemeFragment extends AuthFragment {
                     Intent intent = new Intent(FeaturedTheme.ACTION);
                     intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mPackageName);
                     getActivity().sendBroadcast(intent);
+
+                    Toast.makeText(getActivity(), getString(R.string.theme_set), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
