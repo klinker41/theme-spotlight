@@ -27,7 +27,6 @@ import android.os.Handler;
 import android.util.Pair;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -132,7 +131,10 @@ public class ThemeListFragment extends AuthFragment {
     public void setUpRecyclerView() {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        // item animator looks funny with the loading view, just let the items fade in instead
+        // this also was causing some issues with blank item views, presumably because of the loading footer again
+        mRecyclerView.setItemAnimator(null);
     }
 
     @Override
@@ -208,13 +210,6 @@ public class ThemeListFragment extends AuthFragment {
     public void getMoreThemes() {
         currentSearchIndex += NUM_THEMES_TO_QUERY;
         getThemes(currentSearchIndex);
-
-        // TODO recycler view needs a footer, nothing for this by default... damn.
-//        if (mRecyclerView.getFooterViewsCount() == 0) {
-//            // set a footer to always spin at the bottom of the list
-//            ProgressBar spinner = (ProgressBar) mInflater.inflate(R.layout.loading_footer, null);
-//            mRecyclerView.addFooterView(spinner);
-//        }
     }
 
     // set the apps to the listview and initialize other parts of the list
