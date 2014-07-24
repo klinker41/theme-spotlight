@@ -20,20 +20,25 @@ import java.io.Serializable;
 
 public class FeaturedTheme implements Serializable {
 
+    public static final String ACTION = "com.klinker.android.SET_THEME";
+    public static final String ARG_PACKAGE_NAME = "com.klinker.android.THEME_PACKAGE_NAME";
+
     private final String screenshotUrl;
     private final String downloadUrl;
     private final String shortDescription;
     private final String name;
+    private final String packageName;
     private final String iconUrl;
     private final String sourceUrl;
 
     /**
      * Create a new theme that is not on the play store, sourceUrl can be null
      */
-    public FeaturedTheme(String name, String shortDescription, String iconUrl, String downloadUrl,
+    public FeaturedTheme(String name, String shortDescription, String packageName, String iconUrl, String downloadUrl,
                          String screenshotUrl, String sourceUrl) {
         this.name = name;
         this.shortDescription = shortDescription;
+        this.packageName = packageName;
         this.iconUrl = iconUrl;
         this.downloadUrl = downloadUrl;
         this.screenshotUrl = screenshotUrl;
@@ -62,5 +67,9 @@ public class FeaturedTheme implements Serializable {
 
     public String getSourceUrl() {
         return sourceUrl;
+    }
+
+    public String getPackageName() {
+        return packageName;
     }
 }

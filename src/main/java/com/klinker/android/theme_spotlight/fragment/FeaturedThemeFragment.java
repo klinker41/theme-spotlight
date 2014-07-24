@@ -32,6 +32,7 @@ import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
+import com.klinker.android.theme_spotlight.util.PackageUtils;
 
 public class FeaturedThemeFragment extends AuthFragment {
 
@@ -128,6 +129,18 @@ public class FeaturedThemeFragment extends AuthFragment {
                         screenshotList.getHeight(), screenshotList.getWidth()));
             }
         }, 100);
+
+        if (PackageUtils.doesPackageExist(getActivity(), mTheme.getPackageName())) {
+            download.setText(getString(R.string.installed));
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(FeaturedTheme.ACTION);
+                    intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mTheme.getPackageName());
+                    getActivity().sendBroadcast(intent);
+                }
+            });
+        }
     }
 
     private void startWebViewer(String url) {

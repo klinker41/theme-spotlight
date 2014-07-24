@@ -45,7 +45,7 @@
     <string name="select_a_theme">Select an item!</string>
     <string name="download">Download</string>
     <string name="view_source">View Source Code</string>
-    <string name="installed">Installed</string>
+    <string name="installed">Installed, apply theme?</string>
     <string name="loading">Loading&#8230;</string>
 
     <!-- Search -->

@@ -36,6 +36,7 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
 import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
+import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.data.IconLoader;
 import com.klinker.android.theme_spotlight.util.PackageUtils;
 
@@ -151,7 +152,14 @@ public class ThemeFragment extends AuthFragment {
 
         if (PackageUtils.doesPackageExist(getActivity(), mPackageName)) {
             download.setText(getString(R.string.installed));
-            download.setEnabled(false);
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(FeaturedTheme.ACTION);
+                    intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mPackageName);
+                    getActivity().sendBroadcast(intent);
+                }
+            });
         } else {
             if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
                 download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
