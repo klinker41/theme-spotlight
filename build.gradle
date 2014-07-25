@@ -50,9 +50,19 @@ android {
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("keystore.jks")
+            storePassword "testpass"
+            keyAlias "theme-spotlight"
+            keyPassword "fakepass"
+        }
+    }
+
     buildTypes {
         release {
             runProguard false
+            signingConfig signingConfigs.release
         }
     }
 
