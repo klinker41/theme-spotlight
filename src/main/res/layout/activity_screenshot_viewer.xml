@@ -24,7 +24,8 @@
                 android:background="@color/screenshot_viewer_background">
 
     <ImageView
-            android:id="@+id/picture"
+            android:id="@+id/screenshot"
+            android:viewName="screenshot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="20dp"/>

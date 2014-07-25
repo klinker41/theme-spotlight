@@ -18,6 +18,7 @@ package com.klinker.android.theme_spotlight.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.fragment.ThemeFragment;
@@ -29,6 +30,8 @@ public class ThemeActivity extends AuthActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
         setContentView(R.layout.activity_theme);
 
         String packageName = getIntent().getStringExtra(ThemeFragment.ARG_PACKAGE_NAME);

@@ -25,4 +25,6 @@
         android:scaleType="fitCenter"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:elevation="1dp"/>
+        android:elevation="1dp"
+        android:id="@+id/screenshot"
+        android:viewName="screenshot"/>

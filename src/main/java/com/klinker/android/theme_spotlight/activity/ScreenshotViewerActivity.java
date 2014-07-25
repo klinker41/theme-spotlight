@@ -24,9 +24,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.util.Utils;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import java.io.File;
@@ -43,6 +45,8 @@ public class ScreenshotViewerActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
         context = this;
 
         fileName = getIntent().getStringExtra(EXTRA_FILE_NAME);
@@ -59,7 +63,7 @@ public class ScreenshotViewerActivity extends Activity {
 
         setContentView(R.layout.activity_screenshot_viewer);
 
-        picture = (ImageView) findViewById(R.id.picture);
+        picture = (ImageView) findViewById(R.id.screenshot);
         PhotoViewAttacher mAttacher = new PhotoViewAttacher(picture);
 
         try {
@@ -82,5 +86,10 @@ public class ScreenshotViewerActivity extends Activity {
         ab.setDisplayShowHomeEnabled(false);
         ab.setTitle("");
         ab.setIcon(transparent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

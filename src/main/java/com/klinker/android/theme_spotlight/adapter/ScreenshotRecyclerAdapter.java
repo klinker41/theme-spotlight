@@ -16,6 +16,7 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.klinker.android.theme_spotlight.activity.AuthActivity;
 import com.klinker.android.theme_spotlight.activity.ScreenshotViewerActivity;
 import com.klinker.android.theme_spotlight.data.IconLoader;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
+import com.klinker.android.theme_spotlight.util.Utils;
 
 public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRecyclerAdapter.ViewHolder> {
 
@@ -72,18 +74,22 @@ public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRe
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        ImageView v = viewHolder.image;
+        final ImageView screenshotView = viewHolder.image;
+
+        if (Utils.isAndroidL()) {
+            screenshotView.setViewName("screenshot" + position);
+        }
 
         // load the new image off of the ui thread
         if (downloadUrl == null) {
-            v.setTag(app.getId());
-            new Thread(new IconLoader(app, v, context, position, Market.GetImageRequest.AppImageUsage.SCREENSHOT)).start();
+            screenshotView.setTag(app.getId());
+            new Thread(new IconLoader(app, screenshotView, context, position, Market.GetImageRequest.AppImageUsage.SCREENSHOT)).start();
         } else {
-            v.setTag(downloadUrl);
-            new Thread(new NetworkIconLoader(context, downloadUrl, v, downloadUrl)).start();
+            screenshotView.setTag(downloadUrl);
+            new Thread(new NetworkIconLoader(context, downloadUrl, screenshotView, downloadUrl)).start();
         }
 
-        v.setOnClickListener(new View.OnClickListener() {
+        screenshotView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String fileName;
@@ -97,7 +103,14 @@ public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRe
 
                 Intent intent = new Intent(context, ScreenshotViewerActivity.class);
                 intent.putExtra(ScreenshotViewerActivity.EXTRA_FILE_NAME, fileName);
-                context.startActivity(intent);
+
+                if (Utils.isAndroidL()) {
+                    ActivityOptions options = ActivityOptions
+                            .makeSceneTransitionAnimation(context, screenshotView, "screenshot");
+                    context.startActivity(intent, options.toBundle());
+                } else {
+                    context.startActivity(intent);
+                }
             }
         });
     }
