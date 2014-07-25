@@ -24,7 +24,7 @@
             android:summary="@string/open_source_summary">
 
         <intent android:action="android.intent.action.VIEW"
-                android:data="https://bitbucket.org/jklinker/theme-spotlight"
+                android:data="https://github.com/klinker41/theme-spotlight"
                 />
     </Preference>
 
