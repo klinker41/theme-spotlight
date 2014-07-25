@@ -19,6 +19,7 @@ package com.klinker.android.theme_spotlight.adapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
     private static final String TAG = "ThemeAdapter";
     private final ThemeListFragment fragment;
     private final List<Market.App> items;
+    private int defaultViewHeight;
 
     public ThemeAdapter(ThemeListFragment fragment, List<Market.App> items) {
         super();
@@ -61,17 +63,20 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Market.App clickedApp = items.get(holder.position);
+                Log.v(TAG, holder.position + " " + getRealItemCount());
+                if (holder.position != getRealItemCount()) {
+                    Market.App clickedApp = items.get(holder.position);
 
-                // if this is a single pane view, then start a new activity to display our theme
-                // if this is a dual pane view, then post this to the spotlight activity themeItemClicked
-                // where we will then display that theme in a fragment on the screen
-                if (fragment.isTwoPane()) {
-                    fragment.themeItemClicked(clickedApp);
-                } else {
-                    Intent intent = new Intent(fragment.getActivity(), ThemeActivity.class);
-                    intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
-                    fragment.getActivity().startActivity(intent);
+                    // if this is a single pane view, then start a new activity to display our theme
+                    // if this is a dual pane view, then post this to the spotlight activity themeItemClicked
+                    // where we will then display that theme in a fragment on the screen
+                    if (fragment.isTwoPane()) {
+                        fragment.themeItemClicked(clickedApp);
+                    } else {
+                        Intent intent = new Intent(fragment.getActivity(), ThemeActivity.class);
+                        intent.putExtra(ThemeFragment.ARG_PACKAGE_NAME, clickedApp.getPackageName());
+                        fragment.getActivity().startActivity(intent);
+                    }
                 }
             }
         });
@@ -83,6 +88,13 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
 
+        // set the height in case it has been reset for some reason
+        if (defaultViewHeight == 0) {
+            defaultViewHeight = ((View) holder.icon.getParent()).getLayoutParams().height;
+        } else {
+            ((View) holder.icon.getParent()).getLayoutParams().height = defaultViewHeight;
+        }
+
         if (position == items.size()) {
             // this is used as a loading footer since recycler views don't explicitly have footers available
             holder.title.setVisibility(View.INVISIBLE);
@@ -91,6 +103,7 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
 
             if (getRealItemCount() == 0) {
                 holder.progressBar.setVisibility(View.GONE);
+                ((View) holder.icon.getParent()).getLayoutParams().height = 0;
             } else {
                 holder.progressBar.setVisibility(View.VISIBLE);
             }
