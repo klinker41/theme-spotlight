@@ -31,17 +31,14 @@ import android.preference.PreferenceManager;
 public class AuthToken {
 
     private static final String TAG = "AuthToken";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final String AUTH_TOKEN_PREF = "accounts_auth_token";
     private static final String ANDROID_ID_PREF = "accounts_android_id";
 
     // auth token and android id from my m8
-    private static final String DEBUG_AUTH_TOKEN = "DQAAAPcAAABDnxjLcuGriS5b25tIUFS4KC4tXLiFWXcSttKugg-L82Q4sB57awylbNJf" +
-            "cvO91Eja_aiDyMgQLRli0c0TIodgEymmH_CyeZ2NJVJlA7iyz-VGGTA-fs5J9W5XOysKmoNEtwgQCYUCUgqiWTYpGSLx0UmqRpKAPjGNrR" +
-            "ei9BtDbnSekHL35NhPqHzS2oKjX2XmfQb99v7dLvYJCC5EGT-l3t1jQ7qd7mfjEOXDRWu3Sz5e93Lx2dGcK9kbwEnKGW3PN__y3T80OsWIW" +
-            "EJad62_eNs5if4hfYLZe6EHEWuPIc8b71_Z_n-tHVrCOhgBVMovVdzC0qxgYoqx-hXNgCeN";
-    private static final String DEBUG_ANDROID_ID = "3380911F196A8D2A";
+    private static final String DEBUG_AUTH_TOKEN = "**";
+    private static final String DEBUG_ANDROID_ID = "**";
 
     private String authToken;
     private String androidId;
