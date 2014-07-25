@@ -133,7 +133,10 @@ public class ThemeListFragment extends AuthFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getThemes();
+
+        // start with only grabbing 4 themes, this fixes a bug in the recycler view causing it to scroll
+        // down when the initial themes are loaded, weird
+        getThemes(currentSearchIndex, 4);
     }
 
     public void getThemes() {
@@ -164,6 +167,8 @@ public class ThemeListFragment extends AuthFragment {
                             .setEntriesCount(length)
                             .setWithExtendedInfo(true) // get extended info so that we can verify the theme name against
                             .build();                  // either the name evolvesms or talon
+
+                    currentSearchIndex += length;
 
                     try {
                         // pause the loading for a short amount of time, this helps the recycler view
@@ -201,7 +206,6 @@ public class ThemeListFragment extends AuthFragment {
     }
 
     public void getMoreThemes() {
-        currentSearchIndex += NUM_THEMES_TO_QUERY;
         getThemes(currentSearchIndex);
     }
 
