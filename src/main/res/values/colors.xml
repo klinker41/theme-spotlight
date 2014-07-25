@@ -23,6 +23,7 @@
     <color name="button_pressed">#22000000</color>
     <color name="primary_color">@android:color/holo_orange_dark</color>
     <color name="primary_color_dark">#c96f05</color>
+    <color name="primary_color_light">#ffa33a</color>
 
     <!-- Other activity colors -->
     <color name="screenshot_viewer_background">#cc000000</color>

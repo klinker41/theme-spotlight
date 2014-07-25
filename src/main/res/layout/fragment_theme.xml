@@ -20,45 +20,64 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="2dp">
+              android:paddingTop="2dp"
+              android:paddingBottom="5dp">
 
-    <include layout="@layout/theme_title"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:background="@android:color/white"
+                  android:layout_marginBottom="10dp">
 
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/list_divider"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"/>
+        <include layout="@layout/theme_title"/>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+
+            <View android:layout_width="0dp"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:minWidth="120dp"
+                    android:text="@string/view_source"
+                    android:textColor="@color/drawer_text_color"
+                    android:id="@+id/view_source"
+                    android:background="@drawable/btn_source"
+                    android:visibility="invisible"
+                    android:textAllCaps="true"
+                    android:textSize="11sp"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:minWidth="120dp"
+                    android:layout_height="28dp"
+                    android:text="@string/download"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/btn_download"
+                    android:id="@+id/download"
+                    android:textAllCaps="true"
+                    android:textSize="11sp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
+
+        </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/list_divider"
+                android:layout_marginTop="4dp"/>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/screenshot_list"/>
-
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/list_divider"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"/>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/download"
-            android:textColor="@color/drawer_text_color"
-            android:background="?button_background"
-            android:id="@+id/download"/>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/view_source"
-            android:textColor="@color/drawer_text_color"
-            android:id="@+id/view_source"
-            android:background="?button_background"
-            android:visibility="gone"/>
 
 </LinearLayout>
