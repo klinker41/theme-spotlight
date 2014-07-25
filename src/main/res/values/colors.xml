@@ -24,6 +24,7 @@
     <color name="primary_color">#ff9800</color>
     <color name="primary_color_dark">#ef6c00</color>
     <color name="accent_color">#3f51b5</color>
+    <color name="primary_color_light">#ffa33a</color>
 
     <!-- Other activity colors -->
     <color name="screenshot_viewer_background">#cc000000</color>
