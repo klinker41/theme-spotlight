@@ -66,8 +66,8 @@ public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View screenshot = inflateScreenshot();
-        screenshot.setMinimumHeight(minHeight);
-        screenshot.setMinimumWidth(minWidth);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(minWidth, minHeight);
+        screenshot.setLayoutParams(params);
 
         return new ViewHolder(screenshot);
     }
