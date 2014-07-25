@@ -16,6 +16,7 @@
 
 package com.klinker.android.theme_spotlight.adapter;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,8 +65,8 @@ public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View screenshot = inflateScreenshot();
-        screenshot.setMinimumHeight(minHeight);
-        screenshot.setMinimumWidth(minWidth);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(minWidth, minHeight);
+        screenshot.setLayoutParams(params);
 
         return new ViewHolder(screenshot);
     }
