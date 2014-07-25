@@ -45,7 +45,7 @@ public class Themers {
             "Talon for Twitter Main Developer",
             "http://www.gravatar.com/avatar/d27bf79782954066cc185f7207e0c5fd.png",
             "Klinker Apps"
-    );
+     );
 
     private static final FeaturedThemer KLINKER_APPS = new FeaturedThemer(
             "Klinker Apps",
@@ -53,12 +53,37 @@ public class Themers {
             "http://klinkerapps.com/dev-upload/include/views/img/logo.gif",
             "Klinker Apps"
     );
-
+    
+    private static final FeaturedThemer JON_MERRITT = new FeaturedThemer(
+            "Jon Merritt",
+            "Optimal Designs",
+            "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
+             new FeaturedTheme[]{
+                    Themes.SLICED,
+                    Themes.LAVA,
+                    Themes.WATER,
+                    Themes.SMOKE,
+                    Themes.GLOWRING,
+                    Themes.GLOWRING_2,
+                    Themes.FADE_BLUE,
+                    Themes.FADE_GREEN,
+                    Themes.FADE_RED,
+                    Themes.EPLUS_BLUE,
+                    Themes.EPLUS_GREEN,
+                    Themes.EPLUS_RED,
+                    Themes.EPLUS_BLACK,
+                    Themes.IOS_7_COLOR_PACK,
+                    Themes.EVOLVETHEME_COLOR_PACK,
+                    Themes.EVOLVEBLUE_COLOR_PACK,
+                    Themes.EVOLVECLASSICBLUE_COLOR_PACK
+            }
+    );
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
             LUKE_KLINKER,
             KLINKER_APPS,
+            JON_MERRITT,
     };
 
     static {
