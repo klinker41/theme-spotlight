@@ -60,6 +60,13 @@ public class Themers {
             "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
             "Optimal Designs"
     );
+    
+    private static final FeaturedThemer ROBERTO_DARKO = new FeaturedThemer(
+            "Roberto Darko",
+             null,
+            "https://lh4.googleusercontent.com/-8CJZrnuDkyU/UtA35c6bbxI/AAAAAAAAEW8/4eqc5Ts1Qww/s256-no/Google%252B1_2.jpg",
+            "Darko Apps"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -67,6 +74,7 @@ public class Themers {
             LUKE_KLINKER,
             KLINKER_APPS,
             JON_MERRITT,
+            ROBERTO_DARKO
     };
 
     static {
