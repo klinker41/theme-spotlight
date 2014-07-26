@@ -45,7 +45,7 @@ public class Themers {
             "Talon for Twitter Main Developer",
             "http://www.gravatar.com/avatar/d27bf79782954066cc185f7207e0c5fd.png",
             "Klinker Apps"
-    );
+     );
 
     private static final FeaturedThemer KLINKER_APPS = new FeaturedThemer(
             "Klinker Apps",
@@ -53,12 +53,20 @@ public class Themers {
             "http://klinkerapps.com/dev-upload/include/views/img/logo.gif",
             "Klinker Apps"
     );
+    
+    private static final FeaturedThemer JON_MERRITT = new FeaturedThemer(
+            "Jon Merritt",
+             null,
+            "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
+            "Optimal Designs"
 
+    );
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
             LUKE_KLINKER,
             KLINKER_APPS,
+            JON_MERRITT,
     };
 
     static {
