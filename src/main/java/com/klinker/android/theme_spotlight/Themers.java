@@ -66,7 +66,7 @@ public class Themers {
             "BORDEN GRAPHICS",
              null,
             "https://lh3.googleusercontent.com/-WqwyyX1pysU/UsdbPuxBqkI/AAAAAAAATB4/jjabm1eJ1F4/w521-h520-no/b.gif",
-            "EvolveSMS Themer"
+            "BORDEN GRAPHICS"
 
     );
     // list of all themers, will be alphabetized when displayed
