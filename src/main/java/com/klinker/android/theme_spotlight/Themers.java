@@ -81,6 +81,13 @@ public class Themers {
             "https://lh4.googleusercontent.com/-OaJ3pqADwEg/U17-xMEa_EI/AAAAAAAALG8/STLX2Y89CzY/w477-h479-no/IMG_20140419_192238664_HDR-MOTION.gif",
             "HOBI3CAT"
     );
+    
+    private static final FeaturedThemer ROBERTO_DARKO = new FeaturedThemer(
+            "Roberto Darko",
+             null,
+            "https://lh4.googleusercontent.com/-8CJZrnuDkyU/UtA35c6bbxI/AAAAAAAAEW8/4eqc5Ts1Qww/s256-no/Google%252B1_2.jpg",
+            "Darko Apps"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -91,6 +98,7 @@ public class Themers {
             BORDEN_GRAPHICS,
             NATE_GANTT,
             HOBIE_HELBICH,
+            ROBERTO_DARKO
     };
 
     static {
