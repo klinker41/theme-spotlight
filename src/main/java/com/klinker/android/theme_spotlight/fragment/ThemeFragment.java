@@ -108,7 +108,13 @@ public class ThemeFragment extends AuthFragment {
         loadApp(mPackageName, mHandler, new OnAppLoadFinishedListener() {
             @Override
             public void onLoadFinished(Market.App app) {
-                setApp(app);
+                try {
+                    setApp(app);
+                } catch (IllegalStateException e) {
+                    // this will happen if the theme finishes loading after the user
+                    // has closed out of that theme already, just don't set the theme up
+                    e.printStackTrace();
+                }
             }
         });
     }
