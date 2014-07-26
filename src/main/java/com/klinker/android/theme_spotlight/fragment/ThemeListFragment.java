@@ -30,6 +30,7 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeAdapter;
+import com.klinker.android.theme_spotlight.util.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,9 +214,9 @@ public class ThemeListFragment extends AuthFragment {
     public void setApps(final List<Market.App> apps) {
         final String verifyTitle;
         if (mBaseSearch.equals(SpotlightActivity.EVOLVE_SMS)) {
-            verifyTitle = "Evolve";
+            verifyTitle = AppUtils.EVOLVE;
         } else {
-            verifyTitle = "Talon";
+            verifyTitle = AppUtils.TALON;
         }
 
         mHandler.post(new Runnable() {

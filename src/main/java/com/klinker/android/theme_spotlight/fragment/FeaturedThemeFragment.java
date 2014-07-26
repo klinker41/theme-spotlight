@@ -33,6 +33,7 @@ import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.data.NetworkIconLoader;
+import com.klinker.android.theme_spotlight.util.AppUtils;
 import com.klinker.android.theme_spotlight.util.PackageUtils;
 
 public class FeaturedThemeFragment extends AuthFragment {
@@ -104,13 +105,6 @@ public class FeaturedThemeFragment extends AuthFragment {
             themeDescription.setText(mTheme.getShortDescription());
         }
 
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startWebViewer(mTheme.getDownloadUrl());
-            }
-        });
-
         if (mTheme.getSourceUrl() != null) {
             viewSource.setVisibility(View.VISIBLE);
             viewSource.setOnClickListener(new View.OnClickListener() {
@@ -131,18 +125,34 @@ public class FeaturedThemeFragment extends AuthFragment {
             }
         }, 100);
 
-        if (PackageUtils.doesPackageExist(getActivity(), mTheme.getPackageName())) {
-            download.setText(getString(R.string.installed));
-            download.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(FeaturedTheme.ACTION);
-                    intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mTheme.getPackageName());
-                    getActivity().sendBroadcast(intent);
+        if (AppUtils.checkValidTheme(mTheme.getName(), mTheme.getShortDescription())) {
+            if (PackageUtils.doesPackageExist(getActivity(), mTheme.getPackageName())) {
+                download.setText(getString(R.string.apply));
+                download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(FeaturedTheme.ACTION);
+                        intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mTheme.getPackageName());
+                        getActivity().sendBroadcast(intent);
 
-                    Toast.makeText(getActivity(), getString(R.string.theme_set), Toast.LENGTH_SHORT).show();
-                }
-            });
+                        Toast.makeText(getActivity(), getString(R.string.theme_set), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startWebViewer(mTheme.getDownloadUrl());
+                    }
+                });
+            }
+        } else {
+            download.setEnabled(false);
+            if (PackageUtils.doesPackageExist(getActivity(), mTheme.getPackageName())) {
+                download.setText(R.string.installed);
+            } else {
+                download.setText(R.string.not_a_theme);
+            }
         }
     }
 
