@@ -35,6 +35,9 @@
         to gain better visibility for their themes!
     </string>
     <string name="changelog">Changelog</string>
+    <string name="free_only">Free Themes</string>
+    <string name="free_only_summary">Only free themes will be shown when browsing</string>
+    <string name="free_only_key">free_only</string>
 
     <!-- Error strings -->
     <string name="error_no_accounts">No Google Accounts</string>
