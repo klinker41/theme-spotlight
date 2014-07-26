@@ -59,6 +59,14 @@ public class Themers {
              null,
             "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
             "Optimal Designs"
+            
+            );
+    
+    private static final FeaturedThemer BORDEN_GRAPHICS = new FeaturedThemer(
+            "BORDEN GRAPHICS",
+             null,
+            "https://lh3.googleusercontent.com/-WqwyyX1pysU/UsdbPuxBqkI/AAAAAAAATB4/jjabm1eJ1F4/w521-h520-no/b.gif",
+            "EvolveSMS Themer"
 
     );
     // list of all themers, will be alphabetized when displayed
@@ -67,6 +75,7 @@ public class Themers {
             LUKE_KLINKER,
             KLINKER_APPS,
             JON_MERRITT,
+            BORDEN_GRAPHICS,
     };
 
     static {
