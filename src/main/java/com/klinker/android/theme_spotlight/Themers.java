@@ -56,27 +56,10 @@ public class Themers {
     
     private static final FeaturedThemer JON_MERRITT = new FeaturedThemer(
             "Jon Merritt",
-            "Optimal Designs",
+             null,
             "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
-             new FeaturedTheme[]{
-                    Themes.SLICED,
-                    Themes.LAVA,
-                    Themes.WATER,
-                    Themes.SMOKE,
-                    Themes.GLOWRING,
-                    Themes.GLOWRING_2,
-                    Themes.FADE_BLUE,
-                    Themes.FADE_GREEN,
-                    Themes.FADE_RED,
-                    Themes.EPLUS_BLUE,
-                    Themes.EPLUS_GREEN,
-                    Themes.EPLUS_RED,
-                    Themes.EPLUS_BLACK,
-                    Themes.IOS_7_COLOR_PACK,
-                    Themes.EVOLVETHEME_COLOR_PACK,
-                    Themes.EVOLVEBLUE_COLOR_PACK,
-                    Themes.EVOLVECLASSICBLUE_COLOR_PACK
-            }
+            "Optimal Designs"
+
     );
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
