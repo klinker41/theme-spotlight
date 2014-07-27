@@ -49,7 +49,7 @@ public abstract class AuthFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    MarketSession session = new MarketSession();
+                    MarketSession session = new MarketSession(false);
                     session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(getAuthToken().getAndroidId());
 
@@ -93,7 +93,7 @@ public abstract class AuthFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    MarketSession session = new MarketSession();
+                    MarketSession session = new MarketSession(false);
                     session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(getAuthToken().getAndroidId());
 

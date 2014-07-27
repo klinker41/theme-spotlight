@@ -24,6 +24,7 @@ import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -66,7 +67,7 @@ public class IconLoader extends AbstractImageLoader {
         if (new File(fileName).exists()) {
             setIcon(fileName);
         } else {
-            MarketSession session = new MarketSession();
+            MarketSession session = new MarketSession(false);
             session.getContext().setAuthSubToken(getContext().getAuthToken().getAuthToken());
             session.getContext().setAndroidId(getContext().getAuthToken().getAndroidId());
 

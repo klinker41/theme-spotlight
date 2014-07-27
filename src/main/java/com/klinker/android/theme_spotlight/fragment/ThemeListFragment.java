@@ -156,7 +156,7 @@ public class ThemeListFragment extends AuthFragment {
             public void run() {
                 isSyncing = true;
                 try {
-                    MarketSession session = new MarketSession();
+                    MarketSession session = new MarketSession(false);
                     session.getContext().setAuthSubToken(mContext.getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(mContext.getAuthToken().getAndroidId());
 
