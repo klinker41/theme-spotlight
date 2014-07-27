@@ -1,12 +1,15 @@
 package com.klinker.android.theme_spotlight.data;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.klinker.android.theme_spotlight.R;
+import com.klinker.android.theme_spotlight.activity.AboutAuthActivity;
 
 /**
  * Singleton for settings
@@ -69,7 +72,14 @@ public class Settings {
         // so, what we are doing is saying, if the old version was this, then do that and so on
         switch (currentVersion) {
             case 0:
-                // TODO start an activity giving the user information about the auth request to google we are about to make
+                Intent intent = new Intent(context, AboutAuthActivity.class);
+                context.startActivity(intent);
+
+                if (context instanceof Activity) {
+                    ((Activity) context).finish();
+                }
+
+                break;
         }
     }
 

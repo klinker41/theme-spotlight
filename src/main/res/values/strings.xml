@@ -38,7 +38,6 @@
     <string name="free_only">Free Themes</string>
     <string name="free_only_summary">Only free themes will be shown when browsing</string>
 
-
     <!-- Error strings -->
     <string name="error_no_accounts">No Google Accounts</string>
     <string name="error_no_accounts_summary">No accounts on device to log in to. We can\'t do anything.</string>
@@ -56,5 +55,13 @@
 
     <!-- Search -->
     <string name="search">Search</string>
+
+    <!-- Google Auth information -->
+    <string name="google_auth">Google Authorization</string>
+    <string name="google_auth_summary">To use the Theme Spotlight, we are going to pull results from the Play Store and
+        display them to you in the list of themes. To do this, you first need to allow the app to be authorized
+        by your Google account, which is what the following screen will request.\n\nIf you say no to this request,
+        you won\'t be able to see any of the themes, which would be a major bummer! Loading these search results is the
+        only thing that the Theme Spotlight will do with this authorization, no worries.</string>
 
 </resources>
