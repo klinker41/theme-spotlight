@@ -18,14 +18,19 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <CheckBoxPreference
+            android:key="@string/free_only_key"
+            android:title="@string/free_only"
+            android:summary="@string/free_only_summary"
+            android:defaultValue="false"/>
+
     <Preference
             android:key="preference_get_featured"
             android:title="@string/open_source"
             android:summary="@string/open_source_summary">
 
         <intent android:action="android.intent.action.VIEW"
-                android:data="https://github.com/klinker41/theme-spotlight"
-                />
+                android:data="https://github.com/klinker41/theme-spotlight"/>
     </Preference>
 
     <Preference

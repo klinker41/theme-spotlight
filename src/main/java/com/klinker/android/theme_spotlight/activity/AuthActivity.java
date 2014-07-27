@@ -60,9 +60,15 @@ public abstract class AuthActivity extends Activity {
     // helper to replace a current view with a new fragment
     public void attachFragment(int resourceId, Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(resourceId, fragment)
-                .commit();
+
+        try {
+            fragmentManager.beginTransaction()
+                    .replace(resourceId, fragment)
+                    .commit();
+        } catch (IllegalStateException e) {
+            // happens when the app is no longer open and fragment has been switched, ignore it
+            e.printStackTrace();
+        }
     }
 
     public AuthToken getAuthToken() {

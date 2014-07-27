@@ -17,6 +17,11 @@
   -->
 
 <changelog>
+    <version name="1.1.0">
+        <text>Added option for only showing free themes</text>
+        <text>Fixes when showing apps for featured themers that aren't actually themes</text>
+        <text>Other bug fixes</text>
+    </version>
     <version name="1.0.0" description="Oh yeah, done.">
         <text>Ready for release</text>
         <text>Allow themes to be applied from inside the theme spotlight app</text>

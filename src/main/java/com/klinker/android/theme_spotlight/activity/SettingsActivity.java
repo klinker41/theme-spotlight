@@ -25,6 +25,7 @@ import android.text.Spanned;
 import android.view.MenuItem;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.adapter.ChangelogAdapter;
+import com.klinker.android.theme_spotlight.data.Settings;
 import com.klinker.android.theme_spotlight.util.XmlChangelogUtils;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -92,5 +93,11 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onStop() {
+        Settings.getInstance(this, true);
+        super.onStop();
     }
 }

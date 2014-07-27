@@ -35,6 +35,9 @@
         to gain better visibility for their themes!
     </string>
     <string name="changelog">Changelog</string>
+    <string name="free_only">Free Themes</string>
+    <string name="free_only_summary">Only free themes will be shown when browsing</string>
+    <string name="free_only_key">free_only</string>
 
     <!-- Error strings -->
     <string name="error_no_accounts">No Google Accounts</string>
@@ -45,9 +48,11 @@
     <string name="select_a_theme">Select an item!</string>
     <string name="download">Download</string>
     <string name="view_source">View Source Code</string>
-    <string name="installed">Apply?</string>
+    <string name="apply">Apply?</string>
+    <string name="installed">Installed</string>
     <string name="loading">Loading&#8230;</string>
     <string name="theme_set">Theme Applied!</string>
+    <string name="not_a_theme">Not a theme!</string>
 
     <!-- Search -->
     <string name="search">Search</string>

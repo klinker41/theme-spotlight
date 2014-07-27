@@ -37,6 +37,7 @@ import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.R;
 import com.klinker.android.theme_spotlight.activity.SpotlightActivity;
 import com.klinker.android.theme_spotlight.adapter.ThemeAdapter;
+import com.klinker.android.theme_spotlight.util.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,9 +221,9 @@ public class ThemeListFragment extends AuthFragment {
     public void setApps(final List<Market.App> apps) {
         final String verifyTitle;
         if (mBaseSearch.equals(SpotlightActivity.EVOLVE_SMS)) {
-            verifyTitle = "Evolve";
+            verifyTitle = AppUtils.EVOLVE;
         } else {
-            verifyTitle = "Talon";
+            verifyTitle = AppUtils.TALON;
         }
 
         mHandler.post(new Runnable() {
@@ -231,20 +232,12 @@ public class ThemeListFragment extends AuthFragment {
                 afterListAdapterSet();
 
                 for (Market.App app : apps) {
-                    if (titleVerified(verifyTitle, app)) {
+                    if (AppUtils.shouldAddApp(getActivity(), app, verifyTitle, mBaseSearch)) {
                         mAdapter.add(app, mAdapter.getRealItemCount());
                     }
                 }
             }
         });
-    }
-
-    // verify that we should add the app to the list. this should occur when the title or description contains
-    // the text for evolve or talon, or the base search is based on publisher name
-    private boolean titleVerified(String verify, Market.App app) {
-        return app.getTitle().contains(verify) ||
-                app.getExtendedInfo().getDescription().contains(verify) ||
-                mBaseSearch.startsWith("pub:");
     }
 
     public void afterListAdapterSet() {

@@ -35,6 +35,7 @@ import com.klinker.android.theme_spotlight.adapter.CommentsAdapter;
 import com.klinker.android.theme_spotlight.adapter.ScreenshotRecyclerAdapter;
 import com.klinker.android.theme_spotlight.data.FeaturedTheme;
 import com.klinker.android.theme_spotlight.data.IconLoader;
+import com.klinker.android.theme_spotlight.util.AppUtils;
 import com.klinker.android.theme_spotlight.util.PackageUtils;
 
 import java.util.ArrayList;
@@ -107,7 +108,13 @@ public class ThemeFragment extends AuthFragment {
         loadApp(mPackageName, mHandler, new OnAppLoadFinishedListener() {
             @Override
             public void onLoadFinished(Market.App app) {
-                setApp(app);
+                try {
+                    setApp(app);
+                } catch (IllegalStateException e) {
+                    // this will happen if the theme finishes loading after the user
+                    // has closed out of that theme already, just don't set the theme up
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -140,28 +147,37 @@ public class ThemeFragment extends AuthFragment {
             }
         });
 
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + app.getPackageName())));
-            }
-        });
+        if (AppUtils.checkValidTheme(mPackageName, app.getExtendedInfo().getDescription())) {
+            if (PackageUtils.doesPackageExist(getActivity(), mPackageName)) {
+                download.setText(getString(R.string.apply));
+                download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(FeaturedTheme.ACTION);
+                        intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mPackageName);
+                        getActivity().sendBroadcast(intent);
 
-        if (PackageUtils.doesPackageExist(getActivity(), mPackageName)) {
-            download.setText(getString(R.string.installed));
-            download.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(FeaturedTheme.ACTION);
-                    intent.putExtra(FeaturedTheme.ARG_PACKAGE_NAME, mPackageName);
-                    getActivity().sendBroadcast(intent);
-
-                    Toast.makeText(getActivity(), getString(R.string.theme_set), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.theme_set), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
+                    download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
                 }
-            });
+
+                download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + app.getPackageName())));
+                    }
+                });
+            }
         } else {
-            if (app.hasPrice() && !download.getText().toString().endsWith(")")) {
-                download.setText(download.getText().toString() + " (" + app.getPrice().replace("US", "") + ")");
+            download.setEnabled(false);
+            if (PackageUtils.doesPackageExist(getActivity(), mPackageName)) {
+                download.setText(R.string.installed);
+            } else {
+                download.setText(R.string.not_a_theme);
             }
         }
     }
