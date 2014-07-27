@@ -21,35 +21,29 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 
 public class AuthToken {
 
     private static final String TAG = "AuthToken";
 
-    private static final String AUTH_TOKEN_PREF = "accounts_auth_token";
-    private static final String ANDROID_ID_PREF = "accounts_android_id";
-
-    private String authToken;
-    private String androidId;
+    private Settings settings;
 
     public void initAuthToken(final Activity context, final OnLoadFinishedListener listener) {
 
         // if tokens are not available (ie this is first run, then we need to fetch
         // them. We authenticate with Google Play Services and get the correct account
         // token and then store that and the androidId in shared prefs for next time
-        if (authToken == null || androidId == null) {
+        if (getAuthToken() == null || getAndroidId() == null) {
             final Handler handler = new Handler();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    authToken = getAuthToken(false, context);
-                    androidId = getAndroidID(context);
+                    setAuthToken(fetchAuthToken(false, context));
+                    setAndroidId(fetchAuthorizedAndroidId(context));
                     storeToPrefs(context);
 
                     handler.post(new Runnable() {
@@ -66,25 +60,27 @@ public class AuthToken {
     }
 
     public AuthToken(Context context) {
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        authToken = sharedPreferences.getString(AUTH_TOKEN_PREF, null);
-        androidId = sharedPreferences.getString(ANDROID_ID_PREF, null);
+        settings = Settings.getInstance(context);
     }
 
     private void storeToPrefs(Context context) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString(AUTH_TOKEN_PREF, authToken)
-                .putString(ANDROID_ID_PREF, androidId)
-                .commit();
+        settings.commitAuthInfo(context);
     }
 
     public String getAuthToken() {
-        return authToken;
+        return settings.authToken;
     }
 
     public String getAndroidId() {
-        return androidId;
+        return settings.androidId;
+    }
+
+    public void setAuthToken(String authToken) {
+        settings.authToken = authToken;
+    }
+
+    public void setAndroidId(String androidId) {
+        settings.androidId = androidId;
     }
 
     public interface OnLoadFinishedListener {
@@ -92,7 +88,7 @@ public class AuthToken {
     }
 
     // get the android id from the device
-    private String getAndroidID(Context context) {
+    private String fetchAuthorizedAndroidId(Context context) {
         String[] query = new String[]{"android_id"};
         Cursor cursor = context.getContentResolver().query(Uri.parse("content://com.google.android.gsf.gservices"), null, null, query, null);
 
@@ -104,7 +100,7 @@ public class AuthToken {
     }
 
     // get out auth token
-    private String getAuthToken(boolean invalidateToken, Activity activity) {
+    private String fetchAuthToken(boolean invalidateToken, Activity activity) {
         String authToken = "null";
         try {
             AccountManager am = AccountManager.get(activity);
@@ -119,7 +115,7 @@ public class AuthToken {
             authToken = authTokenBundle.getString(AccountManager.KEY_AUTHTOKEN);
             if (invalidateToken) {
                 am.invalidateAuthToken("com.google", authToken);
-                authToken = getAuthToken(false, activity);
+                authToken = fetchAuthToken(false, activity);
             }
         } catch (Exception e) {
             e.printStackTrace();

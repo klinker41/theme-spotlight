@@ -20,5 +20,7 @@
 
     <string name="free_only_key">free_only</string>
     <string name="current_version_key">current_version</string>
+    <string name="auth_token_key">accounts_auth_token</string>
+    <string name="android_id_key">accounts_android_id</string>
 
 </resources>

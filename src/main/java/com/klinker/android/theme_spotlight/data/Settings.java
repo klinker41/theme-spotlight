@@ -9,17 +9,19 @@ import android.util.Log;
 import com.klinker.android.theme_spotlight.R;
 
 /**
- * Singleton for settings, lots and lots of room for expansion if I want
+ * Singleton for settings
  */
 public class Settings {
 
     private static final String TAG = "Settings";
     private static Settings settings;
 
-    // lots of room for expansion here...
+    public SharedPreferences sharedPreferences;
     public boolean freeOnly;
     public boolean isUpdate;
     public int currentVersion;
+    public String authToken;
+    public String androidId;
 
     public static Settings getInstance(Context context) {
         return getInstance(context, false);
@@ -34,10 +36,12 @@ public class Settings {
     }
 
     private Settings(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         freeOnly = sharedPreferences.getBoolean(context.getString(R.string.free_only_key), false);
         currentVersion = sharedPreferences.getInt(context.getString(R.string.current_version_key), 0);
+        authToken = sharedPreferences.getString(context.getString(R.string.auth_token_key), null);
+        androidId = sharedPreferences.getString(context.getString(R.string.android_id_key), null);
 
         checkIsUpdate(context);
     }
@@ -65,7 +69,14 @@ public class Settings {
         // so, what we are doing is saying, if the old version was this, then do that and so on
         switch (currentVersion) {
             case 0:
-                // do something here when updating
+                // TODO start an activity giving the user information about the auth request to google we are about to make
         }
+    }
+
+    public void commitAuthInfo(Context context) {
+        sharedPreferences.edit()
+                .putString(context.getString(R.string.auth_token_key), authToken)
+                .putString(context.getString(R.string.android_id_key), androidId)
+                .commit();
     }
 }
