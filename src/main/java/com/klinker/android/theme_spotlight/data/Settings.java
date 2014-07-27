@@ -28,7 +28,7 @@ public class Settings {
     }
 
     public static Settings getInstance(Context context, boolean forceReload) {
-        if (settings == null || forceReload) {
+        if (context != null && (settings == null || forceReload)) {
             settings = new Settings(context);
         }
 
