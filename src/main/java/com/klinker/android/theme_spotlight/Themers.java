@@ -67,6 +67,15 @@ public class Themers {
             "https://lh3.googleusercontent.com/-WqwyyX1pysU/UsdbPuxBqkI/AAAAAAAATB4/jjabm1eJ1F4/w521-h520-no/b.gif",
             "BORDEN GRAPHICS"
     );
+    
+    private static final FeaturedThemer NATE_GANTT = new FeaturedThemer(
+            "Nate Gantt",
+             null,
+            "https://lh5.googleusercontent.com/-5LHsOdckHLU/UZEKiWqvoyI/AAAAAAAAJNg/o_VZ6c7tfAI/w722-h724-no/BetterNate_blur.png",
+            "[nXt3_Apps]"
+    );
+    
+    
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -75,6 +84,7 @@ public class Themers {
             KLINKER_APPS,
             JON_MERRITT,
             BORDEN_GRAPHICS,
+            NATE_GANTT,
     };
 
     static {
