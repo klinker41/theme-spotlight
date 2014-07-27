@@ -60,6 +60,15 @@ public class Themers {
             "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
             "Optimal Designs"
     );
+    
+    private static final FeaturedThemer NATE_GANTT = new FeaturedThemer(
+            "Nate Gantt",
+             null,
+            "https://lh5.googleusercontent.com/-5LHsOdckHLU/UZEKiWqvoyI/AAAAAAAAJNg/o_VZ6c7tfAI/w722-h724-no/BetterNate_blur.png",
+            "[nXt3_Apps]"
+    );
+    
+    
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -67,6 +76,7 @@ public class Themers {
             LUKE_KLINKER,
             KLINKER_APPS,
             JON_MERRITT,
+            NATE_GANTT,
     };
 
     static {
