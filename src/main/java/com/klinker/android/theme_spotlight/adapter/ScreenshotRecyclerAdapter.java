@@ -80,6 +80,8 @@ public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRe
             screenshotView.setViewName("screenshot" + position);
         }
 
+        screenshotView.setImageBitmap(null);
+        
         // load the new image off of the ui thread
         if (downloadUrl == null) {
             screenshotView.setTag(app.getId());

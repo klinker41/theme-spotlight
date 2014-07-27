@@ -409,6 +409,11 @@ public class SpotlightActivity extends AuthActivity implements SearchView.OnQuer
         }
 
         currentSearch = newText;
-        return mFragment.onQueryTextChange(newText);
+
+        if (mFragment != null) {
+            return mFragment.onQueryTextChange(newText);
+        } else {
+            return false;
+        }
     }
 }

@@ -45,8 +45,8 @@ android {
         applicationId 'com.klinker.android.theme_spotlight'
         minSdkVersion 14
         targetSdkVersion 'L'
-        versionCode 2
-        versionName '1.1.0'
+        versionCode 3
+        versionName '1.1.1'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
@@ -112,7 +112,7 @@ dependencies {
     compile 'com.android.support:support-v13:+'
     compile "com.android.support:cardview-v7:+"
     compile "com.android.support:recyclerview-v7:+"
-    compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.3.0.jar', 'lib/gridlayoutmanager.jar')
+    compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.4.1.jar', 'lib/gridlayoutmanager.jar')
     compile(name:'android-photoview', ext:'aar')
 
 }

@@ -20,7 +20,9 @@ import android.app.Activity;
 import android.util.Log;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.Bundle;
 import com.klinker.android.theme_spotlight.data.AuthToken;
+import com.klinker.android.theme_spotlight.data.Settings;
 
 // abstract class for keeping all of my auth stuff. AuthTokens will
 // be grabbed in on start vs onCreate so that we can use the callbacks for when
@@ -31,6 +33,13 @@ public abstract class AuthActivity extends Activity {
     private static final String TAG = "AuthActivity";
 
     private AuthToken authToken;
+    private Settings settings;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        settings = Settings.getInstance(this);
+    }
 
     @Override
     public void onStart() {
@@ -73,6 +82,10 @@ public abstract class AuthActivity extends Activity {
 
     public AuthToken getAuthToken() {
         return authToken;
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 
     public abstract void onAuthFinished(AuthToken token);

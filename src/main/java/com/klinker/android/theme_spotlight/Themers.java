@@ -67,7 +67,7 @@ public class Themers {
             "https://lh3.googleusercontent.com/-WqwyyX1pysU/UsdbPuxBqkI/AAAAAAAATB4/jjabm1eJ1F4/w521-h520-no/b.gif",
             "BORDEN GRAPHICS"
     );
-    
+
     private static final FeaturedThemer NATE_GANTT = new FeaturedThemer(
             "Nate Gantt",
              null,
@@ -75,7 +75,19 @@ public class Themers {
             "[nXt3_Apps]"
     );
     
-    
+    private static final FeaturedThemer HOBIE_HELBICH = new FeaturedThemer(
+            "Hobie Helbich",
+             null,
+            "https://lh4.googleusercontent.com/-OaJ3pqADwEg/U17-xMEa_EI/AAAAAAAALG8/STLX2Y89CzY/w477-h479-no/IMG_20140419_192238664_HDR-MOTION.gif",
+            "HOBI3CAT"
+    );
+
+    private static final FeaturedThemer ROBERTO_DARKO = new FeaturedThemer(
+            "Roberto Darko",
+             null,
+            "https://lh4.googleusercontent.com/-8CJZrnuDkyU/UtA35c6bbxI/AAAAAAAAEW8/4eqc5Ts1Qww/s256-no/Google%252B1_2.jpg",
+            "Darko Apps"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -85,6 +97,8 @@ public class Themers {
             JON_MERRITT,
             BORDEN_GRAPHICS,
             NATE_GANTT,
+            HOBIE_HELBICH,
+            ROBERTO_DARKO
     };
 
     static {
