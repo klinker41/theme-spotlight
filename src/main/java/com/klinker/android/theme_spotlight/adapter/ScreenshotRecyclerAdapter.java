@@ -75,6 +75,8 @@ public class ScreenshotRecyclerAdapter extends RecyclerView.Adapter<ScreenshotRe
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         ImageView v = viewHolder.image;
 
+        v.setImageBitmap(null);
+        
         // load the new image off of the ui thread
         if (downloadUrl == null) {
             v.setTag(app.getId());
