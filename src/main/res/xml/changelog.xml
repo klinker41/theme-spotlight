@@ -19,6 +19,8 @@
 <changelog>
     <version name="1.1.1">
         <text>More featured themers</text>
+        <text>Show more than 2 screenshots per theme when available</text>
+        <text>Bug fixes</text>
     </version>
     <version name="1.1.0">
         <text>Added option for only showing free themes</text>
