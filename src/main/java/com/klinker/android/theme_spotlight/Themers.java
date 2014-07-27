@@ -75,7 +75,12 @@ public class Themers {
             "[nXt3_Apps]"
     );
     
-    
+    private static final FeaturedThemer HOBIE_HELBICH = new FeaturedThemer(
+            "Hobie Helbich",
+             null,
+            "https://lh4.googleusercontent.com/-OaJ3pqADwEg/U17-xMEa_EI/AAAAAAAALG8/STLX2Y89CzY/w477-h479-no/IMG_20140419_192238664_HDR-MOTION.gif",
+            "HOBI3CAT"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -85,6 +90,7 @@ public class Themers {
             JON_MERRITT,
             BORDEN_GRAPHICS,
             NATE_GANTT,
+            HOBIE_HELBICH,
     };
 
     static {
