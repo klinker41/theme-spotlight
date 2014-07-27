@@ -63,7 +63,6 @@ public class ThemeAdapter extends AbstractCachingRecyclerAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(TAG, holder.position + " " + getRealItemCount());
                 if (holder.position != getRealItemCount()) {
                     Market.App clickedApp = items.get(holder.position);
 

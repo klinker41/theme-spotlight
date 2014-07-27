@@ -17,6 +17,9 @@
   -->
 
 <changelog>
+    <version name="1.1.1">
+        <text>More featured themers</text>
+    </version>
     <version name="1.1.0">
         <text>Added option for only showing free themes</text>
         <text>Fixes when showing apps for featured themers that aren't actually themes</text>
