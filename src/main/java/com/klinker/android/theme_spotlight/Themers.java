@@ -74,6 +74,13 @@ public class Themers {
             "https://lh5.googleusercontent.com/-5LHsOdckHLU/UZEKiWqvoyI/AAAAAAAAJNg/o_VZ6c7tfAI/w722-h724-no/BetterNate_blur.png",
             "[nXt3_Apps]"
     );
+    
+    private static final FeaturedThemer HOBIE_HELBICH = new FeaturedThemer(
+            "Hobie Helbich",
+             null,
+            "https://lh4.googleusercontent.com/-OaJ3pqADwEg/U17-xMEa_EI/AAAAAAAALG8/STLX2Y89CzY/w477-h479-no/IMG_20140419_192238664_HDR-MOTION.gif",
+            "HOBI3CAT"
+    );
 
     private static final FeaturedThemer ROBERTO_DARKO = new FeaturedThemer(
             "Roberto Darko",
@@ -90,6 +97,7 @@ public class Themers {
             JON_MERRITT,
             BORDEN_GRAPHICS,
             NATE_GANTT,
+            HOBIE_HELBICH,
             ROBERTO_DARKO
     };
 
