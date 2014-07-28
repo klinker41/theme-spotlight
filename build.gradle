@@ -45,8 +45,8 @@ android {
         applicationId 'com.klinker.android.theme_spotlight'
         minSdkVersion 14
         targetSdkVersion 20
-        versionCode 3
-        versionName '1.1.1'
+        versionCode 4
+        versionName '1.1.2'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
