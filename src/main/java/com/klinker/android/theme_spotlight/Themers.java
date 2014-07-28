@@ -78,7 +78,7 @@ public class Themers {
     private static final FeaturedThemer HOBIE_HELBICH = new FeaturedThemer(
             "Hobie Helbich",
              null,
-            "https://lh4.googleusercontent.com/-OaJ3pqADwEg/U17-xMEa_EI/AAAAAAAALG8/STLX2Y89CzY/w477-h479-no/IMG_20140419_192238664_HDR-MOTION.gif",
+            "https://lh4.googleusercontent.com/-4ewb6zcg1j0/U9bT3DJGNCI/AAAAAAAAN2Q/eYKj1wYpQ0c/s553-no/HOBI3CATevolveboatlogo.png",
             "HOBI3CAT"
     );
 
