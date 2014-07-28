@@ -89,6 +89,13 @@ public class Themers {
             "Darko Apps"
     );
 
+    private static final FeaturedThemer FLYINGRHINOCMG = new FeaturedThemer(
+            "FlyingRhinoCMG",
+             null,
+            "https://lh6.googleusercontent.com/-A-vYPVIuZ3o/U9XQIBvw5aI/AAAAAAABQ4I/kQPhT3RdDbQ/s200/avatar3-highres.png",
+            "FlyingRhinoCMG"
+    );
+
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
@@ -98,7 +105,8 @@ public class Themers {
             BORDEN_GRAPHICS,
             NATE_GANTT,
             HOBIE_HELBICH,
-            ROBERTO_DARKO
+            ROBERTO_DARKO,
+            FLYINGRHINOCMG
     };
 
     static {
