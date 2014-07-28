@@ -19,7 +19,7 @@ allprojects {
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'robolectric'
 
 robolectric {
