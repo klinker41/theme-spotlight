@@ -17,6 +17,7 @@
 package com.klinker.android.theme_spotlight.activity;
 
 import com.klinker.android.theme_spotlight.AbstractSpotlightTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.Robolectric;
 
@@ -24,6 +25,7 @@ import static junit.framework.Assert.assertNotNull;
 
 public class FeaturedThemeActivityTest extends AbstractSpotlightTest {
 
+    @Ignore
     @Test
     public void testOnCreate() throws Exception {
         FeaturedThemeActivity activity = Robolectric.buildActivity(FeaturedThemeActivity.class).create().get();
