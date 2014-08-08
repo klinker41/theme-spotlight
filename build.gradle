@@ -50,21 +50,23 @@ android {
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file("keystore.jks")
-            storePassword "testpass"
-            keyAlias "theme-spotlight"
-            keyPassword "fakepass"
-        }
-    }
+    if (new File("keystore.jks").exists()) {
+	    signingConfigs {
+	        release {
+	            storeFile file("keystore.jks")
+	            storePassword "testpass"
+	            keyAlias "theme-spotlight"
+	            keyPassword "fakepass"
+	        }
+	    }
 
-    buildTypes {
-        release {
-            runProguard false
-            signingConfig signingConfigs.release
-        }
-    }
+	    buildTypes {
+	        release {
+	            runProguard false
+	            signingConfig signingConfigs.release
+	        }
+	    }
+	}
 
     sourceSets {
         androidTest {
