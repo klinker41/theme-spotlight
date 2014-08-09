@@ -95,6 +95,12 @@ public class Themers {
             "https://lh6.googleusercontent.com/-A-vYPVIuZ3o/U9XQIBvw5aI/AAAAAAABQ4I/kQPhT3RdDbQ/s200/avatar3-highres.png",
             "FlyingRhinoCMG"
     );
+    private static final FeaturedThemer Null.ART = new FeaturedThemer(
+            "Null.ART",
+             null,
+            "https://avatars1.githubusercontent.com/u/1650125?v=2&u=cfabb6f674b4bfcdc9fd8e06ebd2b1d9f838f6c5&s=140",
+            "Null.ART"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -106,7 +112,8 @@ public class Themers {
             NATE_GANTT,
             HOBIE_HELBICH,
             ROBERTO_DARKO,
-            FLYINGRHINOCMG
+            FLYINGRHINOCMG,
+            Null.ART
     };
 
     static {
