@@ -98,7 +98,7 @@ public class Themers {
     private static final FeaturedThemer Null_ART = new FeaturedThemer(
             "Null.ART",
              null,
-            "https://avatars1.githubusercontent.com/u/1650125?v=2&u=cfabb6f674b4bfcdc9fd8e06ebd2b1d9f838f6c5&s=140",
+            "https://lh3.googleusercontent.com/-aoNORa5R7Ko/AAAAAAAAAAI/AAAAAAAAFvw/o1eG8_AytDY/s120-c/photo.jpg",
             "Null.ART"
     );
 
