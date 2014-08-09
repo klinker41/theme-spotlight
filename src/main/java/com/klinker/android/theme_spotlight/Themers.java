@@ -78,7 +78,7 @@ public class Themers {
     private static final FeaturedThemer HOBIE_HELBICH = new FeaturedThemer(
             "Hobie Helbich",
              null,
-            "https://lh4.googleusercontent.com/-OaJ3pqADwEg/U17-xMEa_EI/AAAAAAAALG8/STLX2Y89CzY/w477-h479-no/IMG_20140419_192238664_HDR-MOTION.gif",
+            "https://lh4.googleusercontent.com/-4ewb6zcg1j0/U9bT3DJGNCI/AAAAAAAAN2Q/eYKj1wYpQ0c/s553-no/HOBI3CATevolveboatlogo.png",
             "HOBI3CAT"
     );
 
@@ -87,6 +87,19 @@ public class Themers {
              null,
             "https://lh4.googleusercontent.com/-8CJZrnuDkyU/UtA35c6bbxI/AAAAAAAAEW8/4eqc5Ts1Qww/s256-no/Google%252B1_2.jpg",
             "Darko Apps"
+    );
+
+    private static final FeaturedThemer FLYINGRHINOCMG = new FeaturedThemer(
+            "FlyingRhinoCMG",
+             null,
+            "https://lh6.googleusercontent.com/-A-vYPVIuZ3o/U9XQIBvw5aI/AAAAAAABQ4I/kQPhT3RdDbQ/s200/avatar3-highres.png",
+            "FlyingRhinoCMG"
+    );
+    private static final FeaturedThemer Null_ART = new FeaturedThemer(
+            "Null.ART",
+             null,
+            "https://lh3.googleusercontent.com/-aoNORa5R7Ko/AAAAAAAAAAI/AAAAAAAAFvw/o1eG8_AytDY/s120-c/photo.jpg",
+            "Null.ART"
     );
 
     // list of all themers, will be alphabetized when displayed
@@ -98,7 +111,9 @@ public class Themers {
             BORDEN_GRAPHICS,
             NATE_GANTT,
             HOBIE_HELBICH,
-            ROBERTO_DARKO
+            ROBERTO_DARKO,
+            FLYINGRHINOCMG,
+            Null_ART
     };
 
     static {

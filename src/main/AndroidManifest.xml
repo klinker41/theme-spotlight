@@ -60,5 +60,8 @@
         <activity android:name=".activity.ScreenshotViewerActivity"
                   android:theme="@style/ScreenshotViewer"/>
 
+        <activity android:name=".activity.AboutAuthActivity"
+                  android:icon="@drawable/spotlight_logo"/>
+
     </application>
 </manifest>
