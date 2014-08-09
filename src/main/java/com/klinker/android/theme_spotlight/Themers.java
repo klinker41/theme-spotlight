@@ -95,7 +95,7 @@ public class Themers {
             "https://lh6.googleusercontent.com/-A-vYPVIuZ3o/U9XQIBvw5aI/AAAAAAABQ4I/kQPhT3RdDbQ/s200/avatar3-highres.png",
             "FlyingRhinoCMG"
     );
-    private static final FeaturedThemer Null.ART = new FeaturedThemer(
+    private static final FeaturedThemer Null_ART = new FeaturedThemer(
             "Null.ART",
              null,
             "https://avatars1.githubusercontent.com/u/1650125?v=2&u=cfabb6f674b4bfcdc9fd8e06ebd2b1d9f838f6c5&s=140",
@@ -113,7 +113,7 @@ public class Themers {
             HOBIE_HELBICH,
             ROBERTO_DARKO,
             FLYINGRHINOCMG,
-            Null.ART
+            Null_ART
     };
 
     static {
