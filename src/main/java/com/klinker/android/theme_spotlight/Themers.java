@@ -101,6 +101,13 @@ public class Themers {
             "https://lh3.googleusercontent.com/-aoNORa5R7Ko/AAAAAAAAAAI/AAAAAAAAFvw/o1eG8_AytDY/s120-c/photo.jpg",
             "Null.ART"
     );
+    
+    private static final FeaturedThemer LUKLEK = new FeaturedThemer(
+            "Luklek",
+            null,
+            "https://lh6.googleusercontent.com/-tXNWxuSyrRk/AAAAAAAAAAI/AAAAAAAAARQ/AO46FDFISKo/s120-c/photo.jpg",
+            "Luklek"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -113,7 +120,8 @@ public class Themers {
             HOBIE_HELBICH,
             ROBERTO_DARKO,
             FLYINGRHINOCMG,
-            Null_ART
+            Null_ART,
+            LUKLEK
     };
 
     static {
