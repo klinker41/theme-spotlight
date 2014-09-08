@@ -30,13 +30,13 @@ public class AuthToken {
 
     private static final String TAG = "AuthToken";
 
-    private Settings settings;
+    private String authToken;
+    private String androidId;
 
     public void initAuthToken(final Activity context, final OnLoadFinishedListener listener) {
-
-        // if tokens are not available (ie this is first run, then we need to fetch
+        // if tokens are not available (ie this is first run), then we need to fetch
         // them. We authenticate with Google Play Services and get the correct account
-        // token and then store that and the androidId in shared prefs for next time
+        // token and then store that and the androidId
         if (getAuthToken() == null || getAndroidId() == null) {
             final Handler handler = new Handler();
             new Thread(new Runnable() {
@@ -44,7 +44,6 @@ public class AuthToken {
                 public void run() {
                     setAuthToken(fetchAuthToken(false, context));
                     setAndroidId(fetchAuthorizedAndroidId(context));
-                    storeToPrefs(context);
 
                     handler.post(new Runnable() {
                         @Override
@@ -59,28 +58,20 @@ public class AuthToken {
         }
     }
 
-    public AuthToken(Context context) {
-        settings = Settings.getInstance(context);
-    }
-
-    private void storeToPrefs(Context context) {
-        settings.commitAuthInfo(context);
-    }
-
     public String getAuthToken() {
-        return settings.authToken;
+        return authToken;
     }
 
     public String getAndroidId() {
-        return settings.androidId;
+        return androidId;
     }
 
     public void setAuthToken(String authToken) {
-        settings.authToken = authToken;
+        this.authToken = authToken;
     }
 
     public void setAndroidId(String androidId) {
-        settings.androidId = androidId;
+        this.androidId = androidId;
     }
 
     public interface OnLoadFinishedListener {
@@ -107,7 +98,7 @@ public class AuthToken {
             Account[] accounts = am.getAccountsByType("com.google");
             AccountManagerFuture<Bundle> accountManagerFuture;
             if (activity == null) {
-                accountManagerFuture = am.getAuthToken(accounts[0], "android", false, null, null);
+                accountManagerFuture = am.getAuthToken(accounts[0], "android", true, null, null);
             } else {
                 accountManagerFuture = am.getAuthToken(accounts[0], "android", null, activity, null, null);
             }

@@ -19,6 +19,7 @@ package com.klinker.android.theme_spotlight.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Handler;
+import android.util.Log;
 import com.gc.android.market.api.MarketSession;
 import com.gc.android.market.api.model.Market;
 import com.klinker.android.theme_spotlight.activity.AuthActivity;
@@ -26,6 +27,7 @@ import com.klinker.android.theme_spotlight.data.AuthToken;
 
 public abstract class AuthFragment extends Fragment {
 
+    private static final String TAG = "AuthFragment";
     private AuthActivity mContext;
 
     @Override
@@ -49,7 +51,11 @@ public abstract class AuthFragment extends Fragment {
             @Override
             public void run() {
                 try {
+                    while (getAuthToken().getAuthToken() == null || getAuthToken().getAndroidId() == null) {
+                        Thread.sleep(25);
+                    }
                     MarketSession session = new MarketSession(false);
+                    Log.v(TAG, getAuthToken().toString() + " " + getAuthToken().getAuthToken() + " " + getAuthToken().getAndroidId());
                     session.getContext().setAuthSubToken(getAuthToken().getAuthToken());
                     session.getContext().setAndroidId(getAuthToken().getAndroidId());
 

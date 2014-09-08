@@ -23,8 +23,6 @@ public class Settings {
     public boolean freeOnly;
     public boolean isUpdate;
     public int currentVersion;
-    public String authToken;
-    public String androidId;
 
     public static Settings getInstance(Context context) {
         return getInstance(context, false);
@@ -43,8 +41,6 @@ public class Settings {
 
         freeOnly = sharedPreferences.getBoolean(context.getString(R.string.free_only_key), false);
         currentVersion = sharedPreferences.getInt(context.getString(R.string.current_version_key), 0);
-        authToken = sharedPreferences.getString(context.getString(R.string.auth_token_key), null);
-        androidId = sharedPreferences.getString(context.getString(R.string.android_id_key), null);
 
         checkIsUpdate(context);
     }
@@ -81,12 +77,5 @@ public class Settings {
 
                 break;
         }
-    }
-
-    public void commitAuthInfo(Context context) {
-        sharedPreferences.edit()
-                .putString(context.getString(R.string.auth_token_key), authToken)
-                .putString(context.getString(R.string.android_id_key), androidId)
-                .commit();
     }
 }

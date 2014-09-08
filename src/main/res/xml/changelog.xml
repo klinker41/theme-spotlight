@@ -17,6 +17,10 @@
   -->
 
 <changelog>
+    <version name="1.2.0">
+        <text>More featured themers</text>
+        <text>Fix infinite loading if auth token has expired</text>
+    </version>
 	<version name="1.1.4">
 		<text>More featured themers</text>
 	</version>

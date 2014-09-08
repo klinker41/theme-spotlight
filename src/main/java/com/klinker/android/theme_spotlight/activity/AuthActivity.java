@@ -23,10 +23,7 @@ import android.os.Bundle;
 import com.klinker.android.theme_spotlight.data.AuthToken;
 import com.klinker.android.theme_spotlight.data.Settings;
 
-// abstract class for keeping all of my auth stuff. AuthTokens will
-// be grabbed in on start vs onCreate so that we can use the callbacks for when
-// the auth has finished and ensure that all boilerplate work is done in the
-// implementing class
+// abstract class for keeping all of my auth stuff
 public abstract class AuthActivity extends Activity {
 
     private AuthToken authToken;
@@ -41,25 +38,19 @@ public abstract class AuthActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-
         if (authToken == null) {
             initAuthToken(this);
         }
     }
 
     public void initAuthToken(Activity activity) {
-        authToken = new AuthToken(activity);
-
-        if (authToken.getAuthToken() == null) {
-            authToken.initAuthToken(activity, new AuthToken.OnLoadFinishedListener() {
-                @Override
-                public void onLoadFinished() {
-                    onAuthFinished(authToken);
-                }
-            });
-        } else {
-            onAuthFinished(authToken);
-        }
+        authToken = new AuthToken();
+        authToken.initAuthToken(activity, new AuthToken.OnLoadFinishedListener() {
+            @Override
+            public void onLoadFinished() {
+                onAuthFinished(authToken);
+            }
+        });
     }
 
     // helper to replace a current view with a new fragment
