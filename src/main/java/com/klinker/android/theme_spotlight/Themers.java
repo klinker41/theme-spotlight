@@ -108,6 +108,13 @@ public class Themers {
             "https://lh6.googleusercontent.com/-tXNWxuSyrRk/AAAAAAAAAAI/AAAAAAAAARQ/AO46FDFISKo/s120-c/photo.jpg",
             "Luklek"
     );
+    
+    private static final FeaturedThemer BW_DESIGNS = new FeaturedThemer(
+            "BW Designs",
+             "Leeland Miller",
+            "http://i46.photobucket.com/albums/f125/Leeland_Miller/Mobile%20Uploads/image_zps52c48ec2.jpg",
+            "BW Designs"
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -121,7 +128,8 @@ public class Themers {
             ROBERTO_DARKO,
             FLYINGRHINOCMG,
             Null_ART,
-            LUKLEK
+            LUKLEK,
+            BW_DESIGNS
     };
 
     static {
