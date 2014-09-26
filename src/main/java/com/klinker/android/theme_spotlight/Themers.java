@@ -115,7 +115,12 @@ public class Themers {
             "http://i46.photobucket.com/albums/f125/Leeland_Miller/Mobile%20Uploads/image_zps52c48ec2.jpg",
             "BW Designs"
     );
-
+private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
+            "George Herbert",
+             null,
+            "http://i1035.photobucket.com/albums/a439/ghevolution/GHevolution_zpsa674a374.png",
+            "GHEvolution"
+    );
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
@@ -129,7 +134,8 @@ public class Themers {
             FLYINGRHINOCMG,
             Null_ART,
             LUKLEK,
-            BW_DESIGNS
+            BW_DESIGNS,
+            GHEVOLUTION
     };
 
     static {
