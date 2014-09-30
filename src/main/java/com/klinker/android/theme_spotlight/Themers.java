@@ -64,7 +64,7 @@ public class Themers {
     private static final FeaturedThemer BORDEN_GRAPHICS = new FeaturedThemer(
             "BORDEN GRAPHICS",
              null,
-            "https://lh3.googleusercontent.com/-WqwyyX1pysU/UsdbPuxBqkI/AAAAAAAATB4/jjabm1eJ1F4/w521-h520-no/b.gif",
+            "https://lh5.googleusercontent.com/-3JSkjkSoefE/VCs3qLJef_I/AAAAAAAAVpg/VOEU1LqIvN8/s511-no/b.png",
             "BORDEN GRAPHICS"
     );
 
