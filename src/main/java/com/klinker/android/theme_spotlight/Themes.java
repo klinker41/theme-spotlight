@@ -25,6 +25,56 @@ import com.klinker.android.theme_spotlight.data.FeaturedTheme;
  */
 public class Themes {
 
+    public static final FeaturedTheme JK_EVOLVESMS_BLUE = new FeaturedTheme(
+            "EvolveSMS Blue",
+            null,
+            "com.klinker.android.evolve_sms.material.blue",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/icon/Blue/512x512.png",
+            "https://play.google.com/store/apps/details?id=com.klinker.android.evolve_sms.material.blue",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/images/blue_feature.png",
+            "https://github.com/klinker41/evolve_material"
+    );
+
+    public static final FeaturedTheme JK_EVOLVESMS_GREEN = new FeaturedTheme(
+            "EvolveSMS Green",
+            null,
+            "com.klinker.android.evolve_sms.material.green",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/icon/Green/512x512.png",
+            "https://play.google.com/store/apps/details?id=com.klinker.android.evolve_sms.material.green",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/images/green_feature.png",
+            "https://github.com/klinker41/evolve_material"
+    );
+
+    public static final FeaturedTheme JK_EVOLVESMS_ORANGE = new FeaturedTheme(
+            "EvolveSMS Orange",
+            null,
+            "com.klinker.android.evolve_sms.material.orange",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/icon/Orange/512x512.png",
+            "https://play.google.com/store/apps/details?id=com.klinker.android.evolve_sms.material.orange",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/images/orange_feature.png",
+            "https://github.com/klinker41/evolve_material"
+    );
+
+    public static final FeaturedTheme JK_EVOLVESMS_PURPLE = new FeaturedTheme(
+            "EvolveSMS Purple",
+            null,
+            "com.klinker.android.evolve_sms.material.purple",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/icon/Purple/512x512.png",
+            "https://play.google.com/store/apps/details?id=com.klinker.android.evolve_sms.material.purple",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/images/purple_feature.png",
+            "https://github.com/klinker41/evolve_material"
+    );
+
+    public static final FeaturedTheme JK_EVOLVESMS_RED = new FeaturedTheme(
+            "EvolveSMS Red",
+            null,
+            "com.klinker.android.evolve_sms.material.red",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/icon/Red/512x512.png",
+            "https://play.google.com/store/apps/details?id=com.klinker.android.evolve_sms.material.red",
+            "https://raw.githubusercontent.com/klinker41/evolve_material/master/promo/images/red_feature.png",
+            "https://github.com/klinker41/evolve_material"
+    );
+
     public static final FeaturedTheme JK_EVOLVE_HANGOUTS = new FeaturedTheme(
             "Evolve Hangouts",
             null,

@@ -32,6 +32,11 @@ public class Themers {
             "EvolveSMS Main Developer",
             "https://lh4.googleusercontent.com/-kD8HBhQOtBc/Ue1x1iothBI/AAAAAAAAMVA/DTisicS7axw/s256-no/f5117d67-1850-4a52-b3a4-e6b267abca17",
             new FeaturedTheme[]{
+                    Themes.JK_EVOLVESMS_BLUE,
+                    Themes.JK_EVOLVESMS_GREEN,
+                    Themes.JK_EVOLVESMS_ORANGE,
+                    Themes.JK_EVOLVESMS_PURPLE,
+                    Themes.JK_EVOLVESMS_RED,
                     Themes.JK_EVOLVE_HANGOUTS,
                     Themes.JK_EVOLVE_BLUE,
                     Themes.JK_EVOLVE_BLUE_CLASSIC,
