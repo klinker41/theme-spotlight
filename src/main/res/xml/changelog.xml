@@ -17,6 +17,9 @@
   -->
 
 <changelog>
+    <version name="1.2.1">
+        <text>Fix out of memory crash</text>
+    </version>
     <version name="1.2.0">
         <text>More featured themers</text>
         <text>Fix infinite loading if auth token has expired</text>
