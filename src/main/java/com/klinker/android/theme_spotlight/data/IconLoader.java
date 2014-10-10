@@ -65,7 +65,11 @@ public class IconLoader extends AbstractImageLoader {
         final String fileName = getContext().getCacheDir() + "/" + item.getPackageName() + screenshot + ".png";
 
         if (new File(fileName).exists()) {
-            setIcon(fileName);
+            try {
+                setIcon(fileName);
+            } catch (Error e) {
+                e.printStackTrace();
+            }
         } else {
             MarketSession session = new MarketSession(false);
             session.getContext().setAuthSubToken(getContext().getAuthToken().getAuthToken());
@@ -87,7 +91,7 @@ public class IconLoader extends AbstractImageLoader {
                         fos.close();
 
                         setIcon(fileName);
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         e.printStackTrace();
                     }
                 }
@@ -96,7 +100,7 @@ public class IconLoader extends AbstractImageLoader {
         }
     }
 
-    private void setIcon(String fileName) {
+    private void setIcon(String fileName) throws OutOfMemoryError {
         final Bitmap icon = BitmapFactory.decodeFile(fileName);
         addBitmapToMemoryCache(item.getId(), icon);
 
