@@ -5,8 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.1'
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.11.+'
+        classpath 'com.android.tools.build:gradle:0.13.3'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.13.0'
     }
 }
 
@@ -38,13 +38,13 @@ android {
         exclude 'mockito-extensions/org.mockito.plugins.MockMaker'
     }
 
-    compileSdkVersion 20
-    buildToolsVersion '20'
+    compileSdkVersion 21
+    buildToolsVersion '21.0.0'
 
     defaultConfig {
         applicationId 'com.klinker.android.theme_spotlight'
         minSdkVersion 14
-        targetSdkVersion 20
+        targetSdkVersion 21
         versionCode 8
         versionName '1.2.1'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
