@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Klinker Apps, Inc.
+ * Copyright (C) 2014 Jacob Klinker
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,28 @@
 
 package com.klinker.android.theme_spotlight;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+import org.junit.runners.model.InitializationError;
 import org.robolectric.RobolectricTestRunner;
 
-@Ignore
-@RunWith(SpotlightTestRunner.class)
-public abstract class AbstractSpotlightTest {
+import java.util.Properties;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+public class SpotlightTestRunner extends RobolectricTestRunner {
+
+    public SpotlightTestRunner(Class<?> testClass) throws InitializationError {
+        super(testClass);
+    }
+
+    @Override
+    protected Properties getConfigProperties() {
+        Properties properties = super.getConfigProperties();
+        if  (properties == null) {
+            properties = new Properties();
+        }
+
+        properties.setProperty("manifest", "/src/main/AndroidManifest.xml");
+        properties.setProperty("emulateSdk", "18");
+        return properties;
     }
 
 }
