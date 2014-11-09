@@ -120,13 +120,15 @@ public class Themers {
             "http://i46.photobucket.com/albums/f125/Leeland_Miller/Mobile%20Uploads/image_zps52c48ec2.jpg",
             "BW Designs"
     );
-private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
+    
+    private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
             "George Herbert",
              null,
             "http://i1035.photobucket.com/albums/a439/ghevolution/GHevolution_zpsa674a374.png",
             "GHEvolution"
     );
-private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
+    
+    private static final FeaturedThemer PITCHED_APPS = new FeaturedThemer(
             "Pitched Apps",
              null,
             "https://lh4.googleusercontent.com/-uAbl5LnILnE/Ux_sNDUEaoI/AAAAAAAAADc/bEJo6clXpbY/s512-no/ic_launcher-web.png",
