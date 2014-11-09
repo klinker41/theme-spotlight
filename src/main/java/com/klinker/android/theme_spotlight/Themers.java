@@ -126,6 +126,12 @@ private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
             "http://i1035.photobucket.com/albums/a439/ghevolution/GHevolution_zpsa674a374.png",
             "GHEvolution"
     );
+private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
+            "Pitched Apps",
+             null,
+            "https://lh4.googleusercontent.com/-uAbl5LnILnE/Ux_sNDUEaoI/AAAAAAAAADc/bEJo6clXpbY/s512-no/ic_launcher-web.png",
+            "Pitched Apps"
+    );    
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
@@ -141,6 +147,7 @@ private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
             LUKLEK,
             BW_DESIGNS,
             GHEVOLUTION
+            PITCHED_APPS
     };
 
     static {
