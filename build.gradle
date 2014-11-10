@@ -48,8 +48,8 @@ android {
         applicationId 'com.klinker.android.theme_spotlight'
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 8
-        versionName '1.2.1'
+        versionCode 9
+        versionName '1.2.2'
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
 

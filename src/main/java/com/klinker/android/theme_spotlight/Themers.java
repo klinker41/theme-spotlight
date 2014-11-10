@@ -148,7 +148,7 @@ public class Themers {
             Null_ART,
             LUKLEK,
             BW_DESIGNS,
-            GHEVOLUTION
+            GHEVOLUTION,
             PITCHED_APPS
     };
 
