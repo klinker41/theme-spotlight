@@ -5,8 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.3'
-        classpath 'org.robolectric:robolectric-gradle-plugin:0.13.0'
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.13.2'
     }
 }
 
@@ -42,7 +42,7 @@ android {
     }
 
     compileSdkVersion 21
-    buildToolsVersion '21.1.0'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId 'com.klinker.android.theme_spotlight'
@@ -65,7 +65,7 @@ android {
 
 	    buildTypes {
 	        release {
-	            runProguard false
+	            minifyEnabled false
 	            signingConfig signingConfigs.release
 	        }
 	    }
@@ -88,12 +88,12 @@ dependencies {
             'org.hamcrest:hamcrest-library:1.1'
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.robolectric:robolectric:2.4'
-    androidTestCompile 'com.squareup:fest-android:1.0.+'
+    androidTestCompile 'com.squareup:fest-android:1.0.8'
     androidTestCompile 'org.mockito:mockito-all:1.9.5'
 
-    compile 'com.android.support:support-v13:+'
-    compile "com.android.support:cardview-v7:+"
-    compile "com.android.support:recyclerview-v7:+"
+    compile 'com.android.support:support-v13:21.0.3'
+    compile "com.android.support:cardview-v7:21.0.3"
+    compile "com.android.support:recyclerview-v7:21.0.3"
     compile files('lib/googleplayapi.jar', 'lib/protobuf-java-2.4.1.jar', 'lib/gridlayoutmanager.jar')
     compile(name:'android-photoview', ext:'aar')
 
