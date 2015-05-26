@@ -124,4 +124,25 @@ public class Themes {
             "https://lh3.googleusercontent.com/-UHAzcPfsCXQ/Ur-Ve6VkZ0I/AAAAAAAAQbw/7OIWCino5pk/w346-h615/Screenshot_2013-12-28-21-20-26.png",
             "https://github.com/klinker41/evolve_theme"
     );
+
+    public static final FeaturedTheme RAB_LOLLIPOP = new FeaturedTheme(
+            "Evolve Lollipop Theme",
+            null,
+            "evolvesms.theme.lollipop",
+            "https://raw.githubusercontent.com/rab4dis/EvolveSMS-L-Theme/master/res/drawable-xhdpi/icon.png",
+            "https://play.google.com/store/apps/details?id=evolvesms.theme.lollipop",
+            "https://lh3.ggpht.com/bDCUnZ7aqAZDPGXQFVMlC566q3DyihckuysIjjQgsQYS75HJphx-48QlUVvZRN7gJmo",
+            "https://github.com/rab4dis/EvolveSMS-L-Theme"
+    );
+
+    public static final FeaturedTheme RAB_GS6 = new FeaturedTheme(
+            "Evolve GSS6 Theme",
+            null,
+            "evolvesms.theme.gs6lol",
+            "https://raw.githubusercontent.com/rab4dis/EvolveSMS-GS6L-Theme/master/res/drawable-xhdpi/icon.png",
+            "https://play.google.com/store/apps/details?id=evolvesms.theme.gs6lol",
+            "https://lh3.googleusercontent.com/ON1oZRFJs1LvxTGnSKwC8XNGE1w7D5vfdsp5zpskfwFn3pLpETTtZG3Y4BTMcOiNljA=h900-rw",
+            "https://github.com/rab4dis/EvolveSMS-GS6L-Theme"
+    );
+
 }

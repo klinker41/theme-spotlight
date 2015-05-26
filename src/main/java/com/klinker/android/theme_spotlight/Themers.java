@@ -133,7 +133,18 @@ public class Themers {
              null,
             "https://lh4.googleusercontent.com/-uAbl5LnILnE/Ux_sNDUEaoI/AAAAAAAAADc/bEJo6clXpbY/s512-no/ic_launcher-web.png",
             "Pitched Apps"
-    );    
+    );
+
+    private static final FeaturedThemer RAB4DIS = new FeaturedThemer(
+            "Rabbite Design",
+            "EvolveSMS Themes Developer",
+            "https://lh3.ggpht.com/LRsGBdjr38gjndkWPPQt5jNmAqi2qPhcLYIQNfKGk83yE4mSyzcyjxvN9A5K5QMRZw",
+            new FeaturedTheme[]{
+                    Themes.RAB_LOLLIPOP,
+                    Themes.RAB_GS6
+            }
+    );
+
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
             JAKE_KLINKER,
@@ -149,7 +160,8 @@ public class Themers {
             LUKLEK,
             BW_DESIGNS,
             GHEVOLUTION,
-            PITCHED_APPS
+            PITCHED_APPS,
+            RAB4DIS
     };
 
     static {
