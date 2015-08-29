@@ -145,4 +145,25 @@ public class Themes {
             "https://github.com/rab4dis/EvolveSMS-GS6L-Theme"
     );
 
+    public static final FeaturedTheme LGUX4 = new FeaturedTheme(
+            "Evolve LGUX4 Theme",
+            null,
+            "evolvesms.theme.lgux4",
+            "https://github.com/szecs/evolve_theme_lgux4/blob/master/app/src/main/res/drawable-xxxhdpi-v4/icon.png",
+            "https://play.google.com/store/apps/details?id=com.kickoff.android.evolve_sms.lgux4&hl=en",
+            "https://www.dropbox.com/s/kjxym52t0o6rztu/Screenshot_2015-08-24-07-43-20.png?dl=0",
+            "https://github.com/szecs/evolve_theme_lgux4"
+    );
+	
+    public static final FeaturedTheme FLYME = new FeaturedTheme(
+            "Evolve Flyme Theme",
+            null,
+            "evolvesms.theme.flyme",
+            "https://github.com/szecs/evolve_theme_flyme/blob/master/app/src/main/res/drawable-xxxhdpi-v4/icon.png",
+            "https://play.google.com/store/apps/details?id=com.kickoff.android.evolve_sms.flyme",
+            "https://www.dropbox.com/s/jm249wjwws7tyw5/Screenshot_2015-08-28-07-33-40.png?dl=0",
+            "https://github.com/szecs/evolve_theme_flyme"
+    );
+	
+	
 }
