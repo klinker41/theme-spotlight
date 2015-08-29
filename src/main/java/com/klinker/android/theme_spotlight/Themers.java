@@ -144,6 +144,16 @@ public class Themers {
                     Themes.RAB_GS6
             }
     );
+	
+	private static final FeaturedThemer KICKOFF = new FeaturedThemer(
+            "Kickoff Development",
+            "EvolveSMS Themes Developer",
+            "https://goo.gl/photos/GP8krMLwziaBRXzR9",
+            new FeaturedTheme[]{
+                    Themes.LGUX4,
+                    Themes.Flyme
+            }
+    );
 
     // list of all themers, will be alphabetized when displayed
     public static final FeaturedThemer[] FEATURED_THEMERS = new FeaturedThemer[]{
@@ -161,7 +171,8 @@ public class Themers {
             BW_DESIGNS,
             GHEVOLUTION,
             PITCHED_APPS,
-            RAB4DIS
+            RAB4DIS,
+			KICKOFF
     };
 
     static {
