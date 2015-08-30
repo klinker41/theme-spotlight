@@ -58,14 +58,14 @@ public class Themers {
             "http://klinkerapps.com/dev-upload/include/views/img/logo.gif",
             "Klinker Apps"
     );
-    
+
     private static final FeaturedThemer JON_MERRITT = new FeaturedThemer(
             "Jon Merritt",
              null,
             "https://lh4.googleusercontent.com/-DO2R3EsKx3I/AAAAAAAAAAI/AAAAAAAADew/3edzsY4jaZ0/s120-c/photo.jpg",
             "Optimal Designs"
             );
-    
+
     private static final FeaturedThemer BORDEN_GRAPHICS = new FeaturedThemer(
             "BORDEN GRAPHICS",
              null,
@@ -79,7 +79,7 @@ public class Themers {
             "https://lh5.googleusercontent.com/-5LHsOdckHLU/UZEKiWqvoyI/AAAAAAAAJNg/o_VZ6c7tfAI/w722-h724-no/BetterNate_blur.png",
             "[nXt3_Apps]"
     );
-    
+
     private static final FeaturedThemer HOBIE_HELBICH = new FeaturedThemer(
             "Hobie Helbich",
              null,
@@ -106,28 +106,28 @@ public class Themers {
             "https://lh3.googleusercontent.com/-aoNORa5R7Ko/AAAAAAAAAAI/AAAAAAAAFvw/o1eG8_AytDY/s120-c/photo.jpg",
             "Null.ART"
     );
-    
+
     private static final FeaturedThemer LUKLEK = new FeaturedThemer(
             "Luklek",
             null,
             "https://lh6.googleusercontent.com/-tXNWxuSyrRk/AAAAAAAAAAI/AAAAAAAAARQ/AO46FDFISKo/s120-c/photo.jpg",
             "Luklek"
     );
-    
+
     private static final FeaturedThemer BW_DESIGNS = new FeaturedThemer(
             "BW Designs",
              "Leeland Miller",
             "http://i46.photobucket.com/albums/f125/Leeland_Miller/Mobile%20Uploads/image_zps52c48ec2.jpg",
             "BW Designs"
     );
-    
+
     private static final FeaturedThemer GHEVOLUTION = new FeaturedThemer(
             "George Herbert",
              null,
             "http://i1035.photobucket.com/albums/a439/ghevolution/GHevolution_zpsa674a374.png",
             "GHEvolution"
     );
-    
+
     private static final FeaturedThemer PITCHED_APPS = new FeaturedThemer(
             "Pitched Apps",
              null,
@@ -144,14 +144,14 @@ public class Themers {
                     Themes.RAB_GS6
             }
     );
-	
+
 	private static final FeaturedThemer KICKOFF = new FeaturedThemer(
             "Kickoff Development",
             "EvolveSMS Themes Developer",
             "https://goo.gl/photos/GP8krMLwziaBRXzR9",
             new FeaturedTheme[]{
                     Themes.LGUX4,
-                    Themes.Flyme
+                    Themes.FLYME
             }
     );
 

@@ -17,6 +17,9 @@
   -->
 
 <changelog>
+    <version name="1.2.4">
+        <text>Add featured themers</text>
+    </version>
     <version name="1.2.2">
         <text>Add featured themers</text>
     </version>
